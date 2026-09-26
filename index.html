@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>후쿠오카 여행 🇯🇵</title>
+
+  <!-- Leaflet 지도 -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Noto Sans KR", sans-serif;
+      background: #f5f5f5;
+    }
+
+    header {
+      background: white;
+      padding: 15px 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: relative;
+      z-index: 1000;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .category-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 12px;
+      background: white;
+    }
+
+    .category {
+      border: none;
+      padding: 9px 14px;
+      border-radius: 20px;
+      background: #eeeeee;
+      white-space: nowrap;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .category.active {
+      background: #222;
+      color: white;
+    }
+
+    #map {
+      width: 100%;
+      height: calc(100vh - 135px);
+      min-height: 500px;
+    }
+
+    .popup-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .popup-category {
+      color: #777;
+      font-size: 13px;
+    }
+
+    .bottom-nav {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+
+      #map {
+        height: calc(100vh - 185px);
+      }
+
+      .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        height: 60px;
+        background: white;
+        z-index: 2000;
+
+        justify-content: space-around;
+        align-items: center;
+
+        border-top: 1px solid #ddd;
+      }
+
+      .bottom-nav div {
+        font-size: 13px;
+        text-align: center;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🇯🇵 후쿠오카 여행</h1>
+  <p>우리 둘만의 여행 지도</p>
+</header>
+
+<div class="category-bar">
+  <button class="category active">전체</button>
+  <button class="category">🍜 맛집</button>
+  <button class="category">☕ 카페</button>
+  <button class="category">🛍️ 쇼핑</button>
+  <button class="category">📸 관광</button>
+  <button class="category">❤️ 찜</button>
+</div>
+
+<div id="map"></div>
+
+<div class="bottom-nav">
+  <div>🗺️<br>지도</div>
+  <div>📅<br>일정</div>
+  <div>❤️<br>찜</div>
+  <div>⚙️<br>설정</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+  // 후쿠오카 중심
+  const map = L.map('map').setView(
+    [33.5902, 130.4017],
+    13
+  );
+
+  // OpenStreetMap
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; OpenStreetMap'
+    }
+  ).addTo(map);
+
+
+  // 테스트 장소
+  const places = [
+
+    {
+      name: "하카타역",
+      category: "교통 / 쇼핑",
+      lat: 33.5898,
+      lng: 130.4207
+    },
+
+    {
+      name: "텐진",
+      category: "쇼핑 / 맛집",
+      lat: 33.5904,
+      lng: 130.3986
+    },
+
+    {
+      name: "나카스",
+      category: "맛집 / 야경",
+      lat: 33.5943,
+      lng: 130.4068
+    },
+
+    {
+      name: "캐널시티 하카타",
+      category: "쇼핑 / 관광",
+      lat: 33.5897,
+      lng: 130.4106
+    },
+
+    {
+      name: "오호리공원",
+      category: "관광",
+      lat: 33.5861,
+      lng: 130.3764
+    }
+
+  ];
+
+
+  places.forEach(place => {
+
+    L.marker(
+      [place.lat, place.lng]
+    )
+    .addTo(map)
+    .bindPopup(`
+      <div class="popup-title">
+        ${place.name}
+      </div>
+
+      <div class="popup-category">
+        ${place.category}
+      </div>
+    `);
+
+  });
+
+</script>
+
+</body>
+</html>
