@@ -1,225 +1,2449 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>후쿠오카 여행 지도</title>
 
-  <title>후쿠오카 여행 🇯🇵</title>
-
-  <!-- Leaflet 지도 -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --bg: #f7f7f8;
+      --card: #ffffff;
+      --text: #17171a;
+      --muted: #74747a;
+      --line: #e8e8eb;
+      --accent: #111111;
+      --blue: #2563eb;
+      --green: #16a34a;
+      --danger: #dc2626;
     }
 
-    body {
+    * { box-sizing: border-box; }
+
+    html, body {
       margin: 0;
-      font-family: Arial, "Noto Sans KR", sans-serif;
-      background: #f5f5f5;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
-      background: white;
-      padding: 15px 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 16px 12px;
       position: relative;
-      z-index: 1000;
+      z-index: 5;
     }
 
     header h1 {
       margin: 0;
-      font-size: 21px;
+      font-size: 20px;
+      line-height: 1.2;
     }
 
     header p {
       margin: 5px 0 0;
-      color: #777;
-      font-size: 13px;
+      color: var(--muted);
+      font-size: 12px;
     }
 
-    .category-bar {
-      display: flex;
+    .search-wrap {
+      position: relative;
+      padding: 10px 12px;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      z-index: 5;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
       gap: 8px;
-      overflow-x: auto;
-      padding: 12px;
-      background: white;
     }
 
-    .category {
-      border: none;
-      padding: 9px 14px;
-      border-radius: 20px;
-      background: #eeeeee;
-      white-space: nowrap;
-      cursor: pointer;
+    .search-row input {
+      width: 100%;
+      height: 44px;
+      border: 1px solid #d8d8dc;
+      border-radius: 12px;
+      padding: 0 13px;
+      font-size: 16px;
+      outline: none;
+      background: #fff;
+    }
+
+    .search-row input:focus {
+      border-color: #999;
+      box-shadow: 0 0 0 3px rgba(0,0,0,.05);
+    }
+
+    .search-btn {
+      height: 44px;
+      border: 0;
+      border-radius: 12px;
+      padding: 0 16px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .search-results {
+      display: none;
+      margin-top: 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .search-results.show {
+      display: block;
+    }
+
+    .result-item {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .result-item:last-child {
+      border-bottom: 0;
+    }
+
+    .result-name {
+      font-weight: 750;
       font-size: 14px;
     }
 
-    .category.active {
-      background: #222;
-      color: white;
+    .result-address {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 9px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      border: 1px solid #d7d7db;
+      background: #fff;
+      color: #222;
+      border-radius: 9px;
+      min-height: 34px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mini-btn.primary {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+
+    .map-shell {
+      position: relative;
+      flex: 1;
+      min-height: 430px;
     }
 
     #map {
-      width: 100%;
-      height: calc(100vh - 135px);
-      min-height: 500px;
+      position: absolute;
+      inset: 0;
     }
 
-    .popup-title {
+    .floating-tools {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .float-btn {
+      min-width: 46px;
+      min-height: 46px;
+      padding: 0 12px;
+      border: 1px solid #dedee2;
+      border-radius: 14px;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 4px 14px rgba(0,0,0,.10);
+      font-weight: 800;
+      color: #222;
+    }
+
+    .route-panel {
+      background: #fff;
+      border-top: 1px solid var(--line);
+      padding: 12px;
+      z-index: 5;
+    }
+
+    .panel-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .panel-title {
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 850;
+    }
+
+    .count-badge {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .settings-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .setting-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .setting-label {
+      font-size: 11px;
+      color: var(--muted);
       margin-bottom: 5px;
     }
 
-    .popup-category {
-      color: #777;
+    .setting-box select {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      font-weight: 750;
+      outline: none;
+    }
+
+    .checkbox-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      min-height: 28px;
+    }
+
+    .checkbox-line input {
+      width: 18px;
+      height: 18px;
+    }
+
+    .route-list {
+      margin-top: 10px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .empty-route {
+      border: 1px dashed #cfcfd5;
+      border-radius: 12px;
+      padding: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .route-item {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px;
+      background: #fff;
+    }
+
+    .route-num {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #111;
+      color: #fff;
+      font-weight: 850;
       font-size: 13px;
     }
 
-    .bottom-nav {
+    .route-info {
+      min-width: 0;
+    }
+
+    .route-name {
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .route-sub {
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .route-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #dedee2;
+      border-radius: 9px;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+    }
+
+    .icon-btn.danger {
+      color: var(--danger);
+    }
+
+    .route-note {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .bottom-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .action-btn {
+      min-height: 46px;
+      border-radius: 13px;
+      border: 1px solid #d7d7dc;
+      background: #fff;
+      font-weight: 850;
+      padding: 8px 12px;
+    }
+
+    .action-btn.primary {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+
+    .action-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .status {
       display: none;
+      margin-top: 8px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      color: #334155;
+      font-size: 12px;
+      line-height: 1.4;
     }
 
-    @media (max-width: 600px) {
-
-      #map {
-        height: calc(100vh - 185px);
-      }
-
-      .bottom-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-
-        height: 60px;
-        background: white;
-        z-index: 2000;
-
-        justify-content: space-around;
-        align-items: center;
-
-        border-top: 1px solid #ddd;
-      }
-
-      .bottom-nav div {
-        font-size: 13px;
-        text-align: center;
-      }
+    .status.show {
+      display: block;
     }
 
+    .status.error {
+      background: #fef2f2;
+      color: #991b1b;
+    }
+
+    .route-marker {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50% 50% 50% 10%;
+      transform: rotate(-45deg);
+      background: #111;
+      border: 3px solid #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    }
+
+    .route-marker span {
+      transform: rotate(45deg);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .me-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #2563eb;
+      border: 4px solid #fff;
+      box-shadow:
+        0 0 0 4px rgba(37,99,235,.18),
+        0 2px 8px rgba(0,0,0,.25);
+    }
+
+    .maplibregl-ctrl-bottom-left,
+    .maplibregl-ctrl-bottom-right {
+      font-size: 9px;
+    }
+
+    @media (min-width: 820px) {
+      .app {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 390px;
+        grid-template-rows: auto auto 1fr;
+        height: 100vh;
+      }
+
+      header {
+        grid-column: 1 / 3;
+      }
+
+      .search-wrap {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .map-shell {
+        grid-column: 1;
+        grid-row: 3;
+        min-height: 0;
+      }
+
+      .route-panel {
+        grid-column: 2;
+        grid-row: 2 / 4;
+        border-top: 0;
+        border-left: 1px solid var(--line);
+        overflow-y: auto;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-<header>
-  <h1>🇯🇵 후쿠오카 여행</h1>
-  <p>우리 둘만의 여행 지도</p>
-</header>
+<div class="app">
 
-<div class="category-bar">
-  <button class="category active">전체</button>
-  <button class="category">🍜 맛집</button>
-  <button class="category">☕ 카페</button>
-  <button class="category">🛍️ 쇼핑</button>
-  <button class="category">📸 관광</button>
-  <button class="category">❤️ 찜</button>
+  <header>
+    <h1>🇯🇵 후쿠오카 여행</h1>
+    <p>검색 → 경유지 추가 → 순서 변경 → Google Maps로 실제 길찾기</p>
+  </header>
+
+  <section class="search-wrap">
+
+    <div class="search-row">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="맛집, 카페, 관광지 검색 (예: 이치란, 다자이후)"
+        autocomplete="off"
+      />
+
+      <button
+        id="searchBtn"
+        class="search-btn"
+        type="button"
+      >
+        검색
+      </button>
+    </div>
+
+    <div
+      id="searchResults"
+      class="search-results"
+      aria-live="polite"
+    ></div>
+
+    <div
+      id="searchStatus"
+      class="status"
+      aria-live="polite"
+    ></div>
+
+  </section>
+
+  <section class="map-shell">
+
+    <div id="map"></div>
+
+    <div class="floating-tools">
+
+      <button
+        id="myLocationBtn"
+        class="float-btn"
+        type="button"
+      >
+        📍 내 위치
+      </button>
+
+      <button
+        id="fitRouteBtn"
+        class="float-btn"
+        type="button"
+      >
+        🧭 경로 보기
+      </button>
+
+    </div>
+
+  </section>
+
+  <aside class="route-panel">
+
+    <div class="panel-title-row">
+
+      <div class="panel-title">
+        오늘의 이동 경로
+      </div>
+
+      <div
+        id="routeCount"
+        class="count-badge"
+      >
+        0곳
+      </div>
+
+    </div>
+
+    <div class="settings-row">
+
+      <div class="setting-box">
+
+        <div class="setting-label">
+          이동 방식
+        </div>
+
+        <select id="travelMode">
+          <option value="walking">🚶 도보</option>
+          <option value="transit">🚇 대중교통</option>
+          <option value="driving">🚗 자동차</option>
+        </select>
+
+      </div>
+
+      <div class="setting-box">
+
+        <div class="setting-label">
+          출발지
+        </div>
+
+        <label class="checkbox-line">
+          <input
+            id="currentStart"
+            type="checkbox"
+            checked
+          />
+          현재 위치에서 출발
+        </label>
+
+      </div>
+
+    </div>
+
+    <div
+      id="routeList"
+      class="route-list"
+    ></div>
+
+    <div class="route-note">
+      지도 위 연결선은 방문 순서 확인용입니다.
+      실제 도로·도보·지하철 경로는 아래 Google Maps 버튼에서 계산합니다.
+    </div>
+
+    <div class="bottom-actions">
+
+      <button
+        id="clearRouteBtn"
+        class="action-btn"
+        type="button"
+      >
+        전체 지우기
+      </button>
+
+      <button
+        id="googleRouteBtn"
+        class="action-btn primary"
+        type="button"
+      >
+        Google Maps 길찾기
+      </button>
+
+    </div>
+
+    <div
+      id="routeStatus"
+      class="status"
+      aria-live="polite"
+    ></div>
+
+  </aside>
+
 </div>
-
-<div id="map"></div>
-
-<div class="bottom-nav">
-  <div>🗺️<br>지도</div>
-  <div>📅<br>일정</div>
-  <div>❤️<br>찜</div>
-  <div>⚙️<br>설정</div>
-</div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
 
-  // 후쿠오카 중심
-  const map = L.map('map').setView(
-    [33.5902, 130.4017],
-    13
-  );
+(() => {
 
-  // OpenStreetMap
-  L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; OpenStreetMap'
-    }
-  ).addTo(map);
+  const FUKUOKA_CENTER = [130.4017, 33.5902];
+
+  const STORAGE_KEY = 'fukuoka-route-v2';
 
 
-  // 테스트 장소
-  const places = [
+  const searchInput =
+    document.getElementById('searchInput');
 
-    {
-      name: "하카타역",
-      category: "교통 / 쇼핑",
-      lat: 33.5898,
-      lng: 130.4207
-    },
+  const searchBtn =
+    document.getElementById('searchBtn');
 
-    {
-      name: "텐진",
-      category: "쇼핑 / 맛집",
-      lat: 33.5904,
-      lng: 130.3986
-    },
+  const searchResults =
+    document.getElementById('searchResults');
 
-    {
-      name: "나카스",
-      category: "맛집 / 야경",
-      lat: 33.5943,
-      lng: 130.4068
-    },
+  const searchStatus =
+    document.getElementById('searchStatus');
 
-    {
-      name: "캐널시티 하카타",
-      category: "쇼핑 / 관광",
-      lat: 33.5897,
-      lng: 130.4106
-    },
+  const routeList =
+    document.getElementById('routeList');
 
-    {
-      name: "오호리공원",
-      category: "관광",
-      lat: 33.5861,
-      lng: 130.3764
-    }
+  const routeCount =
+    document.getElementById('routeCount');
 
-  ];
+  const travelMode =
+    document.getElementById('travelMode');
+
+  const currentStart =
+    document.getElementById('currentStart');
+
+  const myLocationBtn =
+    document.getElementById('myLocationBtn');
+
+  const fitRouteBtn =
+    document.getElementById('fitRouteBtn');
+
+  const clearRouteBtn =
+    document.getElementById('clearRouteBtn');
+
+  const googleRouteBtn =
+    document.getElementById('googleRouteBtn');
+
+  const routeStatus =
+    document.getElementById('routeStatus');
 
 
-  places.forEach(place => {
+  let routePoints = loadRoute();
 
-    L.marker(
-      [place.lat, place.lng]
-    )
-    .addTo(map)
-    .bindPopup(`
-      <div class="popup-title">
-        ${place.name}
-      </div>
+  let routeMarkers = [];
 
-      <div class="popup-category">
-        ${place.category}
-      </div>
-    `);
+  let previewMarker = null;
+
+  let myLocationMarker = null;
+
+  let searchAbortController = null;
+
+
+  const map = new maplibregl.Map({
+
+    container: 'map',
+
+    style:
+      'https://tiles.openfreemap.org/styles/positron',
+
+    center: FUKUOKA_CENTER,
+
+    zoom: 12.4,
+
+    attributionControl: true
 
   });
+
+
+  map.addControl(
+
+    new maplibregl.NavigationControl({
+      showCompass: false
+    }),
+
+    'bottom-right'
+
+  );
+
+
+  map.on('load', () => {
+
+    map.addSource('route-line', {
+
+      type: 'geojson',
+
+      data: emptyLine()
+
+    });
+
+
+    map.addLayer({
+
+      id: 'route-line-layer',
+
+      type: 'line',
+
+      source: 'route-line',
+
+      paint: {
+
+        'line-color': '#111111',
+
+        'line-width': 3,
+
+        'line-opacity': 0.55,
+
+        'line-dasharray': [2, 2]
+
+      }
+
+    });
+
+
+    renderRoute();
+
+  });
+
+
+  function emptyLine() {
+
+    return {
+
+      type: 'Feature',
+
+      geometry: {
+
+        type: 'LineString',
+
+        coordinates: []
+
+      }
+
+    };
+
+  }
+
+
+  function loadRoute() {
+
+    try {
+
+      const parsed =
+        JSON.parse(
+          localStorage.getItem(STORAGE_KEY) || '[]'
+        );
+
+      return Array.isArray(parsed)
+        ? parsed.filter(validPoint)
+        : [];
+
+    }
+
+    catch {
+
+      return [];
+
+    }
+
+  }
+
+
+  function saveRoute() {
+
+    localStorage.setItem(
+
+      STORAGE_KEY,
+
+      JSON.stringify(routePoints)
+
+    );
+
+  }
+
+
+  function validPoint(p) {
+
+    return (
+
+      p &&
+
+      typeof p.name === 'string' &&
+
+      Number.isFinite(Number(p.lat)) &&
+
+      Number.isFinite(Number(p.lng))
+
+    );
+
+  }
+
+
+  function setStatus(
+    el,
+    message = '',
+    isError = false
+  ) {
+
+    el.textContent = message;
+
+    el.classList.toggle(
+      'show',
+      Boolean(message)
+    );
+
+    el.classList.toggle(
+      'error',
+      Boolean(message) && isError
+    );
+
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value ?? '')
+      .replace(
+        /[&<>'"]/g,
+
+        ch => ({
+
+          '&': '&amp;',
+
+          '<': '&lt;',
+
+          '>': '&gt;',
+
+          "'": '&#39;',
+
+          '"': '&quot;'
+
+        }[ch])
+
+      );
+
+  }
+
+
+  function shortName(item) {
+
+    const named =
+      item.namedetails || {};
+
+    return (
+      named['name:ko'] ||
+      named.name ||
+      named['name:ja'] ||
+      item.name ||
+      (item.display_name || '')
+        .split(',')[0] ||
+      '검색 장소'
+    );
+
+  }
+
+
+  async function searchPlaces() {
+
+    const q =
+      searchInput.value.trim();
+
+
+    if (!q) {
+
+      setStatus(
+        searchStatus,
+        '검색어를 입력해줘.',
+        true
+      );
+
+      searchInput.focus();
+
+      return;
+
+    }
+
+
+    if (searchAbortController) {
+
+      searchAbortController.abort();
+
+    }
+
+
+    searchAbortController =
+      new AbortController();
+
+
+    searchBtn.disabled = true;
+
+    searchBtn.textContent = '검색중';
+
+
+    searchResults.classList.remove(
+      'show'
+    );
+
+    searchResults.innerHTML = '';
+
+
+    setStatus(
+      searchStatus,
+      '후쿠오카 지역에서 장소를 찾는 중...'
+    );
+
+
+    const params =
+      new URLSearchParams({
+
+        format: 'jsonv2',
+
+        q,
+
+        countrycodes: 'jp',
+
+        viewbox:
+          '130.20,33.80,130.62,33.42',
+
+        bounded: '1',
+
+        limit: '6',
+
+        addressdetails: '1',
+
+        namedetails: '1',
+
+        'accept-language':
+          'ko,ja,en'
+
+      });
+
+
+    try {
+
+      const res =
+        await fetch(
+
+          'https://nominatim.openstreetmap.org/search?' +
+          params.toString(),
+
+          {
+
+            signal:
+              searchAbortController.signal,
+
+            headers: {
+
+              'Accept':
+                'application/json'
+
+            }
+
+          }
+
+        );
+
+
+      if (!res.ok) {
+
+        throw new Error(
+          '검색 서버 응답 오류'
+        );
+
+      }
+
+
+      const data =
+        await res.json();
+
+
+      renderSearchResults(
+        data,
+        q
+      );
+
+    }
+
+    catch (err) {
+
+      if (
+        err.name !==
+        'AbortError'
+      ) {
+
+        setStatus(
+
+          searchStatus,
+
+          '앱 검색이 안 되면 아래 Google Maps 검색을 사용해줘.',
+
+          true
+
+        );
+
+
+        renderGoogleFallback(q);
+
+      }
+
+    }
+
+    finally {
+
+      searchBtn.disabled =
+        false;
+
+      searchBtn.textContent =
+        '검색';
+
+    }
+
+  }
+
+
+  function renderSearchResults(
+    items,
+    q
+  ) {
+
+    searchResults.innerHTML = '';
+
+
+    if (
+      !Array.isArray(items) ||
+      items.length === 0
+    ) {
+
+      setStatus(
+
+        searchStatus,
+
+        '검색 결과가 없어. 일본어 이름이나 영어 이름으로 다시 검색해봐.'
+
+      );
+
+
+      renderGoogleFallback(q);
+
+      return;
+
+    }
+
+
+    setStatus(
+      searchStatus,
+      ''
+    );
+
+
+    searchResults
+      .classList
+      .add('show');
+
+
+    items.forEach(
+      (item, index) => {
+
+        const lat =
+          Number(item.lat);
+
+        const lng =
+          Number(item.lon);
+
+
+        if (
+          !Number.isFinite(lat) ||
+          !Number.isFinite(lng)
+        ) {
+
+          return;
+
+        }
+
+
+        const name =
+          shortName(item);
+
+
+        const address =
+          item.display_name || '';
+
+
+        const row =
+          document.createElement(
+            'div'
+          );
+
+
+        row.className =
+          'result-item';
+
+
+        row.innerHTML = `
+
+          <div class="result-name">
+            ${escapeHtml(name)}
+          </div>
+
+          <div class="result-address">
+            ${escapeHtml(address)}
+          </div>
+
+          <div class="result-actions">
+
+            <button
+              class="mini-btn"
+              type="button"
+              data-action="show"
+            >
+              지도에서 보기
+            </button>
+
+            <button
+              class="mini-btn primary"
+              type="button"
+              data-action="add"
+            >
+              + 경유지 추가
+            </button>
+
+          </div>
+
+        `;
+
+
+        row
+          .querySelector(
+            '[data-action="show"]'
+          )
+          .addEventListener(
+            'click',
+            () =>
+              previewPlace({
+
+                name,
+
+                address,
+
+                lat,
+
+                lng
+
+              })
+          );
+
+
+        row
+          .querySelector(
+            '[data-action="add"]'
+          )
+          .addEventListener(
+            'click',
+            () =>
+              addRoutePoint({
+
+                name,
+
+                address,
+
+                lat,
+
+                lng
+
+              })
+          );
+
+
+        searchResults
+          .appendChild(row);
+
+
+        if (index === 0) {
+
+          previewPlace(
+            {
+              name,
+              address,
+              lat,
+              lng
+            },
+            false
+          );
+
+        }
+
+      }
+    );
+
+
+    const fallback =
+      document.createElement(
+        'div'
+      );
+
+
+    fallback.className =
+      'result-item';
+
+
+    fallback.innerHTML = `
+
+      <button
+        class="mini-btn"
+        type="button"
+        style="width:100%"
+      >
+        Google Maps에서
+        '${escapeHtml(q)}'
+        더 찾아보기 ↗
+      </button>
+
+    `;
+
+
+    fallback
+      .querySelector('button')
+      .addEventListener(
+        'click',
+        () =>
+          openGoogleSearch(q)
+      );
+
+
+    searchResults
+      .appendChild(fallback);
+
+  }
+
+
+  function renderGoogleFallback(q) {
+
+    searchResults
+      .classList
+      .add('show');
+
+
+    searchResults.innerHTML = '';
+
+
+    const row =
+      document.createElement('div');
+
+
+    row.className =
+      'result-item';
+
+
+    row.innerHTML = `
+
+      <button
+        class="mini-btn primary"
+        type="button"
+        style="width:100%"
+      >
+        Google Maps에서
+        '${escapeHtml(q)}'
+        검색 ↗
+      </button>
+
+    `;
+
+
+    row
+      .querySelector('button')
+      .addEventListener(
+        'click',
+        () =>
+          openGoogleSearch(q)
+      );
+
+
+    searchResults
+      .appendChild(row);
+
+  }
+
+
+  function openGoogleSearch(q) {
+
+    const query =
+      `${q} Fukuoka Japan`;
+
+
+    const url =
+      'https://www.google.com/maps/search/?api=1&query=' +
+      encodeURIComponent(query);
+
+
+    window.open(
+      url,
+      '_blank',
+      'noopener'
+    );
+
+  }
+
+
+  function previewPlace(
+    point,
+    fly = true
+  ) {
+
+    if (previewMarker) {
+
+      previewMarker.remove();
+
+    }
+
+
+    previewMarker =
+      new maplibregl.Marker({
+        color: '#2563eb'
+      })
+
+      .setLngLat([
+        point.lng,
+        point.lat
+      ])
+
+      .setPopup(
+
+        new maplibregl.Popup({
+          offset: 28
+        })
+
+        .setHTML(`
+
+          <strong>
+            ${escapeHtml(point.name)}
+          </strong>
+
+          <br>
+
+          <small>
+            ${escapeHtml(point.address || '')}
+          </small>
+
+        `)
+
+      )
+
+      .addTo(map);
+
+
+    if (fly) {
+
+      map.flyTo({
+
+        center: [
+          point.lng,
+          point.lat
+        ],
+
+        zoom: 15.8,
+
+        essential: true
+
+      });
+
+    }
+
+  }
+
+
+  function addRoutePoint(point) {
+
+    const duplicate =
+      routePoints.some(
+
+        p =>
+          Math.abs(
+            p.lat - point.lat
+          ) < 0.00001
+
+          &&
+
+          Math.abs(
+            p.lng - point.lng
+          ) < 0.00001
+
+      );
+
+
+    if (duplicate) {
+
+      setStatus(
+
+        routeStatus,
+
+        '이미 경로에 들어있는 장소야.',
+
+        true
+
+      );
+
+      return;
+
+    }
+
+
+    routePoints.push(point);
+
+    saveRoute();
+
+    renderRoute();
+
+
+    setStatus(
+
+      routeStatus,
+
+      `${point.name} 추가 완료. 마지막 장소가 목적지가 돼.`
+
+    );
+
+
+    searchResults
+      .classList
+      .remove('show');
+
+  }
+
+
+  function renderRoute() {
+
+    routeList.innerHTML = '';
+
+
+    routeCount.textContent =
+      `${routePoints.length}곳`;
+
+
+    googleRouteBtn.disabled =
+      routePoints.length === 0;
+
+
+    if (
+      routePoints.length === 0
+    ) {
+
+      routeList.innerHTML = `
+
+        <div class="empty-route">
+
+          위에서 장소를 검색한 뒤
+
+          <b>
+            + 경유지 추가
+          </b>
+
+          를 눌러줘.
+
+        </div>
+
+      `;
+
+    }
+
+    else {
+
+      routePoints.forEach(
+
+        (point, index) => {
+
+          const item =
+            document.createElement(
+              'div'
+            );
+
+
+          item.className =
+            'route-item';
+
+
+          const role =
+            index ===
+            routePoints.length - 1
+
+            ? '목적지'
+
+            : '경유지';
+
+
+          item.innerHTML = `
+
+            <div class="route-num">
+              ${index + 1}
+            </div>
+
+            <div class="route-info">
+
+              <div class="route-name">
+                ${escapeHtml(point.name)}
+              </div>
+
+              <div class="route-sub">
+
+                ${role}
+
+                ·
+
+                ${escapeHtml(point.address || '')}
+
+              </div>
+
+            </div>
+
+            <div class="route-actions">
+
+              <button
+                class="icon-btn"
+                type="button"
+                data-action="up"
+                title="위로"
+              >
+                ↑
+              </button>
+
+              <button
+                class="icon-btn"
+                type="button"
+                data-action="down"
+                title="아래로"
+              >
+                ↓
+              </button>
+
+              <button
+                class="icon-btn danger"
+                type="button"
+                data-action="remove"
+                title="삭제"
+              >
+                ✕
+              </button>
+
+            </div>
+
+          `;
+
+
+          item
+            .querySelector(
+              '[data-action="up"]'
+            )
+            .disabled =
+              index === 0;
+
+
+          item
+            .querySelector(
+              '[data-action="down"]'
+            )
+            .disabled =
+              index ===
+              routePoints.length - 1;
+
+
+          item
+            .querySelector(
+              '[data-action="up"]'
+            )
+            .addEventListener(
+
+              'click',
+
+              () =>
+                movePoint(
+                  index,
+                  -1
+                )
+
+            );
+
+
+          item
+            .querySelector(
+              '[data-action="down"]'
+            )
+            .addEventListener(
+
+              'click',
+
+              () =>
+                movePoint(
+                  index,
+                  1
+                )
+
+            );
+
+
+          item
+            .querySelector(
+              '[data-action="remove"]'
+            )
+            .addEventListener(
+
+              'click',
+
+              () =>
+                removePoint(index)
+
+            );
+
+
+          item
+            .querySelector(
+              '.route-info'
+            )
+            .addEventListener(
+
+              'click',
+
+              () =>
+                map.flyTo({
+
+                  center: [
+                    point.lng,
+                    point.lat
+                  ],
+
+                  zoom: 15.8,
+
+                  essential: true
+
+                })
+
+            );
+
+
+          routeList
+            .appendChild(item);
+
+        }
+
+      );
+
+    }
+
+
+    updateRouteMarkers();
+
+    updateRouteLine();
+
+  }
+
+
+  function movePoint(
+    index,
+    delta
+  ) {
+
+    const target =
+      index + delta;
+
+
+    if (
+      target < 0 ||
+      target >=
+      routePoints.length
+    ) {
+
+      return;
+
+    }
+
+
+    [
+      routePoints[index],
+      routePoints[target]
+    ] = [
+
+      routePoints[target],
+      routePoints[index]
+
+    ];
+
+
+    saveRoute();
+
+    renderRoute();
+
+  }
+
+
+  function removePoint(index) {
+
+    routePoints.splice(
+      index,
+      1
+    );
+
+
+    saveRoute();
+
+    renderRoute();
+
+
+    setStatus(
+
+      routeStatus,
+
+      '경로에서 삭제했어.'
+
+    );
+
+  }
+
+
+  function updateRouteMarkers() {
+
+    routeMarkers
+      .forEach(
+        marker =>
+          marker.remove()
+      );
+
+
+    routeMarkers = [];
+
+
+    routePoints.forEach(
+
+      (point, index) => {
+
+        const el =
+          document.createElement(
+            'div'
+          );
+
+
+        el.className =
+          'route-marker';
+
+
+        el.innerHTML =
+          `<span>${index + 1}</span>`;
+
+
+        const marker =
+          new maplibregl.Marker({
+
+            element: el,
+
+            anchor: 'bottom'
+
+          })
+
+          .setLngLat([
+            point.lng,
+            point.lat
+          ])
+
+          .setPopup(
+
+            new maplibregl.Popup({
+              offset: 24
+            })
+
+            .setHTML(`
+
+              <strong>
+
+                ${index + 1}.
+
+                ${escapeHtml(point.name)}
+
+              </strong>
+
+              <br>
+
+              <small>
+
+                ${
+                  index ===
+                  routePoints.length - 1
+
+                    ? '목적지'
+
+                    : '경유지'
+                }
+
+              </small>
+
+            `)
+
+          )
+
+          .addTo(map);
+
+
+        routeMarkers
+          .push(marker);
+
+      }
+
+    );
+
+  }
+
+
+  function updateRouteLine() {
+
+    if (
+      !map.isStyleLoaded() ||
+      !map.getSource(
+        'route-line'
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    const coordinates =
+      routePoints.map(
+
+        p => [
+          p.lng,
+          p.lat
+        ]
+
+      );
+
+
+    map
+      .getSource(
+        'route-line'
+      )
+      .setData({
+
+        type: 'Feature',
+
+        geometry: {
+
+          type:
+            'LineString',
+
+          coordinates
+
+        }
+
+      });
+
+  }
+
+
+  function fitRoute() {
+
+    if (
+      routePoints.length === 0
+    ) {
+
+      setStatus(
+
+        routeStatus,
+
+        '먼저 경유지를 추가해줘.',
+
+        true
+
+      );
+
+      return;
+
+    }
+
+
+    if (
+      routePoints.length === 1
+    ) {
+
+      map.flyTo({
+
+        center: [
+
+          routePoints[0].lng,
+
+          routePoints[0].lat
+
+        ],
+
+        zoom: 15.5,
+
+        essential: true
+
+      });
+
+      return;
+
+    }
+
+
+    const bounds =
+      new maplibregl
+        .LngLatBounds();
+
+
+    routePoints
+      .forEach(
+
+        p =>
+          bounds.extend([
+            p.lng,
+            p.lat
+          ])
+
+      );
+
+
+    map.fitBounds(
+
+      bounds,
+
+      {
+
+        padding: 70,
+
+        maxZoom: 15,
+
+        duration: 700
+
+      }
+
+    );
+
+  }
+
+
+  function showMyLocation() {
+
+    if (
+      !navigator.geolocation
+    ) {
+
+      setStatus(
+
+        routeStatus,
+
+        '이 기기에서는 위치 기능을 사용할 수 없어.',
+
+        true
+
+      );
+
+      return;
+
+    }
+
+
+    myLocationBtn.disabled =
+      true;
+
+
+    myLocationBtn.textContent =
+      '찾는 중...';
+
+
+    navigator
+      .geolocation
+      .getCurrentPosition(
+
+        pos => {
+
+          const lng =
+            pos.coords.longitude;
+
+          const lat =
+            pos.coords.latitude;
+
+
+          if (
+            myLocationMarker
+          ) {
+
+            myLocationMarker
+              .remove();
+
+          }
+
+
+          const el =
+            document.createElement(
+              'div'
+            );
+
+
+          el.className =
+            'me-dot';
+
+
+          myLocationMarker =
+            new maplibregl.Marker({
+              element: el
+            })
+
+            .setLngLat([
+              lng,
+              lat
+            ])
+
+            .setPopup(
+
+              new maplibregl.Popup({
+                offset: 18
+              })
+
+              .setHTML(
+                '<strong>현재 위치</strong>'
+              )
+
+            )
+
+            .addTo(map);
+
+
+          map.flyTo({
+
+            center: [
+              lng,
+              lat
+            ],
+
+            zoom: 15.5,
+
+            essential: true
+
+          });
+
+
+          setStatus(
+
+            routeStatus,
+
+            '현재 위치를 지도에 표시했어.'
+
+          );
+
+
+          myLocationBtn.disabled =
+            false;
+
+
+          myLocationBtn.textContent =
+            '📍 내 위치';
+
+        },
+
+        err => {
+
+          const msg =
+
+            err.code === 1
+
+              ? '위치 권한이 꺼져 있어. 브라우저에서 위치 권한을 허용해줘.'
+
+              : '현재 위치를 가져오지 못했어.';
+
+
+          setStatus(
+
+            routeStatus,
+
+            msg,
+
+            true
+
+          );
+
+
+          myLocationBtn.disabled =
+            false;
+
+
+          myLocationBtn.textContent =
+            '📍 내 위치';
+
+        },
+
+        {
+
+          enableHighAccuracy:
+            true,
+
+          timeout:
+            10000,
+
+          maximumAge:
+            15000
+
+        }
+
+      );
+
+  }
+
+
+  function openGoogleRoute() {
+
+    if (
+      routePoints.length === 0
+    ) {
+
+      setStatus(
+
+        routeStatus,
+
+        '경로에 장소를 하나 이상 추가해줘.',
+
+        true
+
+      );
+
+      return;
+
+    }
+
+
+    const mode =
+      travelMode.value;
+
+
+    const useCurrent =
+      currentStart.checked;
+
+
+    if (
+      !useCurrent &&
+      routePoints.length < 2
+    ) {
+
+      setStatus(
+
+        routeStatus,
+
+        '현재 위치 출발을 끄면 출발지와 목적지, 최소 2곳이 필요해.',
+
+        true
+
+      );
+
+      return;
+
+    }
+
+
+    const maxSelected =
+      useCurrent
+        ? 4
+        : 5;
+
+
+    if (
+      routePoints.length >
+      maxSelected
+    ) {
+
+      setStatus(
+
+        routeStatus,
+
+        `모바일 Google Maps는 경유지 지원이 제한돼. 지금은 ${maxSelected}곳 이하로 줄여서 길찾기를 실행해줘.`,
+
+        true
+
+      );
+
+      return;
+
+    }
+
+
+    const params =
+      new URLSearchParams();
+
+
+    params.set(
+      'api',
+      '1'
+    );
+
+
+    params.set(
+      'travelmode',
+      mode
+    );
+
+
+    params.set(
+      'dir_action',
+      'navigate'
+    );
+
+
+    let waypointPoints = [];
+
+    let destination;
+
+
+    if (useCurrent) {
+
+      destination =
+        routePoints[
+          routePoints.length - 1
+        ];
+
+
+      waypointPoints =
+        routePoints.slice(
+          0,
+          -1
+        );
+
+    }
+
+    else {
+
+      const origin =
+        routePoints[0];
+
+
+      destination =
+        routePoints[
+          routePoints.length - 1
+        ];
+
+
+      waypointPoints =
+        routePoints.slice(
+          1,
+          -1
+        );
+
+
+      params.set(
+
+        'origin',
+
+        `${origin.lat},${origin.lng}`
+
+      );
+
+    }
+
+
+    params.set(
+
+      'destination',
+
+      `${destination.lat},${destination.lng}`
+
+    );
+
+
+    if (
+      waypointPoints.length
+    ) {
+
+      params.set(
+
+        'waypoints',
+
+        waypointPoints
+          .map(
+
+            p =>
+              `${p.lat},${p.lng}`
+
+          )
+          .join('|')
+
+      );
+
+    }
+
+
+    const url =
+
+      'https://www.google.com/maps/dir/?' +
+
+      params.toString();
+
+
+    window.open(
+
+      url,
+
+      '_blank',
+
+      'noopener'
+
+    );
+
+  }
+
+
+  searchBtn
+    .addEventListener(
+
+      'click',
+
+      searchPlaces
+
+    );
+
+
+  searchInput
+    .addEventListener(
+
+      'keydown',
+
+      e => {
+
+        if (
+          e.key === 'Enter'
+        ) {
+
+          searchPlaces();
+
+        }
+
+      }
+
+    );
+
+
+  myLocationBtn
+    .addEventListener(
+
+      'click',
+
+      showMyLocation
+
+    );
+
+
+  fitRouteBtn
+    .addEventListener(
+
+      'click',
+
+      fitRoute
+
+    );
+
+
+  googleRouteBtn
+    .addEventListener(
+
+      'click',
+
+      openGoogleRoute
+
+    );
+
+
+  clearRouteBtn
+    .addEventListener(
+
+      'click',
+
+      () => {
+
+        if (
+          routePoints.length === 0
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          !confirm(
+            '오늘 경로를 전부 지울까?'
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        routePoints = [];
+
+
+        saveRoute();
+
+
+        renderRoute();
+
+
+        setStatus(
+
+          routeStatus,
+
+          '경로를 전부 지웠어.'
+
+        );
+
+      }
+
+    );
+
+
+  renderRoute();
+
+})();
 
 </script>
 
