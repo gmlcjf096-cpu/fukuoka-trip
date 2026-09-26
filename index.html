@@ -1,22 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="ko">
 
 <head>
 
-<meta charset="UTF-8">
+<meta charset="utf-8">
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  content="width=device-width,initial-scale=1,viewport-fit=cover"
 >
 
-<title>후쿠오카 여행</title>
+<title>
+  후쿠오카 여행
+</title>
 
 
 <link
   href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
   rel="stylesheet"
 >
+
 
 <script
   src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js">
@@ -28,16 +32,19 @@
 :root {
 
   --bg:#f5f6f8;
-  --card:#ffffff;
-  --text:#15171a;
-  --muted:#767b83;
+
+  --card:#fff;
+
+  --text:#16181c;
+
+  --muted:#737982;
+
   --line:#e5e7eb;
 
-  --accent:#2563eb;
-  --accent-soft:#eaf1ff;
+  --blue:#2563eb;
 
-  --danger:#dc2626;
-  --green:#16a34a;
+  --red:#dc2626;
+
 }
 
 
@@ -50,11 +57,14 @@ html,
 body {
 
   margin:0;
+
   min-height:100%;
 
-  background:var(--bg);
+  background:
+    var(--bg);
 
-  color:var(--text);
+  color:
+    var(--text);
 
   font-family:
     -apple-system,
@@ -77,12 +87,6 @@ button {
 }
 
 
-button:disabled {
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-
 .app {
 
   min-height:100vh;
@@ -91,11 +95,7 @@ button:disabled {
 }
 
 
-/* =============================
-   TOP
-============================= */
-
-.topbar {
+.top {
 
   position:sticky;
 
@@ -106,26 +106,27 @@ button:disabled {
   background:
     rgba(255,255,255,.96);
 
+  backdrop-filter:
+    blur(10px);
+
   border-bottom:
     1px solid var(--line);
 
   padding:
-    13px 14px 11px;
-
-  backdrop-filter:
-    blur(10px);
+    13px 14px;
 }
 
 
-.topbar h1 {
+.top h1 {
 
   margin:0;
 
   font-size:20px;
+
 }
 
 
-.topbar p {
+.top p {
 
   margin:
     4px 0 0;
@@ -134,12 +135,9 @@ button:disabled {
     var(--muted);
 
   font-size:12px;
+
 }
 
-
-/* =============================
-   COMMON
-============================= */
 
 .view {
   display:none;
@@ -158,8 +156,7 @@ button:disabled {
 
 .card {
 
-  background:
-    var(--card);
+  background:#fff;
 
   border:
     1px solid var(--line);
@@ -172,19 +169,18 @@ button:disabled {
 
   margin-bottom:
     10px;
+
 }
 
 
-.section-title {
+.title {
 
-  font-size:
-    16px;
+  font-size:16px;
 
-  font-weight:
-    900;
+  font-weight:900;
 
-  margin-bottom:
-    10px;
+  margin-bottom:10px;
+
 }
 
 
@@ -193,55 +189,45 @@ button:disabled {
   color:
     var(--muted);
 
-  font-size:
-    12px;
+  font-size:12px;
+
 }
 
 
-/* =============================
-   HOME
-============================= */
-
 .hero {
+
+  padding:20px;
+
+  border-radius:20px;
 
   background:
     linear-gradient(
       135deg,
-      #eaf2ff,
-      #fff0e6
+      #e9f2ff,
+      #fff1e8
     );
 
-  border-radius:
-    20px;
-
-  padding:
-    18px;
 }
 
 
-.hero .eyebrow {
+.hero small {
 
-  font-size:
-    12px;
+  font-weight:800;
 
-  font-weight:
-    800;
+  color:#64748b;
 
-  color:
-    #64748b;
 }
 
 
 .hero h2 {
 
+  font-size:26px;
+
+  line-height:1.2;
+
   margin:
-    5px 0 6px;
+    6px 0;
 
-  font-size:
-    25px;
-
-  line-height:
-    1.2;
 }
 
 
@@ -249,261 +235,368 @@ button:disabled {
 
   margin:0;
 
-  color:
-    #62666d;
+  color:#62666d;
 
-  font-size:
-    13px;
+  font-size:13px;
+
 }
 
 
-.quick-grid {
+.quick {
 
   display:grid;
 
   grid-template-columns:
     1fr 1fr;
 
-  gap:
-    8px;
+  gap:8px;
 
-  margin-top:
-    13px;
+  margin-top:14px;
+
 }
 
 
-.quick-btn {
+.quick button {
 
-  min-height:
-    64px;
+  min-height:62px;
 
   border:0;
 
-  border-radius:
-    14px;
+  border-radius:14px;
 
-  background:
-    #ffffff;
+  background:#fff;
 
-  text-align:
-    left;
+  text-align:left;
 
-  padding:
-    11px;
+  padding:11px;
 
   box-shadow:
-    0 3px 12px rgba(0,0,0,.05);
+    0 3px 12px
+    rgba(0,0,0,.05);
+
+  font-weight:850;
+
 }
 
 
-.quick-btn span {
+.quick span {
 
   display:block;
 
-  font-size:
-    20px;
+  font-size:21px;
 
-  margin-bottom:
-    4px;
+  margin-bottom:3px;
+
 }
 
 
-.quick-btn b {
-
-  font-size:
-    13px;
-}
-
-
-/* =============================
-   DAY / MODE
-============================= */
-
-.day-tabs,
-.mode-tabs {
+.days,
+.modes {
 
   display:flex;
 
   gap:7px;
 
   overflow-x:auto;
+
 }
 
 
-.day-tab,
-.mode-btn {
+.pill {
 
-  min-height:
-    38px;
+  min-height:38px;
 
   border:
     1px solid var(--line);
 
-  border-radius:
-    999px;
+  border-radius:999px;
 
-  background:
-    #ffffff;
+  background:#fff;
 
   padding:
     0 13px;
 
-  font-size:
-    13px;
+  font-size:13px;
 
-  font-weight:
-    800;
+  font-weight:800;
 
-  white-space:
-    nowrap;
+  white-space:nowrap;
+
 }
 
 
-.day-tab.active,
-.mode-btn.active {
+.pill.active {
 
-  background:
-    #151515;
+  background:#171717;
 
-  color:
-    #ffffff;
+  color:#fff;
 
-  border-color:
-    #151515;
+  border-color:#171717;
+
 }
 
 
-/* =============================
-   SEARCH
-============================= */
+/* 검색 */
 
-.search-box {
+.searchBox {
 
-  background:
-    #ffffff;
+  background:#fff;
 
   padding:
     10px 12px;
 
   border-bottom:
     1px solid var(--line);
+
+  position:relative;
+
+  z-index:12;
+
 }
 
 
-.search-row {
+.searchRow {
 
   display:grid;
 
   grid-template-columns:
     1fr auto;
 
-  gap:
-    7px;
+  gap:7px;
+
 }
 
 
-.search-row input {
+.searchRow input {
 
-  width:
-    100%;
+  height:46px;
 
-  height:
-    46px;
+  width:100%;
 
   border:
-    1px solid #d6d9de;
+    1px solid #d5d9df;
 
-  border-radius:
-    13px;
+  border-radius:13px;
 
   padding:
     0 13px;
 
-  font-size:
-    16px;
+  font-size:16px;
 
-  outline:
-    none;
+  outline:none;
+
 }
 
 
-.search-row input:focus {
+.searchRow input:focus {
 
-  border-color:
-    #8b8f97;
+  border-color:#8d929a;
 
   box-shadow:
-    0 0 0 3px rgba(0,0,0,.04);
+    0 0 0 3px
+    rgba(0,0,0,.04);
+
 }
 
 
-.search-btn {
+.searchBtn {
 
-  height:
-    46px;
+  height:46px;
 
   border:0;
 
-  border-radius:
-    13px;
+  border-radius:13px;
 
-  background:
-    #151515;
+  background:#171717;
 
-  color:
-    #ffffff;
+  color:#fff;
 
   padding:
     0 17px;
 
-  font-weight:
-    900;
+  font-weight:900;
+
 }
 
 
-.search-tools {
+.searchTools {
 
   display:flex;
 
-  gap:
-    7px;
+  gap:7px;
 
-  margin-top:
-    8px;
+  overflow-x:auto;
 
-  overflow-x:
-    auto;
+  margin-top:8px;
+
 }
 
 
-.category-select {
+.searchTools select {
 
-  height:
-    38px;
+  height:38px;
 
   border:
-    1px solid #dcdfe4;
+    1px solid #d9dde2;
 
-  border-radius:
-    11px;
+  border-radius:11px;
 
-  background:
-    #ffffff;
+  background:#fff;
 
   padding:
     0 10px;
 
-  font-size:
-    13px;
+  font-weight:750;
 
-  font-weight:
-    750;
 }
 
 
-/* =============================
-   STATUS
-============================= */
+.hint {
+
+  margin-top:7px;
+
+  color:
+    var(--muted);
+
+  font-size:11px;
+
+}
+
+
+/* 검색결과 */
+
+.results {
+
+  display:none;
+
+  background:#fff;
+
+  border-bottom:
+    1px solid var(--line);
+
+  max-height:340px;
+
+  overflow:auto;
+
+  position:relative;
+
+  z-index:11;
+
+}
+
+
+.results.show {
+  display:block;
+}
+
+
+.result {
+
+  padding:
+    11px 12px;
+
+  border-bottom:
+    1px solid var(--line);
+
+}
+
+
+.resultName {
+
+  font-size:14px;
+
+  font-weight:900;
+
+}
+
+
+.resultNative {
+
+  margin-top:2px;
+
+  color:#475569;
+
+  font-size:11px;
+
+}
+
+
+.resultAddress {
+
+  margin-top:3px;
+
+  color:
+    var(--muted);
+
+  font-size:11px;
+
+  line-height:1.4;
+
+}
+
+
+.actions {
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:6px;
+
+  margin-top:8px;
+
+}
+
+
+.btn {
+
+  min-height:36px;
+
+  border:
+    1px solid #d9dce1;
+
+  border-radius:10px;
+
+  background:#fff;
+
+  padding:
+    6px 10px;
+
+  font-size:12px;
+
+  font-weight:850;
+
+}
+
+
+.btn.primary {
+
+  background:
+    var(--blue);
+
+  border-color:
+    var(--blue);
+
+  color:#fff;
+
+}
+
+
+.btn.dark {
+
+  background:#171717;
+
+  border-color:#171717;
+
+  color:#fff;
+
+}
+
+
+.btn.danger {
+  color:var(--red);
+}
+
 
 .status {
 
@@ -512,17 +605,15 @@ button:disabled {
   padding:
     9px 12px;
 
-  background:
-    #eef5ff;
+  background:#eef5ff;
 
-  color:
-    #315d92;
+  color:#315d92;
 
-  font-size:
-    12px;
+  font-size:12px;
 
   border-bottom:
-    1px solid #dce9f9;
+    1px solid #dce8f8;
+
 }
 
 
@@ -533,481 +624,243 @@ button:disabled {
 
 .status.error {
 
-  background:
-    #fff0f0;
+  background:#fff0f0;
 
-  color:
-    #9b3232;
+  color:#973232;
+
 }
 
 
-/* =============================
-   SEARCH RESULT
-============================= */
+/* 지도 */
 
-.search-results {
+.mapWrap {
 
-  display:none;
+  position:relative;
 
-  background:
-    #ffffff;
+  height:54vh;
 
-  max-height:
-    330px;
+  min-height:410px;
 
-  overflow:
-    auto;
+  background:#dde4ec;
 
-  border-bottom:
-    1px solid var(--line);
 }
 
 
-.search-results.show {
-  display:block;
+.map {
+
+  position:absolute;
+
+  inset:0;
+
 }
 
 
-.result {
+.mapTools {
 
-  padding:
-    12px;
+  position:absolute;
 
-  border-bottom:
-    1px solid var(--line);
-}
+  right:10px;
 
+  top:10px;
 
-.result:last-child {
-  border-bottom:0;
-}
-
-
-.result-name {
-
-  font-weight:
-    900;
-
-  font-size:
-    14px;
-}
-
-
-.result-address {
-
-  margin-top:
-    4px;
-
-  color:
-    var(--muted);
-
-  font-size:
-    11px;
-
-  line-height:
-    1.45;
-}
-
-
-.result-actions {
+  z-index:7;
 
   display:flex;
 
-  flex-wrap:
-    wrap;
+  flex-direction:column;
 
-  gap:
-    6px;
+  gap:7px;
 
-  margin-top:
-    9px;
 }
 
 
-.small-btn {
+.mapTools button {
 
-  min-height:
-    36px;
+  min-height:42px;
 
   border:
-    1px solid #d9dce1;
+    1px solid #d9dde2;
 
-  border-radius:
-    10px;
-
-  background:
-    #ffffff;
-
-  padding:
-    6px 10px;
-
-  font-size:
-    12px;
-
-  font-weight:
-    850;
-}
-
-
-.small-btn.primary {
-
-  background:
-    var(--accent);
-
-  color:
-    #ffffff;
-
-  border-color:
-    var(--accent);
-}
-
-
-.small-btn.dark {
-
-  background:
-    #151515;
-
-  color:
-    #ffffff;
-
-  border-color:
-    #151515;
-}
-
-
-.small-btn.danger {
-
-  color:
-    var(--danger);
-}
-
-
-/* =============================
-   MAP
-============================= */
-
-.map-wrap {
-
-  position:
-    relative;
-
-  height:
-    54vh;
-
-  min-height:
-    410px;
-
-  background:
-    #dde5ef;
-}
-
-
-#map {
-
-  position:
-    absolute;
-
-  inset:
-    0;
-}
-
-
-.map-tools {
-
-  position:
-    absolute;
-
-  top:
-    11px;
-
-  right:
-    11px;
-
-  z-index:
-    5;
-
-  display:flex;
-
-  flex-direction:
-    column;
-
-  gap:
-    7px;
-}
-
-
-.map-tool {
-
-  min-height:
-    43px;
-
-  border:
-    1px solid #dce0e5;
-
-  border-radius:
-    12px;
+  border-radius:12px;
 
   background:
     rgba(255,255,255,.96);
 
-  padding:
-    0 11px;
-
   box-shadow:
-    0 4px 14px rgba(0,0,0,.12);
+    0 4px 14px
+    rgba(0,0,0,.12);
 
-  font-size:
-    12px;
+  padding:
+    0 10px;
 
-  font-weight:
-    900;
+  font-size:12px;
+
+  font-weight:900;
+
 }
 
 
-/* =============================
-   NAVIGATION
-============================= */
+.mapTools button.active {
 
-.nav-panel {
+  background:#171717;
 
-  background:
-    #ffffff;
+  color:#fff;
+
+}
+
+
+/* 길찾기 */
+
+.routePanel {
+
+  background:#fff;
 
   border-top:
     1px solid var(--line);
 
-  padding:
-    12px;
+  padding:12px;
+
 }
 
 
-.nav-summary {
+.summary {
 
   display:flex;
-
-  align-items:
-    flex-end;
 
   justify-content:
     space-between;
 
-  gap:
-    10px;
+  align-items:flex-end;
+
+  gap:8px;
+
 }
 
 
-.nav-time {
+.routeTime {
 
-  font-size:
-    25px;
+  font-size:25px;
 
-  font-weight:
-    950;
+  font-weight:950;
+
 }
 
 
-.nav-distance {
+.routeDistance {
+
+  font-size:13px;
 
   color:
     var(--muted);
 
-  font-size:
-    13px;
 }
 
 
-.nav-actions {
-
-  display:flex;
-
-  gap:
-    7px;
-
-  flex-wrap:
-    wrap;
-
-  margin-top:
-    10px;
-}
-
-
-.wide-btn {
-
-  min-height:
-    44px;
-
-  border:
-    1px solid #d8dce1;
-
-  border-radius:
-    12px;
-
-  background:
-    #ffffff;
-
-  padding:
-    0 13px;
-
-  font-weight:
-    900;
-}
-
-
-.wide-btn.primary {
-
-  background:
-    var(--accent);
-
-  color:
-    #ffffff;
-
-  border-color:
-    var(--accent);
-}
-
-
-/* =============================
-   STOP LIST
-============================= */
-
-.stop-list {
-
-  margin-top:
-    10px;
+.stopList {
 
   display:grid;
 
-  gap:
-    7px;
+  gap:7px;
+
+  margin-top:10px;
+
 }
 
 
-.stop-row {
+.stop {
 
   display:grid;
 
   grid-template-columns:
     34px minmax(0,1fr) auto;
 
-  gap:
-    8px;
+  gap:8px;
 
-  align-items:
-    center;
-
-  padding:
-    9px;
+  align-items:center;
 
   border:
     1px solid var(--line);
 
-  border-radius:
-    13px;
+  border-radius:13px;
 
-  background:
-    #ffffff;
+  padding:9px;
+
+  background:#fff;
+
 }
 
 
-.stop-num {
+.num {
 
-  width:
-    30px;
+  width:30px;
 
-  height:
-    30px;
+  height:30px;
+
+  border-radius:50%;
 
   display:grid;
 
-  place-items:
-    center;
+  place-items:center;
 
-  border-radius:
-    50%;
+  background:#171717;
 
-  background:
-    #151515;
+  color:#fff;
 
-  color:
-    #ffffff;
+  font-size:12px;
 
-  font-size:
-    12px;
+  font-weight:900;
 
-  font-weight:
-    900;
 }
 
 
-.stop-name {
+.stopName {
 
-  font-size:
-    13px;
+  font-size:13px;
 
-  font-weight:
-    900;
+  font-weight:900;
 
-  overflow:
-    hidden;
+  overflow:hidden;
 
-  text-overflow:
-    ellipsis;
+  text-overflow:ellipsis;
 
-  white-space:
-    nowrap;
+  white-space:nowrap;
+
 }
 
 
-.stop-sub {
+.stopSub {
 
-  margin-top:
-    2px;
+  font-size:11px;
 
   color:
     var(--muted);
 
-  font-size:
-    11px;
+  overflow:hidden;
 
-  overflow:
-    hidden;
+  text-overflow:ellipsis;
 
-  text-overflow:
-    ellipsis;
+  white-space:nowrap;
 
-  white-space:
-    nowrap;
+  margin-top:2px;
+
 }
 
 
-.stop-actions {
+.icon {
 
-  display:flex;
+  width:31px;
 
-  gap:
-    4px;
-}
-
-
-.icon-btn {
-
-  width:
-    31px;
-
-  height:
-    31px;
+  height:31px;
 
   border:
     1px solid #dcdfe4;
 
-  border-radius:
-    9px;
+  border-radius:9px;
 
-  background:
-    #ffffff;
+  background:#fff;
 
-  font-weight:
-    900;
+  font-weight:900;
+
 }
 
 
@@ -1019,36 +872,38 @@ button:disabled {
   border:
     1px dashed #ccd0d6;
 
-  border-radius:
-    14px;
+  border-radius:14px;
 
   color:
     var(--muted);
 
-  font-size:
-    13px;
+  font-size:13px;
 
-  text-align:
-    center;
+  text-align:center;
+
 }
 
 
-/* =============================
-   MAP MARKER
-============================= */
+.routeBtns {
 
-.place-marker {
+  display:flex;
 
-  width:
-    34px;
+  flex-wrap:wrap;
 
-  height:
-    34px;
+  gap:7px;
 
-  display:grid;
+  margin-top:10px;
 
-  place-items:
-    center;
+}
+
+
+/* 핀 */
+
+.marker {
+
+  width:34px;
+
+  height:34px;
 
   border-radius:
     18px 18px 18px 5px;
@@ -1057,105 +912,87 @@ button:disabled {
     rotate(-45deg);
 
   border:
-    3px solid #ffffff;
+    3px solid #fff;
+
+  display:grid;
+
+  place-items:center;
 
   box-shadow:
-    0 3px 11px rgba(0,0,0,.28);
+    0 3px 11px
+    rgba(0,0,0,.28);
+
+  background:#171717;
+
 }
 
 
-.place-marker span {
+.marker span {
 
   transform:
     rotate(45deg);
 
-  color:
-    #ffffff;
+  color:#fff;
 
-  font-size:
-    12px;
+  font-size:12px;
 
-  font-weight:
-    950;
+  font-weight:950;
+
 }
 
 
-.me-marker {
+.me {
 
-  width:
-    22px;
+  width:22px;
 
-  height:
-    22px;
+  height:22px;
 
-  border-radius:
-    50%;
+  border-radius:50%;
 
-  background:
-    #3478f6;
+  background:#3478f6;
 
   border:
-    4px solid #ffffff;
+    4px solid #fff;
 
   box-shadow:
-    0 0 0 5px rgba(52,120,246,.2),
-    0 3px 9px rgba(0,0,0,.25);
+    0 0 0 5px
+    rgba(52,120,246,.2),
+    0 3px 9px
+    rgba(0,0,0,.25);
+
 }
 
 
-.fav-marker {
+.startMarker {
 
-  width:
-    34px;
+  width:28px;
 
-  height:
-    34px;
+  height:28px;
 
-  display:grid;
+  border-radius:50%;
 
-  place-items:
-    center;
-
-  border-radius:
-    50%;
+  background:#16a34a;
 
   border:
-    3px solid #ffffff;
+    4px solid #fff;
 
   box-shadow:
-    0 3px 10px rgba(0,0,0,.22);
+    0 3px 10px
+    rgba(0,0,0,.24);
 
-  font-size:
-    16px;
 }
 
 
-/* =============================
-   FAVORITE
-============================= */
+/* 찜 */
 
-.favorite-card {
+.favorite {
 
   padding:
     11px 0;
 
   border-bottom:
     1px solid var(--line);
-}
 
-
-.favorite-card:last-child {
-  border-bottom:0;
-}
-
-
-.favorite-name {
-
-  font-size:
-    14px;
-
-  font-weight:
-    900;
 }
 
 
@@ -1163,58 +1000,48 @@ button:disabled {
 
   display:inline-block;
 
-  margin-top:
-    5px;
+  margin-top:5px;
 
   padding:
     4px 8px;
 
-  border-radius:
-    999px;
+  border-radius:999px;
 
-  background:
-    #f1f3f5;
+  background:#f1f3f5;
 
-  color:
-    #555;
+  font-size:11px;
 
-  font-size:
-    11px;
+  font-weight:800;
 
-  font-weight:
-    800;
+  color:#555;
+
 }
 
 
-/* =============================
-   BOTTOM NAV
-============================= */
+/* 하단메뉴 */
 
-.bottom-nav {
+.bottom {
 
-  position:
-    fixed;
+  position:fixed;
 
-  left:
-    0;
+  left:0;
 
-  right:
-    0;
+  right:0;
 
-  bottom:
-    0;
+  bottom:0;
 
-  z-index:
-    50;
+  z-index:50;
 
-  height:
-    66px;
+  height:66px;
 
   padding-bottom:
     env(safe-area-inset-bottom);
 
   background:
     rgba(255,255,255,.97);
+
+  backdrop-filter:
+    blur(14px);
 
   border-top:
     1px solid var(--line);
@@ -1224,78 +1051,64 @@ button:disabled {
   grid-template-columns:
     repeat(4,1fr);
 
-  backdrop-filter:
-    blur(14px);
 }
 
 
-.nav-btn {
+.bottom button {
 
-  border:
-    0;
+  border:0;
 
-  background:
-    transparent;
+  background:transparent;
 
-  color:
-    #858991;
+  color:#858991;
 
-  font-size:
-    11px;
+  font-size:11px;
 
-  font-weight:
-    800;
+  font-weight:800;
+
 }
 
 
-.nav-btn span {
+.bottom span {
 
   display:block;
 
-  font-size:
-    20px;
+  font-size:20px;
 
-  margin-bottom:
-    2px;
+  margin-bottom:2px;
+
 }
 
 
-.nav-btn.active {
-
-  color:
-    #111111;
+.bottom button.active {
+  color:#111;
 }
 
 
-@media (min-width:820px) {
+@media(min-width:820px) {
 
   .app {
 
-    max-width:
-      1100px;
+    max-width:1100px;
 
-    margin:
-      auto;
+    margin:auto;
+
   }
 
 
-  .map-wrap {
-
-    height:
-      650px;
+  .mapWrap {
+    height:650px;
   }
 
 
-  .bottom-nav {
+  .bottom {
 
-    left:
-      50%;
+    left:50%;
 
     transform:
       translateX(-50%);
 
-    max-width:
-      720px;
+    max-width:720px;
 
     border-left:
       1px solid var(--line);
@@ -1305,12 +1118,15 @@ button:disabled {
 
     border-radius:
       16px 16px 0 0;
+
   }
+
 }
 
 </style>
 
 </head>
+
 
 
 <body>
@@ -1319,15 +1135,15 @@ button:disabled {
 <div class="app">
 
 
-<header class="topbar">
+<header class="top">
 
-  <h1>
-    🇯🇵 후쿠오카 여행
-  </h1>
+<h1>
+🇯🇵 후쿠오카 여행
+</h1>
 
-  <p>
-    검색부터 실제 길찾기까지 이 화면 안에서
-  </p>
+<p>
+장소명·주소 검색 → 앱 안에서 바로 길찾기
+</p>
 
 </header>
 
@@ -1336,123 +1152,94 @@ button:disabled {
 <main>
 
 
-<!-- ================================
-     HOME
-================================ -->
-
 <section
-  id="homeView"
-  class="view active"
+id="homeView"
+class="view active"
 >
-
 
 <div class="page">
 
 
 <div class="hero">
 
-  <div class="eyebrow">
-    FUKUOKA TRIP
-  </div>
+<small>
+FUKUOKA TRIP
+</small>
+
+<h2>
+오늘은 어디로<br>
+가볼까? 🇯🇵
+</h2>
+
+<p>
+한국어 장소명이나 일본 주소를 검색해도 돼.
+</p>
 
 
-  <h2>
-    오늘은 어디로<br>
-    가볼까? 🇯🇵
-  </h2>
+<div class="quick">
+
+<button data-go="map">
+
+<span>
+🔎
+</span>
+
+장소·주소 찾기
+
+</button>
 
 
-  <p>
-    장소를 검색하고 바로 길찾기하거나 일정에 넣어봐.
-  </p>
+<button data-go="schedule">
+
+<span>
+🗓️
+</span>
+
+일정 보기
+
+</button>
 
 
-  <div class="quick-grid">
+<button data-go="favorites">
+
+<span>
+❤️
+</span>
+
+찜한 장소
+
+</button>
 
 
-    <button
-      class="quick-btn"
-      data-go="map"
-    >
+<button id="homeLocation">
 
-      <span>
-        🔎
-      </span>
+<span>
+📍
+</span>
 
-      <b>
-        장소 찾기
-      </b>
+현재 위치
 
-    </button>
+</button>
 
-
-    <button
-      class="quick-btn"
-      data-go="schedule"
-    >
-
-      <span>
-        🗓️
-      </span>
-
-      <b>
-        일정 보기
-      </b>
-
-    </button>
-
-
-    <button
-      class="quick-btn"
-      data-go="favorites"
-    >
-
-      <span>
-        ❤️
-      </span>
-
-      <b>
-        찜한 장소
-      </b>
-
-    </button>
-
-
-    <button
-      class="quick-btn"
-      id="homeLocationBtn"
-    >
-
-      <span>
-        📍
-      </span>
-
-      <b>
-        현재 위치 보기
-      </b>
-
-    </button>
-
-
-  </div>
+</div>
 
 </div>
 
 
 
 <div
-  class="card"
-  style="margin-top:10px;"
+class="card"
+style="margin-top:10px"
 >
 
-  <div class="section-title">
-    여행 날짜
-  </div>
+<div class="title">
+여행 날짜
+</div>
 
-  <div
-    class="day-tabs"
-    data-day-tabs
-  ></div>
+<div
+class="days"
+data-day-tabs
+></div>
 
 </div>
 
@@ -1460,11 +1247,11 @@ button:disabled {
 
 <div class="card">
 
-  <div class="section-title">
-    선택한 날 일정
-  </div>
+<div class="title">
+선택한 날 일정
+</div>
 
-  <div id="homeSchedule"></div>
+<div id="homeSchedule"></div>
 
 </div>
 
@@ -1475,231 +1262,158 @@ button:disabled {
 
 
 
-<!-- ================================
-     MAP
-================================ -->
+<!-- 지도 -->
 
 <section
-  id="mapView"
-  class="view"
+id="mapView"
+class="view"
 >
 
 
-<div class="search-box">
+<div class="searchBox">
 
 
-<div class="search-row">
+<div class="searchRow">
 
-  <input
-    id="searchInput"
-    type="search"
-    placeholder="이치란, 캐널시티, 다자이후..."
-    autocomplete="off"
-  >
+<input
+id="searchInput"
+type="search"
+autocomplete="off"
+placeholder="텐진역 / 이치란 / 福岡市中央区天神2丁目"
+>
 
-  <button
-    id="searchBtn"
-    class="search-btn"
-    type="button"
-  >
-    검색
-  </button>
+
+<button
+id="searchBtn"
+class="searchBtn"
+>
+검색
+</button>
 
 </div>
 
 
 
-<div class="search-tools">
+<div class="searchTools">
 
 
-<select
-  id="categorySelect"
-  class="category-select"
->
+<select id="category">
 
-  <option value="restaurant">
-    🍜 맛집
-  </option>
+<option value="restaurant">
+🍜 맛집
+</option>
 
-  <option value="cafe">
-    ☕ 카페
-  </option>
+<option value="cafe">
+☕ 카페
+</option>
 
-  <option value="shopping">
-    🛍️ 쇼핑
-  </option>
+<option value="shopping">
+🛍️ 쇼핑
+</option>
 
-  <option value="tour">
-    📸 관광
-  </option>
+<option value="tour">
+📸 관광
+</option>
 
-  <option value="hotel">
-    🏨 숙소
-  </option>
+<option value="hotel">
+🏨 숙소
+</option>
 
-  <option value="etc">
-    📍 기타
-  </option>
+<option value="etc">
+📍 기타
+</option>
 
 </select>
 
 
 
-<div
-  class="mode-tabs"
-  id="mapModeTabs"
->
-
-  <button
-    class="mode-btn active"
-    data-mode="walking"
-  >
-    🚶 도보
-  </button>
-
-
-  <button
-    class="mode-btn"
-    data-mode="driving"
-  >
-    🚗 자동차
-  </button>
-
-
-  <button
-    class="mode-btn"
-    data-mode="cycling"
-  >
-    🚲 자전거
-  </button>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-
-<div
-  id="searchStatus"
-  class="status"
-></div>
-
-
-
-<div
-  id="searchResults"
-  class="search-results"
-></div>
-
-
-
-<div class="map-wrap">
-
-  <div id="map"></div>
-
-
-  <div class="map-tools">
-
-    <button
-      id="myLocationBtn"
-      class="map-tool"
-      type="button"
-    >
-      📍 내 위치
-    </button>
-
-
-    <button
-      id="refreshRouteBtn"
-      class="map-tool"
-      type="button"
-    >
-      🔄 경로 갱신
-    </button>
-
-
-    <button
-      id="fitRouteBtn"
-      class="map-tool"
-      type="button"
-    >
-      🧭 경로 전체
-    </button>
-
-  </div>
-
-</div>
-
-
-
-<div class="nav-panel">
-
-
-<div class="nav-summary">
-
-  <div>
-
-    <div class="muted">
-      현재 길찾기
-    </div>
-
-    <div
-      id="routeTime"
-      class="nav-time"
-    >
-      경로 없음
-    </div>
-
-  </div>
-
-
-  <div
-    id="routeDistance"
-    class="nav-distance"
-  ></div>
-
-</div>
-
-
-
-<div
-  id="routeMessage"
-  class="muted"
-  style="margin-top:6px;"
->
-  검색 결과에서 ‘여기로 길찾기’를 눌러줘.
-</div>
-
-
-
-<div
-  id="navStops"
-  class="stop-list"
-></div>
-
-
-
-<div class="nav-actions">
-
+<div class="modes">
 
 <button
-  id="clearNavBtn"
-  class="wide-btn"
-  type="button"
+class="pill active"
+data-mode="walking"
 >
-  경로 종료
+🚶 도보
 </button>
 
 
 <button
-  id="addNavToScheduleBtn"
-  class="wide-btn"
-  type="button"
+class="pill"
+data-mode="driving"
 >
-  현재 경로를 일정에 추가
+🚗 자동차
+</button>
+
+
+<button
+class="pill"
+data-mode="cycling"
+>
+🚲 자전거
+</button>
+
+</div>
+
+
+</div>
+
+
+
+<div class="hint">
+
+장소명·역 이름·일본어/영문 주소를 한 칸에서 검색해.
+입력하면 후보도 자동으로 뜬다.
+
+</div>
+
+
+</div>
+
+
+
+<div
+id="status"
+class="status"
+></div>
+
+
+<div
+id="results"
+class="results"
+></div>
+
+
+
+<div class="mapWrap">
+
+
+<div
+id="map"
+class="map"
+></div>
+
+
+
+<div class="mapTools">
+
+
+<button id="currentBtn">
+📍 현재위치
+</button>
+
+
+<button id="pickStartBtn">
+🟢 출발지 찍기
+</button>
+
+
+<button id="pickDestBtn">
+🎯 목적지 찍기
+</button>
+
+
+<button id="fitBtn">
+🧭 경로 전체
 </button>
 
 
@@ -1708,33 +1422,111 @@ button:disabled {
 
 </div>
 
+
+
+<div class="routePanel">
+
+
+<div class="summary">
+
+<div>
+
+<div class="muted">
+현재 길찾기
+</div>
+
+<div
+id="routeTime"
+class="routeTime"
+>
+경로 없음
+</div>
+
+</div>
+
+
+<div
+id="routeDistance"
+class="routeDistance"
+></div>
+
+</div>
+
+
+
+<div
+id="routeMessage"
+class="muted"
+style="margin-top:5px"
+>
+
+검색 결과에서
+‘바로 길찾기’를 눌러줘.
+
+</div>
+
+
+<div
+id="navStops"
+class="stopList"
+></div>
+
+
+<div class="routeBtns">
+
+<button
+id="refreshBtn"
+class="btn primary"
+>
+🔄 경로 갱신
+</button>
+
+
+<button
+id="saveRouteBtn"
+class="btn"
+>
+현재 경로를 일정에 추가
+</button>
+
+
+<button
+id="clearRouteBtn"
+class="btn danger"
+>
+경로 종료
+</button>
+
+</div>
+
+
+</div>
+
+
 </section>
 
 
 
-<!-- ================================
-     SCHEDULE
-================================ -->
+<!-- 일정 -->
 
 <section
-  id="scheduleView"
-  class="view"
+id="scheduleView"
+class="view"
 >
-
 
 <div class="page">
 
 
 <div class="card">
 
-  <div class="section-title">
-    여행 일정
-  </div>
+<div class="title">
+여행 날짜
+</div>
 
-  <div
-    class="day-tabs"
-    data-day-tabs
-  ></div>
+<div
+class="days"
+data-day-tabs
+></div>
 
 </div>
 
@@ -1742,39 +1534,31 @@ button:disabled {
 
 <div class="card">
 
-  <div class="section-title">
-    방문 순서
-  </div>
+<div class="title">
+방문 순서
+</div>
+
+<div id="scheduleList"></div>
 
 
-  <div id="scheduleList"></div>
+<div class="actions">
+
+<button
+id="scheduleRouteBtn"
+class="btn primary"
+>
+📍 이 일정 전체 길찾기
+</button>
 
 
-  <div
-    class="result-actions"
-    style="margin-top:12px;"
-  >
+<button
+id="scheduleMapBtn"
+class="btn"
+>
+🗺️ 지도에서 보기
+</button>
 
-
-    <button
-      id="scheduleRouteBtn"
-      class="small-btn primary"
-      type="button"
-    >
-      📍 현재 위치부터 전체 길찾기
-    </button>
-
-
-    <button
-      id="scheduleMapBtn"
-      class="small-btn"
-      type="button"
-    >
-      🗺️ 지도에서 보기
-    </button>
-
-
-  </div>
+</div>
 
 </div>
 
@@ -1785,34 +1569,28 @@ button:disabled {
 
 
 
-<!-- ================================
-     FAVORITES
-================================ -->
+<!-- 찜 -->
 
 <section
-  id="favoritesView"
-  class="view"
+id="favoritesView"
+class="view"
 >
-
 
 <div class="page">
 
-
 <div class="card">
 
-  <div class="section-title">
-    ❤️ 찜한 장소
-  </div>
-
-  <div id="favoriteList"></div>
-
+<div class="title">
+❤️ 찜한 장소
 </div>
 
+<div id="favoriteList"></div>
+
+</div>
 
 </div>
 
 </section>
-
 
 
 </main>
@@ -1821,65 +1599,52 @@ button:disabled {
 
 
 
-<!-- ================================
-     BOTTOM NAV
-================================ -->
-
-<nav class="bottom-nav">
+<nav class="bottom">
 
 
 <button
-  class="nav-btn active"
-  data-view="home"
+class="active"
+data-view="home"
 >
 
-  <span>
-    🏠
-  </span>
+<span>
+🏠
+</span>
 
-  홈
+홈
 
 </button>
 
 
-<button
-  class="nav-btn"
-  data-view="map"
->
+<button data-view="map">
 
-  <span>
-    🗺️
-  </span>
+<span>
+🗺️
+</span>
 
-  지도
+지도
 
 </button>
 
 
-<button
-  class="nav-btn"
-  data-view="schedule"
->
+<button data-view="schedule">
 
-  <span>
-    🗓️
-  </span>
+<span>
+🗓️
+</span>
 
-  일정
+일정
 
 </button>
 
 
-<button
-  class="nav-btn"
-  data-view="favorites"
->
+<button data-view="favorites">
 
-  <span>
-    ❤️
-  </span>
+<span>
+❤️
+</span>
 
-  찜
+찜
 
 </button>
 
@@ -1893,3396 +1658,4210 @@ button:disabled {
 (() => {
 
 
-const WORKER_BASE =
-  "https://orange-recipe-d340fukuoka-route.wnals4836.workers.dev";
+const WORKER =
+"https://orange-recipe-d340fukuoka-route.wnals4836.workers.dev";
 
 
-const STORAGE_KEY =
-  "fukuoka-trip-v6";
+const STORAGE =
+"fukuoka-trip-v8";
+
+
+const FUKUOKA = {
+lat:33.5902,
+lng:130.4017
+};
 
 
 
 const categoryInfo = {
 
-  restaurant:{
-    label:"맛집",
-    emoji:"🍜",
-    color:"#ef5350"
-  },
+restaurant:{
+label:"맛집",
+emoji:"🍜",
+color:"#ef5350"
+},
 
-  cafe:{
-    label:"카페",
-    emoji:"☕",
-    color:"#a66b45"
-  },
+cafe:{
+label:"카페",
+emoji:"☕",
+color:"#a66b45"
+},
 
-  shopping:{
-    label:"쇼핑",
-    emoji:"🛍️",
-    color:"#8e61d4"
-  },
+shopping:{
+label:"쇼핑",
+emoji:"🛍️",
+color:"#8e61d4"
+},
 
-  tour:{
-    label:"관광",
-    emoji:"📸",
-    color:"#2f6fed"
-  },
+tour:{
+label:"관광",
+emoji:"📸",
+color:"#2f6fed"
+},
 
-  hotel:{
-    label:"숙소",
-    emoji:"🏨",
-    color:"#16a34a"
-  },
+hotel:{
+label:"숙소",
+emoji:"🏨",
+color:"#16a34a"
+},
 
-  etc:{
-    label:"기타",
-    emoji:"📍",
-    color:"#6b7280"
-  }
+etc:{
+label:"기타",
+emoji:"📍",
+color:"#6b7280"
+}
 
 };
 
 
 
-const defaultState = {
+const KO_RULES = [
 
-  selectedDay:
-    "day1",
+[
+/天神駅|Tenjin Station/i,
+"텐진역"
+],
 
-  routeMode:
-    "walking",
+[
+/博多駅|Hakata Station/i,
+"하카타역"
+],
 
-  days:{
-    day1:[],
-    day2:[],
-    day3:[]
-  },
+[
+/福岡空港|Fukuoka Airport/i,
+"후쿠오카공항"
+],
 
-  favorites:[],
+[
+/キャナルシティ博多|Canal City Hakata/i,
+"캐널시티 하카타"
+],
 
-  navStops:[]
+[
+/大濠公園|Ohori Park/i,
+"오호리공원"
+],
+
+[
+/福岡タワー|Fukuoka Tower/i,
+"후쿠오카타워"
+],
+
+[
+/太宰府天満宮|Dazaifu Tenmangu/i,
+"다자이후 텐만구"
+],
+
+[
+/中洲川端駅|Nakasu-Kawabata Station/i,
+"나카스카와바타역"
+],
+
+[
+/天神南駅|Tenjin-minami Station/i,
+"텐진미나미역"
+],
+
+[
+/櫛田神社|Kushida Shrine/i,
+"구시다신사"
+],
+
+[
+/天神地下街/i,
+"텐진지하상가"
+],
+
+[
+/ららぽーと福岡/i,
+"라라포트 후쿠오카"
+],
+
+[
+/マリンワールド海の中道/i,
+"마린월드 우미노나카미치"
+],
+
+[
+/海の中道海浜公園/i,
+"우미노나카미치 해변공원"
+],
+
+[
+/柳橋連合市場/i,
+"야나기바시 시장"
+]
+
+];
+
+
+
+const baseState = {
+
+selectedDay:
+"day1",
+
+routeMode:
+"walking",
+
+days:{
+day1:[],
+day2:[],
+day3:[]
+},
+
+favorites:[],
+
+navStops:[],
+
+manualStart:null,
+
+useManualStart:false
+
 };
 
 
 
 let state =
-  loadState();
+loadState();
 
 
 let map;
 
 let mapReady =
-  false;
-
+false;
 
 let currentLocation =
-  null;
+null;
 
+let pickMode =
+null;
 
-let myLocationMarker =
-  null;
+let searchTimer =
+null;
+
+let searchAbort =
+null;
+
+let lastRoute =
+null;
+
+let lastSegments =
+[];
 
 
 let routeMarkers =
-  [];
-
+[];
 
 let savedMarkers =
-  [];
-
+[];
 
 let previewMarker =
-  null;
+null;
 
+let currentMarker =
+null;
 
-let lastRouteGeoJSON =
-  null;
-
-
-let lastRouteSegments =
-  [];
-
-
-let searchController =
-  null;
+let startMarker =
+null;
 
 
 
-function clone(obj) {
+function clone(x) {
 
-  return JSON.parse(
-    JSON.stringify(obj)
-  );
+return JSON.parse(
+JSON.stringify(x)
+);
+
 }
 
 
 
 function loadState() {
 
-  try {
+try {
 
-    const saved =
-      JSON.parse(
-        localStorage.getItem(
-          STORAGE_KEY
-        ) || "null"
-      );
-
-
-    if (!saved) {
-
-      return clone(
-        defaultState
-      );
-    }
+const saved =
+JSON.parse(
+localStorage.getItem(
+STORAGE
+) || "null"
+);
 
 
-    return {
+if (!saved) {
 
-      ...clone(
-        defaultState
-      ),
+return clone(
+baseState
+);
 
-      ...saved,
+}
 
-      days:{
-        ...clone(
-          defaultState.days
-        ),
 
-        ...(saved.days || {})
-      },
+return {
 
-      favorites:
-        Array.isArray(
-          saved.favorites
-        )
-        ?
-        saved.favorites
-        :
-        [],
+...clone(baseState),
 
-      navStops:
-        Array.isArray(
-          saved.navStops
-        )
-        ?
-        saved.navStops
-        :
-        []
+...saved,
 
-    };
+days:{
 
-  }
+...clone(
+baseState.days
+),
 
-  catch {
+...(saved.days || {})
 
-    return clone(
-      defaultState
-    );
-  }
+},
+
+favorites:
+Array.isArray(
+saved.favorites
+)
+?
+saved.favorites
+:
+[],
+
+navStops:
+Array.isArray(
+saved.navStops
+)
+?
+saved.navStops
+:
+[]
+
+};
+
+}
+
+catch {
+
+return clone(
+baseState
+);
+
+}
+
 }
 
 
 
 function saveState() {
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(state)
-  );
+localStorage.setItem(
+STORAGE,
+JSON.stringify(state)
+);
+
 }
 
 
 
 function currentSchedule() {
 
-  return (
-    state.days[
-      state.selectedDay
-    ] ||
-    []
-  );
+return (
+state.days[
+state.selectedDay
+] || []
+);
+
 }
 
 
 
 function dayLabel(day) {
 
-  if (day === "day1") {
-    return "1일차";
-  }
+if (
+day === "day1"
+) {
+return "1일차";
+}
 
-  if (day === "day2") {
-    return "2일차";
-  }
+if (
+day === "day2"
+) {
+return "2일차";
+}
 
-  return "3일차";
+return "3일차";
+
 }
 
 
 
 function makeId() {
 
-  return (
-    crypto.randomUUID
-    ?
-    crypto.randomUUID()
-    :
-    Date.now() +
-    "-" +
-    Math.random()
-  );
+return (
+crypto.randomUUID
+?
+crypto.randomUUID()
+:
+Date.now()
++
+"-"
++
+Math.random()
+);
+
 }
 
 
 
 function esc(value) {
 
-  return String(
-    value ?? ""
-  )
-  .replace(
-    /[&<>"']/g,
+return String(
+value ?? ""
+)
+.replace(
 
-    char => ({
+/[&<>"']/g,
 
-      "&":"&amp;",
+char => ({
 
-      "<":"&lt;",
+"&":"&amp;",
 
-      ">":"&gt;",
+"<":"&lt;",
 
-      '"':"&quot;",
+">":"&gt;",
 
-      "'":"&#039;"
+'"':"&quot;",
 
-    })[char]
-  );
+"'":"&#039;"
+
+})[char]
+
+);
+
 }
 
 
 
 function samePlace(a,b) {
 
-  return (
+return (
 
-    Math.abs(
-      Number(a.lat) -
-      Number(b.lat)
-    )
-    <
-    0.00002
+Math.abs(
+Number(a.lat) -
+Number(b.lat)
+)
+<
+0.00002
 
-    &&
+&&
 
-    Math.abs(
-      Number(a.lng) -
-      Number(b.lng)
-    )
-    <
-    0.00002
-  );
+Math.abs(
+Number(a.lng) -
+Number(b.lng)
+)
+<
+0.00002
+
+);
+
+}
+
+
+
+function koName(text) {
+
+const value =
+String(text || "");
+
+
+for (
+const [rule,korean]
+of KO_RULES
+) {
+
+if (
+rule.test(value)
+) {
+
+return korean;
+
+}
+
+}
+
+
+return value;
+
 }
 
 
 
 function formatDistance(meters) {
 
-  if (meters >= 1000) {
+if (
+meters >= 1000
+) {
 
-    return (
-      meters / 1000
-    )
-    .toFixed(
-      meters >= 10000
-      ?
-      0
-      :
-      1
-    )
-    +
-    "km";
-  }
+return (
+meters / 1000
+)
+.toFixed(
+meters >= 10000
+?
+0
+:
+1
+)
++
+"km";
+
+}
 
 
-  return (
-    Math.round(meters) +
-    "m"
-  );
+return (
+Math.round(meters)
++
+"m"
+);
+
 }
 
 
 
 function formatDuration(seconds) {
 
-  const minutes =
-    Math.round(
-      seconds / 60
-    );
+const minutes =
+Math.round(
+seconds / 60
+);
 
 
-  if (minutes < 60) {
+if (
+minutes < 60
+) {
 
-    return (
-      minutes +
-      "분"
-    );
-  }
+return (
+minutes +
+"분"
+);
 
-
-  const hours =
-    Math.floor(
-      minutes / 60
-    );
+}
 
 
-  const remain =
-    minutes % 60;
+const hours =
+Math.floor(
+minutes / 60
+);
 
 
-  return (
-    remain
-    ?
-    `${hours}시간 ${remain}분`
-    :
-    `${hours}시간`
-  );
+const remain =
+minutes % 60;
+
+
+return (
+
+hours +
+"시간 " +
+
+(
+remain
+?
+remain + "분"
+:
+""
+)
+
+);
+
+}
+
+
+
+function modeLabel() {
+
+if (
+state.routeMode ===
+"walking"
+) {
+
+return "🚶 도보";
+
+}
+
+
+if (
+state.routeMode ===
+"driving"
+) {
+
+return "🚗 자동차";
+
+}
+
+
+return "🚲 자전거";
+
 }
 
 
 
 function showStatus(
-  text,
-  error=false
+text,
+error=false
 ) {
 
-  const el =
-    document.getElementById(
-      "searchStatus"
-    );
+const el =
+document.getElementById(
+"status"
+);
 
 
-  el.textContent =
-    text;
+el.textContent =
+text;
 
 
-  el.classList.toggle(
-    "show",
-    Boolean(text)
-  );
+el.classList.toggle(
+"show",
+Boolean(text)
+);
 
 
-  el.classList.toggle(
-    "error",
-    Boolean(text) &&
-    error
-  );
+el.classList.toggle(
+"error",
+Boolean(text) &&
+error
+);
+
 }
 
 
 
-/* =====================================
+/* ========================
    MAP
-===================================== */
+======================== */
 
 function initMap() {
 
-  map =
-    new maplibregl.Map({
+map =
+new maplibregl.Map({
 
-      container:
-        "map",
+container:
+"map",
 
-      style:
-        "https://tiles.openfreemap.org/styles/liberty",
+style:
+"https://tiles.openfreemap.org/styles/liberty",
 
-      center:[
-        130.4017,
-        33.5902
-      ],
+center:[
+FUKUOKA.lng,
+FUKUOKA.lat
+],
 
-      zoom:
-        12.6
+zoom:
+12.6
 
-    });
-
-
-  map.addControl(
-
-    new maplibregl.NavigationControl({
-      showCompass:false
-    }),
-
-    "bottom-right"
-
-  );
+});
 
 
-  map.on(
-    "load",
-    () => {
+map.addControl(
 
-      mapReady =
-        true;
+new maplibregl.NavigationControl({
+showCompass:false
+}),
 
+"bottom-right"
 
-      map.addSource(
-        "route",
-        {
-
-          type:
-            "geojson",
-
-          data:{
-            type:
-              "FeatureCollection",
-
-            features:[]
-          }
-
-        }
-      );
+);
 
 
-      map.addLayer({
 
-        id:
-          "route-casing",
+map.on(
+"load",
+() => {
 
-        type:
-          "line",
-
-        source:
-          "route",
-
-        paint:{
-
-          "line-color":
-            "#ffffff",
-
-          "line-width":
-            9,
-
-          "line-opacity":
-            0.92
-        }
-
-      });
+mapReady =
+true;
 
 
-      map.addLayer({
+/*
+가능한 지도 글자를
+한국어 → 영어 → 일본어/현지어
+순으로 표시
+*/
 
-        id:
-          "route-line",
-
-        type:
-          "line",
-
-        source:
-          "route",
-
-        paint:{
-
-          "line-color":
-            "#2563eb",
-
-          "line-width":
-            6,
-
-          "line-opacity":
-            0.95
-        }
-
-      });
+localizeLabels();
 
 
-      refreshMapMarkers();
+map.addSource(
+"route",
+{
+
+type:
+"geojson",
+
+data:{
+type:
+"FeatureCollection",
+features:[]
+}
+
+}
+);
 
 
-      if (
-        lastRouteGeoJSON
-      ) {
+map.addLayer({
 
-        drawRoute(
-          lastRouteGeoJSON
-        );
-      }
+id:
+"route-bg",
 
-    }
-  );
+type:
+"line",
+
+source:
+"route",
+
+paint:{
+
+"line-color":
+"#ffffff",
+
+"line-width":
+9,
+
+"line-opacity":
+0.95
 
 }
 
+});
 
 
-function clearMarkers(list) {
+map.addLayer({
 
-  list.forEach(
-    marker =>
-      marker.remove()
-  );
+id:
+"route-line",
 
+type:
+"line",
 
-  list.length =
-    0;
-}
+source:
+"route",
 
+paint:{
 
+"line-color":
+"#2563eb",
 
-function refreshMapMarkers() {
+"line-width":
+6,
 
-  if (!mapReady) {
-    return;
-  }
-
-
-  clearMarkers(
-    savedMarkers
-  );
-
-
-  clearMarkers(
-    routeMarkers
-  );
-
-
-  currentSchedule()
-  .forEach(
-    (place,index) => {
-
-      const info =
-        categoryInfo[
-          place.category ||
-          "etc"
-        ];
-
-
-      const el =
-        document.createElement(
-          "div"
-        );
-
-
-      el.className =
-        "fav-marker";
-
-
-      el.style.background =
-        info.color;
-
-
-      el.textContent =
-        info.emoji;
-
-
-      const marker =
-        new maplibregl.Marker({
-          element:el
-        })
-
-        .setLngLat([
-          place.lng,
-          place.lat
-        ])
-
-        .setPopup(
-
-          new maplibregl.Popup({
-            offset:20
-          })
-
-          .setHTML(
-            `
-            <b>
-              ${esc(place.name)}
-            </b>
-
-            <br>
-
-            <small>
-              ${dayLabel(state.selectedDay)}
-              ${index+1}번째
-            </small>
-            `
-          )
-
-        )
-
-        .addTo(map);
-
-
-      savedMarkers.push(
-        marker
-      );
-
-    }
-  );
-
-
-  state.navStops
-  .forEach(
-    (place,index) => {
-
-      const el =
-        document.createElement(
-          "div"
-        );
-
-
-      el.className =
-        "place-marker";
-
-
-      el.style.background =
-        "#151515";
-
-
-      el.innerHTML =
-        `<span>${index+1}</span>`;
-
-
-      const marker =
-        new maplibregl.Marker({
-
-          element:el,
-
-          anchor:"bottom"
-
-        })
-
-        .setLngLat([
-          place.lng,
-          place.lat
-        ])
-
-        .setPopup(
-
-          new maplibregl.Popup({
-            offset:25
-          })
-
-          .setHTML(
-            `
-            <b>
-              ${index+1}.
-              ${esc(place.name)}
-            </b>
-            `
-          )
-
-        )
-
-        .addTo(map);
-
-
-      routeMarkers.push(
-        marker
-      );
-
-    }
-  );
+"line-opacity":
+0.96
 
 }
 
+});
 
 
-function setMyLocationMarker(
-  location,
-  fly=false
+refreshMarkers();
+
+}
+);
+
+
+
+map.on(
+"click",
+async event => {
+
+
+if (!pickMode) {
+return;
+}
+
+
+const place = {
+
+id:
+makeId(),
+
+name:
+
+pickMode === "start"
+?
+"지도에서 지정한 출발지"
+:
+"지도에서 지정한 목적지",
+
+address:
+
+event.lngLat.lat
+.toFixed(6)
+
++
+", "
+
++
+event.lngLat.lng
+.toFixed(6),
+
+lat:
+event.lngLat.lat,
+
+lng:
+event.lngLat.lng,
+
+category:
+"etc"
+
+};
+
+
+if (
+pickMode ===
+"start"
 ) {
 
-  if (!mapReady) {
-    return;
-  }
+state.manualStart =
+place;
+
+state.useManualStart =
+true;
 
 
-  if (myLocationMarker) {
+saveState();
 
-    myLocationMarker.remove();
-  }
-
-
-  const el =
-    document.createElement(
-      "div"
-    );
+setStartMarker();
 
 
-  el.className =
-    "me-marker";
+showStatus(
+"출발지를 지도에서 지정했어."
+);
 
 
-  myLocationMarker =
-    new maplibregl.Marker({
-      element:el
-    })
+if (
+state.navStops.length
+) {
 
-    .setLngLat([
-      location.lng,
-      location.lat
-    ])
+await calculateRoute();
 
-    .setPopup(
+}
 
-      new maplibregl.Popup({
-        offset:18
-      })
+}
 
-      .setHTML(
-        "<b>현재 위치</b>"
-      )
+else {
 
-    )
-
-    .addTo(map);
+state.navStops =
+[place];
 
 
-  if (fly) {
+saveState();
 
-    map.flyTo({
+renderNavStops();
 
-      center:[
-        location.lng,
-        location.lat
-      ],
+refreshMarkers();
 
-      zoom:
-        15.8,
 
-      essential:
-        true
+await calculateRoute();
 
-    });
-  }
+}
+
+
+setPickMode(null);
+
+}
+);
+
+}
+
+
+
+function localizeLabels() {
+
+const targets =
+new Set([
+
+"place",
+
+"poi",
+
+"transportation_name",
+
+"water_name",
+
+"waterway",
+
+"park",
+
+"aerodrome_label"
+
+]);
+
+
+const layers =
+map.getStyle()
+?.layers || [];
+
+
+for (
+const layer of layers
+) {
+
+if (
+layer.type !==
+"symbol"
+) {
+continue;
+}
+
+
+if (
+!targets.has(
+layer["source-layer"]
+)
+) {
+continue;
+}
+
+
+/*
+도로번호 아이콘 등은
+건드리지 않음
+*/
+
+if (
+/shield|ref|route.?number/i
+.test(layer.id)
+) {
+continue;
+}
+
+
+const textField =
+map.getLayoutProperty(
+layer.id,
+"text-field"
+);
+
+
+if (
+textField ===
+undefined
+) {
+continue;
+}
+
+
+try {
+
+map.setLayoutProperty(
+
+layer.id,
+
+"text-field",
+
+[
+"coalesce",
+
+[
+"get",
+"name:ko"
+],
+
+[
+"get",
+"name_ko"
+],
+
+[
+"get",
+"name:en"
+],
+
+[
+"get",
+"name_en"
+],
+
+[
+"get",
+"name"
+]
+
+]
+
+);
+
+}
+
+catch {}
+
+}
+
+}
+
+
+
+function clearMarkers(array) {
+
+array.forEach(
+marker =>
+marker.remove()
+);
+
+
+array.length =
+0;
+
+}
+
+
+
+function refreshMarkers() {
+
+if (!mapReady) {
+return;
+}
+
+
+clearMarkers(
+routeMarkers
+);
+
+
+clearMarkers(
+savedMarkers
+);
+
+
+
+currentSchedule()
+.forEach(
+place => {
+
+
+const info =
+categoryInfo[
+place.category ||
+"etc"
+];
+
+
+const el =
+document.createElement(
+"div"
+);
+
+
+el.className =
+"marker";
+
+
+el.style.background =
+info.color;
+
+
+el.innerHTML =
+`<span>${info.emoji}</span>`;
+
+
+const marker =
+new maplibregl.Marker({
+
+element:el,
+
+anchor:"bottom"
+
+})
+
+.setLngLat([
+place.lng,
+place.lat
+])
+
+.setPopup(
+
+new maplibregl.Popup({
+offset:25
+})
+
+.setHTML(
+
+`<b>${esc(
+koName(place.name)
+)}</b>`
+
+)
+
+)
+
+.addTo(map);
+
+
+savedMarkers.push(
+marker
+);
+
+}
+);
+
+
+
+state.navStops
+.forEach(
+(place,index) => {
+
+
+const el =
+document.createElement(
+"div"
+);
+
+
+el.className =
+"marker";
+
+
+el.innerHTML =
+`<span>${index+1}</span>`;
+
+
+const marker =
+new maplibregl.Marker({
+
+element:el,
+
+anchor:"bottom"
+
+})
+
+.setLngLat([
+place.lng,
+place.lat
+])
+
+.setPopup(
+
+new maplibregl.Popup({
+offset:25
+})
+
+.setHTML(
+
+`<b>${index+1}. ${esc(
+koName(place.name)
+)}</b>`
+
+)
+
+)
+
+.addTo(map);
+
+
+routeMarkers.push(
+marker
+);
+
+}
+);
+
+
+setStartMarker();
+
+}
+
+
+
+function setCurrentMarker(
+fly=false
+) {
+
+if (
+!mapReady ||
+!currentLocation
+) {
+return;
+}
+
+
+if (
+currentMarker
+) {
+
+currentMarker.remove();
+
+}
+
+
+const el =
+document.createElement(
+"div"
+);
+
+
+el.className =
+"me";
+
+
+currentMarker =
+new maplibregl.Marker({
+element:el
+})
+
+.setLngLat([
+currentLocation.lng,
+currentLocation.lat
+])
+
+.setPopup(
+
+new maplibregl.Popup({
+offset:18
+})
+
+.setHTML(
+"<b>현재 위치</b>"
+)
+
+)
+
+.addTo(map);
+
+
+if (fly) {
+
+map.flyTo({
+
+center:[
+currentLocation.lng,
+currentLocation.lat
+],
+
+zoom:
+15.5
+
+});
+
+}
+
+}
+
+
+
+function setStartMarker() {
+
+if (
+startMarker
+) {
+
+startMarker.remove();
+
+startMarker =
+null;
+
+}
+
+
+if (
+!mapReady ||
+!state.useManualStart ||
+!state.manualStart
+) {
+return;
+}
+
+
+const el =
+document.createElement(
+"div"
+);
+
+
+el.className =
+"startMarker";
+
+
+startMarker =
+new maplibregl.Marker({
+element:el
+})
+
+.setLngLat([
+state.manualStart.lng,
+state.manualStart.lat
+])
+
+.setPopup(
+
+new maplibregl.Popup({
+offset:18
+})
+
+.setHTML(
+"<b>직접 지정 출발지</b>"
+)
+
+)
+
+.addTo(map);
+
+}
+
+
+
+/* ========================
+   위치
+======================== */
+
+function distanceKm(a,b) {
+
+const R =
+6371;
+
+
+const toRad =
+value =>
+value * Math.PI / 180;
+
+
+const dLat =
+toRad(
+b.lat -
+a.lat
+);
+
+
+const dLng =
+toRad(
+b.lng -
+a.lng
+);
+
+
+const value =
+
+Math.sin(
+dLat/2
+) ** 2
+
++
+
+Math.cos(
+toRad(a.lat)
+)
+
+*
+
+Math.cos(
+toRad(b.lat)
+)
+
+*
+
+Math.sin(
+dLng/2
+) ** 2;
+
+
+return (
+2 *
+R *
+Math.asin(
+Math.sqrt(value)
+)
+);
+
 }
 
 
 
 function getCurrentLocation(
-  force=false
+force=false
 ) {
 
-  if (
-    currentLocation &&
-    !force
-  ) {
+if (
+currentLocation &&
+!force
+) {
 
-    return Promise.resolve(
-      currentLocation
-    );
-  }
+return Promise.resolve(
+currentLocation
+);
 
-
-  if (
-    !navigator.geolocation
-  ) {
-
-    return Promise.reject(
-      new Error(
-        "이 기기에서는 위치 기능을 사용할 수 없어."
-      )
-    );
-  }
+}
 
 
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
+if (
+!navigator.geolocation
+) {
 
-      navigator.geolocation
-      .getCurrentPosition(
+return Promise.reject(
 
-        position => {
+new Error(
+"이 기기에서는 위치 기능을 사용할 수 없어."
+)
 
-          currentLocation = {
+);
 
-            lat:
-              position.coords.latitude,
-
-            lng:
-              position.coords.longitude
-          };
+}
 
 
-          setMyLocationMarker(
-            currentLocation,
-            false
-          );
+return new Promise(
+(resolve,reject) => {
 
 
-          resolve(
-            currentLocation
-          );
+navigator.geolocation
+.getCurrentPosition(
 
-        },
+position => {
 
-        error => {
 
-          reject(
-            new Error(
+currentLocation = {
 
-              error.code === 1
-              ?
-              "브라우저에서 위치 권한을 허용해줘."
-              :
-              "현재 위치를 가져오지 못했어."
+lat:
+position.coords.latitude,
 
-            )
-          );
+lng:
+position.coords.longitude
 
-        },
+};
 
-        {
 
-          enableHighAccuracy:
-            true,
+setCurrentMarker(
+false
+);
 
-          timeout:
-            12000,
 
-          maximumAge:
-            10000
+resolve(
+currentLocation
+);
 
-        }
+},
 
-      );
+error => {
 
-    }
-  );
+
+reject(
+
+new Error(
+
+error.code === 1
+
+?
+
+"브라우저 위치 권한을 허용해줘."
+
+:
+
+"현재 위치를 가져오지 못했어."
+
+)
+
+);
+
+},
+
+{
+
+enableHighAccuracy:
+true,
+
+timeout:
+12000,
+
+maximumAge:
+10000
+
+}
+
+);
+
+}
+);
+
 }
 
 
 
-/* =====================================
-   SEARCH
-===================================== */
+async function getRouteStart() {
 
-async function searchPlaces() {
+if (
+state.useManualStart &&
+state.manualStart
+) {
 
-  const input =
-    document.getElementById(
-      "searchInput"
-    );
+return state.manualStart;
 
-
-  const query =
-    input.value.trim();
-
-
-  if (!query) {
-
-    showStatus(
-      "검색어를 입력해줘.",
-      true
-    );
-
-    input.focus();
-
-    return;
-  }
-
-
-  if (searchController) {
-
-    searchController.abort();
-  }
-
-
-  searchController =
-    new AbortController();
-
-
-  const button =
-    document.getElementById(
-      "searchBtn"
-    );
-
-
-  button.disabled =
-    true;
-
-
-  button.textContent =
-    "검색중";
-
-
-  showStatus(
-    "후쿠오카 주변 장소를 찾는 중..."
-  );
-
-
-  document
-  .getElementById(
-    "searchResults"
-  )
-  .classList
-  .remove(
-    "show"
-  );
-
-
-  try {
-
-    const response =
-      await fetch(
-
-        `${WORKER_BASE}/search?q=${encodeURIComponent(query)}`,
-
-        {
-          signal:
-            searchController.signal
-        }
-
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        `검색 오류 (${response.status})`
-      );
-    }
-
-
-    renderSearchResults(
-      data.features ||
-      []
-    );
-
-  }
-
-  catch (error) {
-
-    if (
-      error.name !==
-      "AbortError"
-    ) {
-
-      showStatus(
-        `검색 실패: ${error.message}`,
-        true
-      );
-    }
-
-  }
-
-  finally {
-
-    button.disabled =
-      false;
-
-
-    button.textContent =
-      "검색";
-  }
 }
 
 
+const location =
+await getCurrentLocation();
+
+
+/*
+한국에서 테스트할 경우
+후쿠오카까지 도보경로를
+계산하는 실수를 막음
+*/
+
+if (
+distanceKm(
+location,
+FUKUOKA
+) > 200
+) {
+
+throw new Error(
+
+"현재 위치가 후쿠오카에서 멀리 있어. 한국에서 테스트 중이면 ‘출발지 찍기’로 후쿠오카 안의 출발지를 먼저 찍어줘."
+
+);
+
+}
+
+
+return {
+
+...location,
+
+name:
+"현재 위치"
+
+};
+
+}
+
+
+
+/* ========================
+   검색
+======================== */
 
 function featureToPlace(
-  feature
+feature
 ) {
 
-  const properties =
-    feature.properties ||
-    {};
+const properties =
+feature.properties || {};
 
 
-  const coordinates =
-    feature.geometry
-    ?.coordinates ||
-    [];
+const coordinates =
+feature.geometry
+?.coordinates || [];
 
 
-  return {
+const nativeName =
 
-    id:
-      makeId(),
+properties.name ||
 
-    name:
-      properties.name ||
-      properties.label ||
-      "검색 장소",
+properties.label ||
 
-    address:
-      properties.label ||
-      [
-        properties.locality,
-        properties.region,
-        properties.country
-      ]
-      .filter(Boolean)
-      .join(", "),
+"검색 장소";
 
-    lat:
-      Number(
-        coordinates[1]
-      ),
 
-    lng:
-      Number(
-        coordinates[0]
-      ),
+return {
 
-    category:
-      document
-      .getElementById(
-        "categorySelect"
-      )
-      .value
+id:
+makeId(),
 
-  };
+name:
+koName(
+nativeName
+),
+
+nativeName,
+
+address:
+
+properties.label
+
+||
+
+[
+properties.locality,
+properties.region,
+properties.country
+]
+.filter(Boolean)
+.join(", "),
+
+lat:
+Number(
+coordinates[1]
+),
+
+lng:
+Number(
+coordinates[0]
+),
+
+category:
+document
+.getElementById(
+"category"
+)
+.value
+
+};
+
 }
 
 
 
-function renderSearchResults(
-  features
+async function requestSearch(
+path,
+query
 ) {
 
-  const box =
-    document.getElementById(
-      "searchResults"
-    );
+if (
+searchAbort
+) {
 
+searchAbort.abort();
 
-  box.innerHTML =
-    "";
+}
 
 
-  const valid =
-    features
+searchAbort =
+new AbortController();
 
-    .map(
-      featureToPlace
-    )
 
-    .filter(
-      place =>
-        Number.isFinite(
-          place.lat
-        )
-        &&
-        Number.isFinite(
-          place.lng
-        )
-    );
+const response =
+await fetch(
 
+`${WORKER}${path}?q=${encodeURIComponent(query)}`,
 
-  if (!valid.length) {
+{
+signal:
+searchAbort.signal
+}
 
-    showStatus(
-      "검색 결과가 없어. 일본어·영어 이름도 한번 검색해봐."
-    );
+);
 
-    return;
-  }
 
+const data =
+await response.json();
 
-  showStatus("");
 
+if (
+!response.ok
+) {
 
-  box.classList.add(
-    "show"
-  );
+throw new Error(
 
+data.error ||
 
-  valid.forEach(
-    place => {
+`검색 오류 ${response.status}`
 
+);
 
-      const row =
-        document.createElement(
-          "div"
-        );
+}
 
 
-      row.className =
-        "result";
+return data;
 
+}
 
-      row.innerHTML = `
 
-        <div class="result-name">
 
-          ${esc(place.name)}
+async function fullSearch() {
 
-        </div>
+const input =
+document.getElementById(
+"searchInput"
+);
 
 
-        <div class="result-address">
+const query =
+input.value.trim();
 
-          ${esc(place.address)}
 
-        </div>
+if (!query) {
 
+showStatus(
+"검색어 또는 주소를 입력해줘.",
+true
+);
 
-        <div class="result-actions">
+return;
 
+}
 
-          <button
-            class="small-btn primary route-now"
-            type="button"
-          >
-            📍 여기로 길찾기
-          </button>
 
+const button =
+document.getElementById(
+"searchBtn"
+);
 
-          <button
-            class="small-btn waypoint"
-            type="button"
-          >
-            ＋ 경유지 추가
-          </button>
 
+button.disabled =
+true;
 
-          <button
-            class="small-btn schedule"
-            type="button"
-          >
-            ＋ 일정
-          </button>
 
+button.textContent =
+"검색중";
 
-          <button
-            class="small-btn favorite"
-            type="button"
-          >
-            ♡ 찜
-          </button>
 
+showStatus(
+"후쿠오카 주변에서 찾는 중..."
+);
 
-          <button
-            class="small-btn preview"
-            type="button"
-          >
-            지도보기
-          </button>
 
+try {
 
-        </div>
+const data =
+await requestSearch(
 
-      `;
+"/search",
 
+query
 
+);
 
-      row
-      .querySelector(
-        ".route-now"
-      )
-      .addEventListener(
-        "click",
-        async () => {
 
-          state.navStops =
-            [place];
+renderResults(
+data.features || []
+);
 
+}
 
-          saveState();
+catch(error) {
 
+if (
+error.name !==
+"AbortError"
+) {
 
-          renderNavStops();
+showStatus(
 
+"검색 실패: " +
+error.message,
 
-          refreshMapMarkers();
+true
 
+);
 
-          box.classList.remove(
-            "show"
-          );
+}
 
+}
 
-          await calculateRoute(
-            false
-          );
+finally {
 
-        }
-      );
+button.disabled =
+false;
 
 
+button.textContent =
+"검색";
 
-      row
-      .querySelector(
-        ".waypoint"
-      )
-      .addEventListener(
-        "click",
-        async () => {
+}
 
-          if (
-            !state.navStops
-            .some(
-              p =>
-                samePlace(
-                  p,
-                  place
-                )
-            )
-          ) {
+}
 
-            state.navStops
-            .push(
-              place
-            );
-          }
 
 
-          saveState();
+async function autocomplete() {
 
+const query =
+document
+.getElementById(
+"searchInput"
+)
+.value
+.trim();
 
-          renderNavStops();
 
+if (
+query.length < 2
+) {
 
-          refreshMapMarkers();
+hideResults();
 
+return;
 
-          box.classList.remove(
-            "show"
-          );
+}
 
 
-          await calculateRoute(
-            false
-          );
+try {
 
-        }
-      );
+const data =
+await requestSearch(
 
+"/autocomplete",
 
+query
 
-      row
-      .querySelector(
-        ".schedule"
-      )
-      .addEventListener(
-        "click",
-        () => {
+);
 
-          addToSchedule(
-            place
-          );
 
-        }
-      );
+renderResults(
+data.features || [],
+true
+);
 
+}
 
+catch(error) {
 
-      row
-      .querySelector(
-        ".favorite"
-      )
-      .addEventListener(
-        "click",
-        () => {
+if (
+error.name !==
+"AbortError"
+) {
 
-          addFavorite(
-            place
-          );
+console.warn(error);
 
-        }
-      );
+}
 
+}
 
+}
 
-      row
-      .querySelector(
-        ".preview"
-      )
-      .addEventListener(
-        "click",
-        () => {
 
-          previewPlace(
-            place
-          );
 
-        }
-      );
+function hideResults() {
 
+document
+.getElementById(
+"results"
+)
+.classList
+.remove(
+"show"
+);
 
-      box.appendChild(
-        row
-      );
+}
 
-    }
-  );
+
+
+function renderResults(
+features,
+compact=false
+) {
+
+const box =
+document.getElementById(
+"results"
+);
+
+
+box.innerHTML =
+"";
+
+
+const places =
+features
+
+.map(
+featureToPlace
+)
+
+.filter(
+place =>
+Number.isFinite(
+place.lat
+)
+&&
+Number.isFinite(
+place.lng
+)
+);
+
+
+const unique =
+[];
+
+
+for (
+const place of places
+) {
+
+if (
+!unique.some(
+item =>
+samePlace(
+item,
+place
+)
+)
+) {
+
+unique.push(
+place
+);
+
+}
+
+
+if (
+unique.length > 8
+) {
+break;
+}
+
+}
+
+
+if (
+!unique.length
+) {
+
+showStatus(
+
+"검색 결과가 없어. 일본어 주소나 영문 주소도 한번 넣어봐."
+
+);
+
+
+hideResults();
+
+return;
+
+}
+
+
+showStatus("");
+
+
+box.classList.add(
+"show"
+);
+
+
+
+unique.forEach(
+place => {
+
+
+const row =
+document.createElement(
+"div"
+);
+
+
+row.className =
+"result";
+
+
+row.innerHTML = `
+
+<div class="resultName">
+${esc(place.name)}
+</div>
+
+${
+place.nativeName !==
+place.name
+?
+`
+<div class="resultNative">
+${esc(place.nativeName)}
+</div>
+`
+:
+""
+}
+
+<div class="resultAddress">
+${esc(place.address)}
+</div>
+
+<div class="actions">
+
+<button class="btn primary go">
+📍 바로 길찾기
+</button>
+
+<button class="btn wp">
+＋ 경유지
+</button>
+
+<button class="btn sch">
+＋ 일정
+</button>
+
+<button class="btn fav">
+♡ 찜
+</button>
+
+<button class="btn prev">
+지도보기
+</button>
+
+</div>
+
+`;
+
+
+row
+.querySelector(
+".go"
+)
+.onclick =
+async () => {
+
+
+state.navStops =
+[place];
+
+
+saveState();
+
+
+renderNavStops();
+
+refreshMarkers();
+
+hideResults();
+
+
+await calculateRoute();
+
+};
+
+
+
+row
+.querySelector(
+".wp"
+)
+.onclick =
+async () => {
+
+
+if (
+!state.navStops
+.some(
+item =>
+samePlace(
+item,
+place
+)
+)
+) {
+
+state.navStops
+.push(
+place
+);
+
+}
+
+
+saveState();
+
+
+renderNavStops();
+
+refreshMarkers();
+
+hideResults();
+
+
+await calculateRoute();
+
+};
+
+
+
+row
+.querySelector(
+".sch"
+)
+.onclick =
+() =>
+addSchedule(
+place
+);
+
+
+
+row
+.querySelector(
+".fav"
+)
+.onclick =
+() =>
+addFavorite(
+place
+);
+
+
+
+row
+.querySelector(
+".prev"
+)
+.onclick =
+() =>
+previewPlace(
+place
+);
+
+
+
+box.appendChild(
+row
+);
+
+}
+);
+
+
+
+if (
+compact &&
+unique.length > 5
+) {
+
+while (
+box.children.length > 5
+) {
+
+box.lastElementChild
+.remove();
+
+}
+
+}
+
 }
 
 
 
 function previewPlace(
-  place
+place
 ) {
 
-  changeView(
-    "map"
-  );
+changeView(
+"map"
+);
 
 
-  if (previewMarker) {
+if (
+previewMarker
+) {
 
-    previewMarker.remove();
-  }
+previewMarker.remove();
 
-
-  previewMarker =
-    new maplibregl.Marker({
-      color:"#f59e0b"
-    })
-
-    .setLngLat([
-      place.lng,
-      place.lat
-    ])
-
-    .setPopup(
-
-      new maplibregl.Popup({
-        offset:24
-      })
-
-      .setHTML(
-        `
-        <b>
-          ${esc(place.name)}
-        </b>
-
-        <br>
-
-        <small>
-          ${esc(place.address)}
-        </small>
-        `
-      )
-
-    )
-
-    .addTo(map);
+}
 
 
-  previewMarker
-  .togglePopup();
+previewMarker =
+new maplibregl.Marker({
+color:"#f59e0b"
+})
+
+.setLngLat([
+place.lng,
+place.lat
+])
+
+.setPopup(
+
+new maplibregl.Popup({
+offset:24
+})
+
+.setHTML(
+
+`
+<b>
+${esc(place.name)}
+</b>
+
+<br>
+
+<small>
+${esc(place.address)}
+</small>
+`
+
+)
+
+)
+
+.addTo(map);
 
 
-  map.flyTo({
+previewMarker
+.togglePopup();
 
-    center:[
-      place.lng,
-      place.lat
-    ],
 
-    zoom:
-      16,
+map.flyTo({
 
-    essential:
-      true
+center:[
+place.lng,
+place.lat
+],
 
-  });
+zoom:
+16
+
+});
+
 }
 
 
 
-/* =====================================
-   ROUTING
-===================================== */
+/* ========================
+   길찾기
+======================== */
 
-async function calculateRoute(
-  forceLocation=false
+async function calculateRoute() {
+
+if (
+!state.navStops.length
 ) {
 
-  if (
-    !state.navStops.length
-  ) {
+setSummary(
 
-    setRouteSummary(
+null,
 
-      null,
+"검색 결과에서 ‘바로 길찾기’를 눌러줘."
 
-      "검색 결과에서 ‘여기로 길찾기’를 눌러줘."
+);
 
-    );
 
+clearRouteLine();
 
-    clearRouteLine();
+return;
 
-    return;
-  }
-
-
-  setRouteSummary(
-
-    "계산 중...",
-
-    "현재 위치에서 실제 도로 경로를 계산하고 있어."
-
-  );
-
-
-  try {
-
-
-    const location =
-      await getCurrentLocation(
-        forceLocation
-      );
-
-
-    const coordinates = [
-
-      [
-        location.lng,
-        location.lat
-      ],
-
-      ...state.navStops
-      .map(
-        place => [
-          place.lng,
-          place.lat
-        ]
-      )
-
-    ];
-
-
-    const response =
-      await fetch(
-        `${WORKER_BASE}/route`,
-        {
-
-          method:
-            "POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-
-              profile:
-                state.routeMode,
-
-              coordinates:
-                coordinates
-
-            })
-
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        data.error ||
-        data.message ||
-        `길찾기 오류 (${response.status})`
-      );
-    }
-
-
-    lastRouteGeoJSON =
-      data;
-
-
-    lastRouteSegments =
-
-      data.features?.[0]
-      ?.properties
-      ?.segments
-
-      ||
-
-      [];
-
-
-    drawRoute(
-      data
-    );
-
-
-    renderNavStops();
-
-
-    const summary =
-
-      data.features?.[0]
-      ?.properties
-      ?.summary;
-
-
-    if (summary) {
-
-
-      document
-      .getElementById(
-        "routeTime"
-      )
-      .textContent =
-        formatDuration(
-          summary.duration
-        );
-
-
-      document
-      .getElementById(
-        "routeDistance"
-      )
-      .textContent =
-        formatDistance(
-          summary.distance
-        );
-
-
-      document
-      .getElementById(
-        "routeMessage"
-      )
-      .textContent =
-
-        `${modeLabel(state.routeMode)} · 현재 위치 → ${state.navStops[state.navStops.length-1].name}`;
-
-    }
-
-    else {
-
-      setRouteSummary(
-
-        "경로 완료",
-
-        `${modeLabel(state.routeMode)} 경로를 지도에 표시했어.`
-
-      );
-    }
-
-
-    refreshMapMarkers();
-
-  }
-
-  catch (error) {
-
-    setRouteSummary(
-
-      "길찾기 실패",
-
-      error.message
-
-    );
-
-
-    alert(
-      error.message
-    );
-  }
 }
 
 
+setSummary(
 
-function modeLabel(mode) {
+"계산 중...",
 
-  if (
-    mode === "walking"
-  ) {
+"실제 도로 경로를 계산하고 있어."
 
-    return "🚶 도보";
-  }
+);
 
 
-  if (
-    mode === "driving"
-  ) {
-
-    return "🚗 자동차";
-  }
+try {
 
 
-  return "🚲 자전거";
+const start =
+await getRouteStart();
+
+
+const coordinates = [
+
+[
+start.lng,
+start.lat
+],
+
+...state.navStops
+.map(
+place => [
+place.lng,
+place.lat
+]
+)
+
+];
+
+
+const response =
+await fetch(
+
+`${WORKER}/route`,
+
+{
+
+method:
+"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:
+JSON.stringify({
+
+profile:
+state.routeMode,
+
+coordinates
+
+})
+
+}
+
+);
+
+
+const data =
+await response.json();
+
+
+if (
+!response.ok
+) {
+
+throw new Error(
+
+data.error?.message ||
+
+data.error ||
+
+data.message ||
+
+`길찾기 오류 ${response.status}`
+
+);
+
 }
 
 
+lastRoute =
+data;
 
-function setRouteSummary(
-  title,
-  message
+
+lastSegments =
+
+data.features?.[0]
+?.properties
+?.segments
+
+||
+
+[];
+
+
+drawRoute(
+data
+);
+
+
+renderNavStops();
+
+
+const summary =
+
+data.features?.[0]
+?.properties
+?.summary;
+
+
+if (
+summary
 ) {
 
-  document
-  .getElementById(
-    "routeTime"
-  )
-  .textContent =
-    title ||
-    "경로 없음";
+
+document
+.getElementById(
+"routeTime"
+)
+.textContent =
+formatDuration(
+summary.duration
+);
 
 
-  document
-  .getElementById(
-    "routeDistance"
-  )
-  .textContent =
-    "";
+document
+.getElementById(
+"routeDistance"
+)
+.textContent =
+formatDistance(
+summary.distance
+);
 
 
-  document
-  .getElementById(
-    "routeMessage"
-  )
-  .textContent =
-    message ||
-    "";
+document
+.getElementById(
+"routeMessage"
+)
+.textContent =
+
+`${modeLabel()} · ${start.name || "출발지"} → ${state.navStops[state.navStops.length-1].name}`;
+
+}
+
+else {
+
+setSummary(
+
+"경로 완료",
+
+modeLabel() +
+" 경로를 표시했어."
+
+);
+
+}
+
+
+refreshMarkers();
+
+}
+
+catch(error) {
+
+setSummary(
+
+"길찾기 실패",
+
+error.message
+
+);
+
+
+alert(
+error.message
+);
+
+}
+
 }
 
 
 
 function drawRoute(
-  geojson
+geojson
 ) {
 
-  if (
-    !mapReady ||
-    !map.getSource(
-      "route"
-    )
-  ) {
+if (
+!mapReady ||
+!map.getSource(
+"route"
+)
+) {
 
-    return;
-  }
+return;
 
-
-  map
-  .getSource(
-    "route"
-  )
-  .setData(
-    geojson
-  );
+}
 
 
-  const coordinates =
-
-    geojson.features?.[0]
-    ?.geometry
-    ?.coordinates
-
-    ||
-
-    [];
+map
+.getSource(
+"route"
+)
+.setData(
+geojson
+);
 
 
-  if (
-    !coordinates.length
-  ) {
+const coordinates =
 
-    return;
-  }
+geojson.features?.[0]
+?.geometry
+?.coordinates
 
+||
 
-  const bounds =
-    new maplibregl
-    .LngLatBounds();
+[];
 
 
-  coordinates.forEach(
-    coordinate =>
-      bounds.extend(
-        coordinate
-      )
-  );
+if (
+!coordinates.length
+) {
+
+return;
+
+}
 
 
-  map.fitBounds(
-    bounds,
-    {
+const bounds =
+new maplibregl
+.LngLatBounds();
 
-      padding:
-        55,
 
-      maxZoom:
-        16,
+coordinates.forEach(
+coordinate =>
+bounds.extend(
+coordinate
+)
+);
 
-      duration:
-        700
 
-    }
-  );
+map.fitBounds(
+
+bounds,
+
+{
+
+padding:
+55,
+
+maxZoom:
+16,
+
+duration:
+650
+
+}
+
+);
+
 }
 
 
 
 function clearRouteLine() {
 
-  lastRouteGeoJSON =
-    null;
+lastRoute =
+null;
 
 
-  lastRouteSegments =
-    [];
+lastSegments =
+[];
 
 
-  if (
-    mapReady &&
-    map.getSource(
-      "route"
-    )
-  ) {
+if (
+mapReady &&
+map.getSource(
+"route"
+)
+) {
 
-    map
-    .getSource(
-      "route"
-    )
-    .setData({
+map
+.getSource(
+"route"
+)
+.setData({
 
-      type:
-        "FeatureCollection",
+type:
+"FeatureCollection",
 
-      features:[]
+features:[]
 
-    });
-  }
+});
+
+}
+
 }
 
 
 
-/* =====================================
-   CURRENT NAV STOPS
-===================================== */
+function setSummary(
+title,
+message
+) {
+
+document
+.getElementById(
+"routeTime"
+)
+.textContent =
+title ||
+"경로 없음";
+
+
+document
+.getElementById(
+"routeDistance"
+)
+.textContent =
+"";
+
+
+document
+.getElementById(
+"routeMessage"
+)
+.textContent =
+message || "";
+
+}
+
+
+
+/* 경유지 */
 
 function renderNavStops() {
 
-  const box =
-    document.getElementById(
-      "navStops"
-    );
+const box =
+document.getElementById(
+"navStops"
+);
 
 
-  if (
-    !state.navStops.length
-  ) {
-
-    box.innerHTML =
-      "";
-
-    return;
-  }
+box.innerHTML =
+"";
 
 
-  box.innerHTML =
-    "";
+state.navStops
+.forEach(
+(place,index) => {
 
 
-  state.navStops
-  .forEach(
-    (place,index) => {
+const segment =
+lastSegments[
+index
+];
 
 
-      const segment =
-        lastRouteSegments[
-          index
-        ];
+const row =
+document.createElement(
+"div"
+);
 
 
-      const row =
-        document.createElement(
-          "div"
-        );
+row.className =
+"stop";
 
 
-      row.className =
-        "stop-row";
+row.innerHTML = `
+
+<div class="num">
+${index+1}
+</div>
 
 
-      row.innerHTML = `
+<div>
 
-        <div class="stop-num">
-
-          ${index+1}
-
-        </div>
+<div class="stopName">
+${esc(place.name)}
+</div>
 
 
-        <div>
+<div class="stopSub">
 
-          <div class="stop-name">
+${
+segment
 
-            ${esc(place.name)}
+?
 
-          </div>
+`${formatDuration(segment.duration)} · ${formatDistance(segment.distance)}`
 
+:
 
-          <div class="stop-sub">
+(
+index ===
+state.navStops.length-1
 
-            ${
-              segment
-              ?
-              `${formatDuration(segment.duration)} · ${formatDistance(segment.distance)}`
-              :
-              (
-                index ===
-                state.navStops.length-1
-                ?
-                "목적지"
-                :
-                "경유지"
-              )
-            }
+?
 
-          </div>
+"목적지"
 
-        </div>
+:
 
+"경유지"
+)
 
-        <div class="stop-actions">
+}
 
-          <button
-            class="icon-btn up"
-            type="button"
-          >
-            ↑
-          </button>
+</div>
+
+</div>
 
 
-          <button
-            class="icon-btn down"
-            type="button"
-          >
-            ↓
-          </button>
+<div>
+
+<button class="icon up">
+↑
+</button>
+
+<button class="icon down">
+↓
+</button>
+
+<button class="icon remove">
+×
+</button>
+
+</div>
+
+`;
 
 
-          <button
-            class="icon-btn remove"
-            type="button"
-          >
-            ×
-          </button>
-
-        </div>
-
-      `;
+row
+.querySelector(
+".up"
+)
+.disabled =
+index === 0;
 
 
-      row
-      .querySelector(
-        ".up"
-      )
-      .disabled =
-        index === 0;
+row
+.querySelector(
+".down"
+)
+.disabled =
+
+index ===
+state.navStops.length-1;
 
 
-      row
-      .querySelector(
-        ".down"
-      )
-      .disabled =
-
-        index ===
-        state.navStops.length-1;
-
-
-      row
-      .querySelector(
-        ".up"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          moveNavStop(
-            index,
-            -1
-          )
-      );
+row
+.querySelector(
+".up"
+)
+.onclick =
+() =>
+moveNav(
+index,
+-1
+);
 
 
-      row
-      .querySelector(
-        ".down"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          moveNavStop(
-            index,
-            1
-          )
-      );
+row
+.querySelector(
+".down"
+)
+.onclick =
+() =>
+moveNav(
+index,
+1
+);
 
 
-      row
-      .querySelector(
-        ".remove"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          removeNavStop(
-            index
-          )
-      );
+row
+.querySelector(
+".remove"
+)
+.onclick =
+() =>
+removeNav(
+index
+);
 
 
-      box.appendChild(
-        row
-      );
+box.appendChild(
+row
+);
 
-    }
-  );
+}
+);
+
 }
 
 
 
-async function moveNavStop(
-  index,
-  delta
+async function moveNav(
+index,
+direction
 ) {
 
-  const target =
-    index +
-    delta;
+const target =
+index +
+direction;
 
 
-  if (
-    target < 0 ||
-    target >=
-    state.navStops.length
-  ) {
+if (
+target < 0 ||
+target >=
+state.navStops.length
+) {
 
-    return;
-  }
+return;
 
-
-  [
-    state.navStops[index],
-    state.navStops[target]
-  ]
-  =
-  [
-    state.navStops[target],
-    state.navStops[index]
-  ];
+}
 
 
-  saveState();
+[
+state.navStops[index],
+state.navStops[target]
+]
+=
+[
+state.navStops[target],
+state.navStops[index]
+];
 
 
-  renderNavStops();
+saveState();
+
+renderNavStops();
+
+refreshMarkers();
 
 
-  refreshMapMarkers();
+await calculateRoute();
 
-
-  await calculateRoute(
-    false
-  );
 }
 
 
 
-async function removeNavStop(
-  index
+async function removeNav(
+index
 ) {
 
-  state.navStops.splice(
-    index,
-    1
-  );
+state.navStops.splice(
+index,
+1
+);
 
 
-  saveState();
+saveState();
+
+renderNavStops();
+
+refreshMarkers();
 
 
-  renderNavStops();
+if (
+state.navStops.length
+) {
+
+await calculateRoute();
+
+}
+
+else {
+
+clearRouteLine();
 
 
-  refreshMapMarkers();
+setSummary(
 
+null,
 
-  if (
-    state.navStops.length
-  ) {
+"검색 결과에서 ‘바로 길찾기’를 눌러줘."
 
-    await calculateRoute(
-      false
-    );
-  }
+);
 
-  else {
+}
 
-    clearRouteLine();
-
-
-    setRouteSummary(
-
-      null,
-
-      "검색 결과에서 ‘여기로 길찾기’를 눌러줘."
-
-    );
-  }
 }
 
 
 
-/* =====================================
-   SCHEDULE
-===================================== */
+/* ========================
+   일정 / 찜
+======================== */
 
-function addToSchedule(
-  place
+function addSchedule(
+place
 ) {
 
-  const schedule =
-    currentSchedule();
+const schedule =
+currentSchedule();
 
 
-  if (
-    schedule.some(
-      p =>
-        samePlace(
-          p,
-          place
-        )
-    )
-  ) {
+if (
+schedule.some(
+item =>
+samePlace(
+item,
+place
+)
+)
+) {
 
-    alert(
-      "이미 이 날짜 일정에 들어있어."
-    );
+alert(
+"이미 이 날짜 일정에 있어."
+);
 
-    return;
-  }
+return;
 
-
-  schedule.push({
-    ...place,
-    id:makeId()
-  });
+}
 
 
-  saveState();
+schedule.push({
+
+...place,
+
+id:
+makeId()
+
+});
 
 
-  renderEverything();
+saveState();
+
+renderAll();
 
 
-  alert(
-    `${dayLabel(state.selectedDay)} 일정에 추가했어.`
-  );
+alert(
+dayLabel(
+state.selectedDay
+)
++
+" 일정에 추가했어."
+);
+
 }
 
 
 
 function addFavorite(
-  place
+place
 ) {
 
-  if (
-    state.favorites.some(
-      p =>
-        samePlace(
-          p,
-          place
-        )
-    )
-  ) {
+if (
+state.favorites.some(
+item =>
+samePlace(
+item,
+place
+)
+)
+) {
 
-    alert(
-      "이미 찜한 장소야."
-    );
+alert(
+"이미 찜한 장소야."
+);
 
-    return;
-  }
+return;
 
-
-  state.favorites.push({
-    ...place,
-    id:makeId()
-  });
+}
 
 
-  saveState();
+state.favorites.push({
+
+...place,
+
+id:
+makeId()
+
+});
 
 
-  renderEverything();
+saveState();
+
+renderAll();
 
 
-  alert(
-    "찜에 추가했어. ❤️"
-  );
+alert(
+"찜에 추가했어. ❤️"
+);
+
 }
 
 
 
-function renderDayTabs() {
+function renderDays() {
 
-  document
-  .querySelectorAll(
-    "[data-day-tabs]"
-  )
-  .forEach(
-    box => {
-
-
-      box.innerHTML =
-        "";
+document
+.querySelectorAll(
+"[data-day-tabs]"
+)
+.forEach(
+box => {
 
 
-      [
-        [
-          "day1",
-          "1일차"
-        ],
-
-        [
-          "day2",
-          "2일차"
-        ],
-
-        [
-          "day3",
-          "3일차"
-        ]
-
-      ]
-      .forEach(
-        ([value,label]) => {
+box.innerHTML =
+"";
 
 
-          const button =
-            document.createElement(
-              "button"
-            );
+[
+["day1","1일차"],
+["day2","2일차"],
+["day3","3일차"]
+]
+.forEach(
+([value,label]) => {
 
 
-          button.className =
-
-            "day-tab" +
-
-            (
-              state.selectedDay ===
-              value
-              ?
-              " active"
-              :
-              ""
-            );
+const button =
+document.createElement(
+"button"
+);
 
 
-          button.textContent =
-            label;
+button.className =
+
+"pill"
+
++
+
+(
+state.selectedDay ===
+value
+?
+" active"
+:
+""
+);
 
 
-          button
-          .addEventListener(
-            "click",
-            () => {
-
-              state.selectedDay =
-                value;
+button.textContent =
+label;
 
 
-              saveState();
+button.onclick =
+() => {
+
+state.selectedDay =
+value;
+
+saveState();
+
+renderAll();
+
+};
 
 
-              renderEverything();
+box.appendChild(
+button
+);
 
-            }
-          );
+}
+);
 
+}
+);
 
-          box.appendChild(
-            button
-          );
-
-        }
-      );
-
-    }
-  );
 }
 
 
 
 function renderHome() {
 
-  const box =
-    document.getElementById(
-      "homeSchedule"
-    );
+const box =
+document.getElementById(
+"homeSchedule"
+);
 
 
-  const schedule =
-    currentSchedule();
+const schedule =
+currentSchedule();
 
 
-  if (
-    !schedule.length
-  ) {
+box.innerHTML =
 
-    box.innerHTML = `
+schedule.length
 
-      <div class="empty">
+?
 
-        아직 일정이 없어.
+schedule
+.map(
+(place,index) => `
 
-        <br><br>
+<div class="stop">
 
-        지도에서 장소를 검색해서
-        일정에 추가해줘.
+<div class="num">
+${index+1}
+</div>
 
-      </div>
+<div>
 
-    `;
+<div class="stopName">
+${esc(place.name)}
+</div>
 
-    return;
-  }
+<div class="stopSub">
+${esc(place.address || "")}
+</div>
 
+</div>
 
-  box.innerHTML =
+<div></div>
 
-    schedule
-    .map(
-      (place,index) => `
+</div>
 
-        <div class="stop-row">
+`
+)
+.join("")
 
-          <div class="stop-num">
+:
 
-            ${index+1}
+`
 
-          </div>
+<div class="empty">
 
+아직 일정이 없어.
 
-          <div>
+<br><br>
 
-            <div class="stop-name">
+지도에서 검색해서
+일정에 추가해줘.
 
-              ${
-                categoryInfo[
-                  place.category ||
-                  "etc"
-                ].emoji
-              }
+</div>
 
-              ${esc(place.name)}
+`;
 
-            </div>
-
-
-            <div class="stop-sub">
-
-              ${esc(place.address || "")}
-
-            </div>
-
-          </div>
-
-
-          <div></div>
-
-        </div>
-
-      `
-    )
-    .join("");
 }
 
 
 
 function renderSchedule() {
 
-  const box =
-    document.getElementById(
-      "scheduleList"
-    );
+const box =
+document.getElementById(
+"scheduleList"
+);
 
 
-  const schedule =
-    currentSchedule();
+const schedule =
+currentSchedule();
 
 
-  if (
-    !schedule.length
-  ) {
-
-    box.innerHTML = `
-
-      <div class="empty">
-
-        ${dayLabel(state.selectedDay)}
-        일정이 비어있어.
-
-      </div>
-
-    `;
-
-    return;
-  }
+box.innerHTML =
+"";
 
 
-  box.innerHTML =
-    "";
+if (
+!schedule.length
+) {
+
+box.innerHTML = `
+
+<div class="empty">
+
+${dayLabel(
+state.selectedDay
+)}
+
+일정이 비어있어.
+
+</div>
+
+`;
+
+return;
+
+}
 
 
-  schedule.forEach(
-    (place,index) => {
+
+schedule.forEach(
+(place,index) => {
 
 
-      const row =
-        document.createElement(
-          "div"
-        );
+const row =
+document.createElement(
+"div"
+);
 
 
-      row.className =
-        "stop-row";
+row.className =
+"stop";
 
 
-      row.innerHTML = `
+row.innerHTML = `
 
-        <div class="stop-num">
-
-          ${index+1}
-
-        </div>
+<div class="num">
+${index+1}
+</div>
 
 
-        <div>
+<div>
 
-          <div class="stop-name">
+<div class="stopName">
+${esc(place.name)}
+</div>
 
-            ${
-              categoryInfo[
-                place.category ||
-                "etc"
-              ].emoji
-            }
+<div class="stopSub">
+${esc(place.address || "")}
+</div>
 
-            ${esc(place.name)}
-
-          </div>
+</div>
 
 
-          <div class="stop-sub">
+<div>
 
-            ${esc(place.address || "")}
+<button class="icon up">
+↑
+</button>
 
-          </div>
+<button class="icon down">
+↓
+</button>
 
-        </div>
+<button class="icon remove">
+×
+</button>
 
+</div>
 
-        <div class="stop-actions">
-
-          <button
-            class="icon-btn up"
-          >
-            ↑
-          </button>
-
-
-          <button
-            class="icon-btn down"
-          >
-            ↓
-          </button>
+`;
 
 
-          <button
-            class="icon-btn remove"
-          >
-            ×
-          </button>
-
-        </div>
-
-      `;
+row
+.querySelector(
+".up"
+)
+.disabled =
+index === 0;
 
 
-      row
-      .querySelector(
-        ".up"
-      )
-      .disabled =
-        index === 0;
+row
+.querySelector(
+".down"
+)
+.disabled =
+
+index ===
+schedule.length-1;
 
 
-      row
-      .querySelector(
-        ".down"
-      )
-      .disabled =
-
-        index ===
-        schedule.length-1;
-
-
-      row
-      .querySelector(
-        ".up"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          moveSchedule(
-            index,
-            -1
-          )
-      );
+row
+.querySelector(
+".up"
+)
+.onclick =
+() =>
+moveSchedule(
+index,
+-1
+);
 
 
-      row
-      .querySelector(
-        ".down"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          moveSchedule(
-            index,
-            1
-          )
-      );
+row
+.querySelector(
+".down"
+)
+.onclick =
+() =>
+moveSchedule(
+index,
+1
+);
 
 
-      row
-      .querySelector(
-        ".remove"
-      )
-      .addEventListener(
-        "click",
-        () => {
+row
+.querySelector(
+".remove"
+)
+.onclick =
+() => {
 
-          schedule.splice(
-            index,
-            1
-          );
+schedule.splice(
+index,
+1
+);
 
+saveState();
 
-          saveState();
+renderAll();
 
-
-          renderEverything();
-
-        }
-      );
+};
 
 
-      box.appendChild(
-        row
-      );
+box.appendChild(
+row
+);
 
-    }
-  );
+}
+);
+
 }
 
 
 
 function moveSchedule(
-  index,
-  delta
+index,
+direction
 ) {
 
-  const schedule =
-    currentSchedule();
+const schedule =
+currentSchedule();
 
 
-  const target =
-    index +
-    delta;
+const target =
+index +
+direction;
 
 
-  if (
-    target < 0 ||
-    target >=
-    schedule.length
-  ) {
+if (
+target < 0 ||
+target >=
+schedule.length
+) {
 
-    return;
-  }
+return;
 
-
-  [
-    schedule[index],
-    schedule[target]
-  ]
-  =
-  [
-    schedule[target],
-    schedule[index]
-  ];
-
-
-  saveState();
-
-
-  renderEverything();
 }
 
 
+[
+schedule[index],
+schedule[target]
+]
+=
+[
+schedule[target],
+schedule[index]
+];
 
-/* =====================================
-   FAVORITES
-===================================== */
+
+saveState();
+
+renderAll();
+
+}
+
+
 
 function renderFavorites() {
 
-  const box =
-    document.getElementById(
-      "favoriteList"
-    );
+const box =
+document.getElementById(
+"favoriteList"
+);
 
 
-  if (
-    !state.favorites.length
-  ) {
+box.innerHTML =
+"";
 
-    box.innerHTML = `
 
-      <div class="empty">
+if (
+!state.favorites.length
+) {
 
-        아직 찜한 장소가 없어. ❤️
+box.innerHTML = `
 
-      </div>
+<div class="empty">
+아직 찜한 장소가 없어. ❤️
+</div>
 
-    `;
+`;
 
-    return;
-  }
+return;
 
-
-  box.innerHTML =
-    "";
-
-
-  state.favorites
-  .forEach(
-    (place,index) => {
-
-
-      const info =
-        categoryInfo[
-          place.category ||
-          "etc"
-        ];
-
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "favorite-card";
-
-
-      card.innerHTML = `
-
-        <div class="favorite-name">
-
-          ${info.emoji}
-
-          ${esc(place.name)}
-
-        </div>
-
-
-        <span class="tag">
-
-          ${info.label}
-
-        </span>
-
-
-        <div class="result-actions">
-
-
-          <button
-            class="small-btn primary route"
-          >
-            길찾기
-          </button>
-
-
-          <button
-            class="small-btn schedule"
-          >
-            ${dayLabel(state.selectedDay)}
-            추가
-          </button>
-
-
-          <button
-            class="small-btn preview"
-          >
-            지도
-          </button>
-
-
-          <button
-            class="small-btn danger remove"
-          >
-            삭제
-          </button>
-
-
-        </div>
-
-      `;
-
-
-      card
-      .querySelector(
-        ".route"
-      )
-      .addEventListener(
-        "click",
-        async () => {
-
-
-          state.navStops =
-            [place];
-
-
-          saveState();
-
-
-          changeView(
-            "map"
-          );
-
-
-          renderNavStops();
-
-
-          refreshMapMarkers();
-
-
-          await calculateRoute(
-            false
-          );
-
-        }
-      );
-
-
-      card
-      .querySelector(
-        ".schedule"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          addToSchedule(
-            place
-          )
-      );
-
-
-      card
-      .querySelector(
-        ".preview"
-      )
-      .addEventListener(
-        "click",
-        () =>
-          previewPlace(
-            place
-          )
-      );
-
-
-      card
-      .querySelector(
-        ".remove"
-      )
-      .addEventListener(
-        "click",
-        () => {
-
-          state.favorites.splice(
-            index,
-            1
-          );
-
-
-          saveState();
-
-
-          renderEverything();
-
-        }
-      );
-
-
-      box.appendChild(
-        card
-      );
-
-    }
-  );
 }
 
 
 
-/* =====================================
-   MODE BUTTON
-===================================== */
+state.favorites
+.forEach(
+(place,index) => {
 
-function renderModeButtons() {
 
-  document
-  .querySelectorAll(
-    "[data-mode]"
-  )
-  .forEach(
-    button => {
+const info =
+categoryInfo[
+place.category ||
+"etc"
+];
 
-      button.classList.toggle(
 
-        "active",
+const div =
+document.createElement(
+"div"
+);
 
-        button.dataset.mode ===
-        state.routeMode
 
-      );
+div.className =
+"favorite";
 
-    }
-  );
+
+div.innerHTML = `
+
+<div class="resultName">
+
+${info.emoji}
+
+${esc(place.name)}
+
+</div>
+
+
+<span class="tag">
+
+${info.label}
+
+</span>
+
+
+<div class="actions">
+
+<button class="btn primary go">
+길찾기
+</button>
+
+<button class="btn sch">
+${dayLabel(state.selectedDay)} 추가
+</button>
+
+<button class="btn map">
+지도
+</button>
+
+<button class="btn danger del">
+삭제
+</button>
+
+</div>
+
+`;
+
+
+div
+.querySelector(
+".go"
+)
+.onclick =
+async () => {
+
+
+state.navStops =
+[place];
+
+
+saveState();
+
+
+changeView(
+"map"
+);
+
+
+renderNavStops();
+
+refreshMarkers();
+
+
+await calculateRoute();
+
+};
+
+
+
+div
+.querySelector(
+".sch"
+)
+.onclick =
+() =>
+addSchedule(
+place
+);
+
+
+
+div
+.querySelector(
+".map"
+)
+.onclick =
+() =>
+previewPlace(
+place
+);
+
+
+
+div
+.querySelector(
+".del"
+)
+.onclick =
+() => {
+
+
+state.favorites.splice(
+index,
+1
+);
+
+
+saveState();
+
+renderAll();
+
+};
+
+
+box.appendChild(
+div
+);
+
+}
+);
+
 }
 
 
 
-/* =====================================
-   RENDER ALL
-===================================== */
+function renderModes() {
 
-function renderEverything() {
-
-  renderDayTabs();
-
-  renderHome();
-
-  renderSchedule();
-
-  renderFavorites();
-
-  renderNavStops();
-
-  renderModeButtons();
+document
+.querySelectorAll(
+"[data-mode]"
+)
+.forEach(
+button => {
 
 
-  if (mapReady) {
+button.classList.toggle(
 
-    refreshMapMarkers();
-  }
+"active",
+
+button.dataset.mode ===
+state.routeMode
+
+);
+
+}
+);
+
 }
 
 
 
-/* =====================================
-   VIEW
-===================================== */
+function renderAll() {
 
-function changeView(view) {
+renderDays();
 
-  document
-  .querySelectorAll(
-    ".view"
-  )
-  .forEach(
-    item =>
-      item.classList
-      .remove(
-        "active"
-      )
-  );
+renderHome();
+
+renderSchedule();
+
+renderFavorites();
+
+renderModes();
+
+renderNavStops();
 
 
-  document
-  .getElementById(
-    view +
-    "View"
-  )
-  .classList
-  .add(
-    "active"
-  );
+if (
+mapReady
+) {
 
+refreshMarkers();
 
-  document
-  .querySelectorAll(
-    ".nav-btn"
-  )
-  .forEach(
-    button => {
+}
 
-      button.classList.toggle(
-
-        "active",
-
-        button.dataset.view ===
-        view
-
-      );
-
-    }
-  );
-
-
-  if (
-    view ===
-    "map"
-  ) {
-
-    setTimeout(
-      () => {
-
-        map.resize();
-
-
-        refreshMapMarkers();
-
-
-        if (
-          lastRouteGeoJSON
-        ) {
-
-          drawRoute(
-            lastRouteGeoJSON
-          );
-        }
-
-      },
-      120
-    );
-  }
-
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
 }
 
 
 
-function fitCurrentRoute() {
+/* ========================
+   화면
+======================== */
 
-  if (
-    lastRouteGeoJSON
-  ) {
+function changeView(
+view
+) {
 
-    drawRoute(
-      lastRouteGeoJSON
-    );
-
-    return;
-  }
-
-
-  const points = [
-    ...state.navStops
-  ];
-
-
-  if (
-    currentLocation
-  ) {
-
-    points.unshift({
-      lng:currentLocation.lng,
-      lat:currentLocation.lat
-    });
-  }
+document
+.querySelectorAll(
+".view"
+)
+.forEach(
+item =>
+item.classList.remove(
+"active"
+)
+);
 
 
-  if (
-    !points.length
-  ) {
-
-    return;
-  }
-
-
-  const bounds =
-    new maplibregl
-    .LngLatBounds();
+document
+.getElementById(
+view +
+"View"
+)
+.classList.add(
+"active"
+);
 
 
-  points.forEach(
-    place =>
-      bounds.extend(
-        [
-          place.lng,
-          place.lat
-        ]
-      )
-  );
+document
+.querySelectorAll(
+".bottom button"
+)
+.forEach(
+button => {
 
 
-  if (
-    points.length === 1
-  ) {
+button.classList.toggle(
 
-    map.flyTo({
+"active",
 
-      center:[
-        points[0].lng,
-        points[0].lat
-      ],
+button.dataset.view ===
+view
 
-      zoom:
-        15.5
+);
 
-    });
+}
+);
 
-  }
 
-  else {
+if (
+view === "map"
+) {
 
-    map.fitBounds(
-      bounds,
-      {
-        padding:60,
-        maxZoom:15
-      }
-    );
-  }
+setTimeout(
+() => {
+
+map.resize();
+
+refreshMarkers();
+
+
+if (
+lastRoute
+) {
+
+drawRoute(
+lastRoute
+);
+
+}
+
+},
+100
+);
+
+}
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
 }
 
 
 
-/* =====================================
-   BUTTON EVENTS
-===================================== */
+function fitRoute() {
+
+if (
+lastRoute
+) {
+
+drawRoute(
+lastRoute
+);
+
+return;
+
+}
+
+
+const points =
+[
+...state.navStops
+];
+
+
+if (
+state.useManualStart &&
+state.manualStart
+) {
+
+points.unshift(
+state.manualStart
+);
+
+}
+
+else if (
+currentLocation
+) {
+
+points.unshift(
+currentLocation
+);
+
+}
+
+
+if (
+!points.length
+) {
+return;
+}
+
+
+const bounds =
+new maplibregl
+.LngLatBounds();
+
+
+points.forEach(
+place =>
+bounds.extend([
+place.lng,
+place.lat
+])
+);
+
+
+if (
+points.length === 1
+) {
+
+map.flyTo({
+
+center:[
+points[0].lng,
+points[0].lat
+],
+
+zoom:
+15.5
+
+});
+
+}
+
+else {
+
+map.fitBounds(
+
+bounds,
+
+{
+padding:60,
+maxZoom:15
+}
+
+);
+
+}
+
+}
+
+
+
+function setPickMode(
+mode
+) {
+
+pickMode =
+mode;
+
 
 document
 .getElementById(
-  "searchBtn"
+"pickStartBtn"
+)
+.classList.toggle(
+
+"active",
+
+mode === "start"
+
+);
+
+
+document
+.getElementById(
+"pickDestBtn"
+)
+.classList.toggle(
+
+"active",
+
+mode === "dest"
+
+);
+
+
+if (
+mode
+) {
+
+showStatus(
+
+mode === "start"
+
+?
+
+"지도에서 출발할 위치를 한 번 눌러줘."
+
+:
+
+"지도에서 목적지로 쓸 위치를 한 번 눌러줘."
+
+);
+
+}
+
+}
+
+
+
+/* ========================
+   이벤트
+======================== */
+
+document
+.getElementById(
+"searchBtn"
+)
+.onclick =
+fullSearch;
+
+
+
+document
+.getElementById(
+"searchInput"
 )
 .addEventListener(
-  "click",
-  searchPlaces
+"keydown",
+event => {
+
+
+if (
+event.key ===
+"Enter"
+) {
+
+clearTimeout(
+searchTimer
+);
+
+fullSearch();
+
+}
+
+}
 );
 
 
 
 document
 .getElementById(
-  "searchInput"
+"searchInput"
 )
 .addEventListener(
-  "keydown",
-  event => {
+"input",
+() => {
 
-    if (
-      event.key ===
-      "Enter"
-    ) {
 
-      searchPlaces();
-    }
+clearTimeout(
+searchTimer
+);
 
-  }
+
+searchTimer =
+setTimeout(
+autocomplete,
+650
+);
+
+}
 );
 
 
 
 document
 .getElementById(
-  "myLocationBtn"
+"currentBtn"
 )
-.addEventListener(
-  "click",
-  async () => {
-
-    try {
-
-      const location =
-        await getCurrentLocation(
-          true
-        );
+.onclick =
+async () => {
 
 
-      setMyLocationMarker(
-        location,
-        true
-      );
+try {
 
-    }
+state.useManualStart =
+false;
 
-    catch (error) {
 
-      alert(
-        error.message
-      );
-    }
+saveState();
 
-  }
+
+const location =
+await getCurrentLocation(
+true
+);
+
+
+setCurrentMarker(
+true
+);
+
+
+setStartMarker();
+
+
+showStatus(
+"현재 위치를 출발지로 사용할게."
+);
+
+
+if (
+state.navStops.length
+) {
+
+await calculateRoute();
+
+}
+
+}
+
+catch(error) {
+
+alert(
+error.message
+);
+
+}
+
+};
+
+
+
+document
+.getElementById(
+"pickStartBtn"
+)
+.onclick =
+() =>
+setPickMode(
+
+pickMode === "start"
+
+?
+
+null
+
+:
+
+"start"
+
 );
 
 
 
 document
 .getElementById(
-  "refreshRouteBtn"
+"pickDestBtn"
 )
-.addEventListener(
-  "click",
-  () =>
-    calculateRoute(
-      true
-    )
+.onclick =
+() =>
+setPickMode(
+
+pickMode === "dest"
+
+?
+
+null
+
+:
+
+"dest"
+
 );
 
 
 
 document
 .getElementById(
-  "fitRouteBtn"
+"fitBtn"
 )
-.addEventListener(
-  "click",
-  fitCurrentRoute
-);
+.onclick =
+fitRoute;
 
 
 
 document
 .getElementById(
-  "clearNavBtn"
+"refreshBtn"
 )
-.addEventListener(
-  "click",
-  () => {
-
-    state.navStops =
-      [];
-
-
-    saveState();
-
-
-    clearRouteLine();
-
-
-    renderNavStops();
-
-
-    refreshMapMarkers();
-
-
-    setRouteSummary(
-
-      null,
-
-      "검색 결과에서 ‘여기로 길찾기’를 눌러줘."
-
-    );
-
-  }
-);
+.onclick =
+() =>
+calculateRoute();
 
 
 
 document
 .getElementById(
-  "addNavToScheduleBtn"
+"clearRouteBtn"
 )
-.addEventListener(
-  "click",
-  () => {
+.onclick =
+() => {
 
 
-    if (
-      !state.navStops.length
-    ) {
-
-      alert(
-        "현재 길찾기 경로가 없어."
-      );
-
-      return;
-    }
+state.navStops =
+[];
 
 
-    let added =
-      0;
+saveState();
 
 
-    state.navStops
-    .forEach(
-      place => {
+clearRouteLine();
 
-        if (
-          !currentSchedule()
-          .some(
-            existing =>
-              samePlace(
-                existing,
-                place
-              )
-          )
-        ) {
+renderNavStops();
 
-          currentSchedule()
-          .push({
-            ...place,
-            id:makeId()
-          });
+refreshMarkers();
 
 
-          added++;
-        }
+setSummary(
 
-      }
-    );
+null,
 
+"검색 결과에서 ‘바로 길찾기’를 눌러줘."
 
-    saveState();
-
-
-    renderEverything();
-
-
-    alert(
-      `${dayLabel(state.selectedDay)} 일정에 ${added}곳 추가했어.`
-    );
-
-  }
 );
+
+};
 
 
 
 document
 .getElementById(
-  "scheduleRouteBtn"
+"saveRouteBtn"
 )
-.addEventListener(
-  "click",
-  async () => {
+.onclick =
+() => {
 
 
-    if (
-      !currentSchedule().length
-    ) {
+if (
+!state.navStops.length
+) {
 
-      alert(
-        "일정을 먼저 추가해줘."
-      );
-
-      return;
-    }
-
-
-    state.navStops =
-      clone(
-        currentSchedule()
-      );
-
-
-    saveState();
-
-
-    changeView(
-      "map"
-    );
-
-
-    renderNavStops();
-
-
-    refreshMapMarkers();
-
-
-    await calculateRoute(
-      false
-    );
-
-  }
+alert(
+"현재 경로가 없어."
 );
+
+return;
+
+}
+
+
+let count =
+0;
+
+
+state.navStops
+.forEach(
+place => {
+
+
+if (
+!currentSchedule()
+.some(
+item =>
+samePlace(
+item,
+place
+)
+)
+) {
+
+currentSchedule()
+.push({
+
+...place,
+
+id:
+makeId()
+
+});
+
+
+count++;
+
+}
+
+}
+);
+
+
+saveState();
+
+renderAll();
+
+
+alert(
+
+`${dayLabel(
+state.selectedDay
+)} 일정에 ${count}곳 추가했어.`
+
+);
+
+};
 
 
 
 document
 .getElementById(
-  "scheduleMapBtn"
+"scheduleRouteBtn"
 )
-.addEventListener(
-  "click",
-  () => {
-
-    changeView(
-      "map"
-    );
+.onclick =
+async () => {
 
 
-    setTimeout(
-      fitCurrentRoute,
-      150
-    );
+if (
+!currentSchedule()
+.length
+) {
 
-  }
+alert(
+"일정을 먼저 추가해줘."
 );
+
+return;
+
+}
+
+
+state.navStops =
+clone(
+currentSchedule()
+);
+
+
+saveState();
+
+
+changeView(
+"map"
+);
+
+
+renderNavStops();
+
+refreshMarkers();
+
+
+await calculateRoute();
+
+};
 
 
 
 document
 .getElementById(
-  "homeLocationBtn"
+"scheduleMapBtn"
 )
-.addEventListener(
-  "click",
-  async () => {
+.onclick =
+() => {
 
 
-    changeView(
-      "map"
-    );
+changeView(
+"map"
+);
 
 
-    setTimeout(
-      async () => {
+setTimeout(
+fitRoute,
+150
+);
 
-        try {
-
-          const location =
-            await getCurrentLocation(
-              true
-            );
+};
 
 
-          setMyLocationMarker(
-            location,
-            true
-          );
 
-        }
+document
+.getElementById(
+"homeLocation"
+)
+.onclick =
+async () => {
 
-        catch (error) {
 
-          alert(
-            error.message
-          );
-        }
+changeView(
+"map"
+);
 
-      },
-      200
-    );
 
-  }
+setTimeout(
+
+async () => {
+
+try {
+
+state.useManualStart =
+false;
+
+
+saveState();
+
+
+const location =
+await getCurrentLocation(
+true
+);
+
+
+setCurrentMarker(
+true
+);
+
+}
+
+catch(error) {
+
+alert(
+error.message
+);
+
+}
+
+},
+
+180
+
+);
+
+};
+
+
+
+document
+.querySelectorAll(
+"[data-mode]"
+)
+.forEach(
+button => {
+
+
+button.onclick =
+async () => {
+
+
+state.routeMode =
+button.dataset.mode;
+
+
+saveState();
+
+renderModes();
+
+
+if (
+state.navStops.length
+) {
+
+await calculateRoute();
+
+}
+
+};
+
+}
 );
 
 
 
 document
 .querySelectorAll(
-  "[data-mode]"
+".bottom button"
 )
 .forEach(
-  button => {
-
-    button.addEventListener(
-      "click",
-      async () => {
+button => {
 
 
-        state.routeMode =
-          button.dataset.mode;
+button.onclick =
+() =>
+changeView(
+button.dataset.view
+);
 
-
-        saveState();
-
-
-        renderModeButtons();
-
-
-        if (
-          state.navStops.length
-        ) {
-
-          await calculateRoute(
-            false
-          );
-        }
-
-      }
-    );
-
-  }
+}
 );
 
 
 
 document
 .querySelectorAll(
-  ".nav-btn"
+"[data-go]"
 )
 .forEach(
-  button => {
+button => {
 
-    button.addEventListener(
-      "click",
-      () => {
 
-        changeView(
-          button.dataset.view
-        );
+button.onclick =
+() =>
+changeView(
+button.dataset.go
+);
 
-      }
-    );
-
-  }
+}
 );
 
 
 
-document
-.querySelectorAll(
-  "[data-go]"
-)
-.forEach(
-  button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        changeView(
-          button.dataset.go
-        );
-
-      }
-    );
-
-  }
-);
-
-
-
-/* =====================================
-   START
-===================================== */
+/* 시작 */
 
 initMap();
 
-renderEverything();
+renderAll();
 
 
 })();
