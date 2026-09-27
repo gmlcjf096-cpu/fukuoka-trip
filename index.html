@@ -1,1655 +1,1819 @@
 <!doctype html>
-
 <html lang="ko">
-
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>후쿠오카 여행</title>
+
+  <script src="config.js"></script>
+
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.umd.min.js"></script>
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.css"
+  />
+
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --card: #fff;
+      --text: #16181c;
+      --muted: #747982;
+      --line: #e5e7eb;
+      --blue: #2563eb;
+      --dark: #171717;
+      --danger: #dc2626;
+      --shadow: 0 7px 24px rgba(0,0,0,.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans KR",
+        sans-serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      max-width: 920px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 78px;
+    }
+
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      padding: 13px 14px;
+
+      background:
+        rgba(255,255,255,.96);
+
+      backdrop-filter:
+        blur(12px);
+
+      border-bottom:
+        1px solid var(--line);
+    }
+
+    .top h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .top p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .page {
+      padding: 12px;
+    }
+
+    .card {
+      background: var(--card);
 
-<meta charset="utf-8">
+      border:
+        1px solid var(--line);
 
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1,viewport-fit=cover"
->
+      border-radius:
+        17px;
 
-<title>
-  후쿠오카 여행
-</title>
+      padding:
+        14px;
 
+      margin-bottom:
+        10px;
 
-<link
-  href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css"
-  rel="stylesheet"
->
+      box-shadow:
+        0 2px 10px rgba(0,0,0,.02);
+    }
 
+    .title {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
 
-<script
-  src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js">
-</script>
+    .muted {
+      font-size: 12px;
+      color: var(--muted);
+    }
 
+    .hero {
+      padding: 22px;
 
-<style>
+      border-radius:
+        22px;
 
-:root {
+      background:
+        linear-gradient(
+          135deg,
+          #e8f2ff,
+          #fff1e8
+        );
+    }
 
-  --bg:#f5f6f8;
+    .hero small {
+      font-weight: 900;
+      color: #64748b;
+    }
 
-  --card:#fff;
+    .hero h2 {
+      font-size: 28px;
+      line-height: 1.15;
+      margin: 7px 0;
+    }
 
-  --text:#16181c;
+    .hero p {
+      margin: 0;
+      color: #5e636b;
+      font-size: 13px;
+    }
 
-  --muted:#737982;
+    .quick {
+      display: grid;
 
-  --line:#e5e7eb;
+      grid-template-columns:
+        1fr 1fr;
 
-  --blue:#2563eb;
+      gap: 8px;
+      margin-top: 15px;
+    }
 
-  --red:#dc2626;
+    .quick button {
+      min-height: 64px;
 
-}
+      border: 0;
 
+      border-radius:
+        15px;
 
-* {
-  box-sizing:border-box;
-}
+      background: #fff;
 
+      padding: 11px;
 
-html,
-body {
+      text-align: left;
 
-  margin:0;
+      font-weight: 850;
 
-  min-height:100%;
+      box-shadow:
+        0 3px 12px
+        rgba(0,0,0,.05);
+    }
 
-  background:
-    var(--bg);
+    .quick button span {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 3px;
+    }
 
-  color:
-    var(--text);
+    .stats {
+      display: grid;
 
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    "Noto Sans KR",
-    sans-serif;
-}
+      grid-template-columns:
+        repeat(3,1fr);
 
+      gap: 8px;
+    }
 
-button,
-input,
-select {
-  font:inherit;
-}
+    .stat {
+      padding: 12px;
 
+      border-radius:
+        14px;
 
-button {
-  cursor:pointer;
-}
+      background:
+        #f8fafc;
 
+      text-align:
+        center;
+    }
 
-.app {
+    .stat b {
+      display: block;
+      font-size: 19px;
+    }
 
-  min-height:100vh;
+    .stat span {
+      font-size: 11px;
+      color: var(--muted);
+    }
 
-  padding-bottom:72px;
-}
+    .days,
+    .chips,
+    .modes {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+    }
 
+    .pill {
+      min-height: 38px;
 
-.top {
+      border:
+        1px solid var(--line);
 
-  position:sticky;
+      border-radius:
+        999px;
 
-  top:0;
+      background:
+        #fff;
 
-  z-index:30;
+      padding:
+        0 13px;
 
-  background:
-    rgba(255,255,255,.96);
+      font-size:
+        13px;
 
-  backdrop-filter:
-    blur(10px);
+      font-weight:
+        850;
 
-  border-bottom:
-    1px solid var(--line);
+      white-space:
+        nowrap;
+    }
 
-  padding:
-    13px 14px;
-}
+    .pill.active {
+      background:
+        var(--dark);
 
+      border-color:
+        var(--dark);
 
-.top h1 {
+      color:
+        #fff;
+    }
 
-  margin:0;
+    .btn {
+      min-height: 38px;
 
-  font-size:20px;
+      border:
+        1px solid #d8dce2;
 
-}
+      border-radius:
+        11px;
 
+      background:
+        #fff;
 
-.top p {
+      padding:
+        7px 11px;
 
-  margin:
-    4px 0 0;
+      font-size:
+        12px;
 
-  color:
-    var(--muted);
+      font-weight:
+        850;
+    }
 
-  font-size:12px;
+    .btn.primary {
+      background:
+        var(--blue);
 
-}
+      border-color:
+        var(--blue);
 
+      color:
+        #fff;
+    }
 
-.view {
-  display:none;
-}
+    .btn.dark {
+      background:
+        var(--dark);
 
+      border-color:
+        var(--dark);
 
-.view.active {
-  display:block;
-}
+      color:
+        #fff;
+    }
 
+    .btn.danger {
+      color:
+        var(--danger);
+    }
 
-.page {
-  padding:12px;
-}
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
 
+    .searchbar {
+      display: grid;
 
-.card {
+      grid-template-columns:
+        1fr auto;
 
-  background:#fff;
+      gap:
+        8px;
+    }
 
-  border:
-    1px solid var(--line);
+    .searchbar input {
+      height:
+        47px;
 
-  border-radius:
-    16px;
+      border:
+        1px solid #d5d9df;
 
-  padding:
-    14px;
+      border-radius:
+        13px;
 
-  margin-bottom:
-    10px;
+      padding:
+        0 13px;
 
-}
+      font-size:
+        16px;
 
+      outline:
+        none;
+    }
 
-.title {
+    .searchbar input:focus {
+      border-color:
+        #9aa0a8;
 
-  font-size:16px;
+      box-shadow:
+        0 0 0 3px
+        rgba(0,0,0,.04);
+    }
 
-  font-weight:900;
+    .searchHelp {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
 
-  margin-bottom:10px;
+    .notice {
+      margin-top:
+        8px;
 
-}
+      padding:
+        9px 11px;
 
+      border-radius:
+        11px;
 
-.muted {
+      background:
+        #eef5ff;
 
-  color:
-    var(--muted);
+      color:
+        #315d92;
 
-  font-size:12px;
+      font-size:
+        12px;
+    }
 
-}
+    .place {
+      padding:
+        12px 0;
 
+      border-bottom:
+        1px solid var(--line);
+    }
 
-.hero {
+    .place:last-child {
+      border-bottom:
+        0;
+    }
 
-  padding:20px;
+    .placeHead {
+      display:
+        flex;
 
-  border-radius:20px;
+      gap:
+        9px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #e9f2ff,
-      #fff1e8
-    );
+      align-items:
+        flex-start;
+    }
 
-}
+    .emoji {
+      width:
+        36px;
 
+      height:
+        36px;
 
-.hero small {
+      display:
+        grid;
 
-  font-weight:800;
+      place-items:
+        center;
 
-  color:#64748b;
+      border-radius:
+        11px;
 
-}
+      background:
+        #f3f4f6;
 
+      font-size:
+        19px;
+    }
 
-.hero h2 {
+    .placeBody {
+      flex: 1;
+      min-width: 0;
+    }
 
-  font-size:26px;
+    .placeName {
+      font-size:
+        14px;
 
-  line-height:1.2;
+      font-weight:
+        900;
+    }
 
-  margin:
-    6px 0;
+    .placeSub {
+      margin-top:
+        3px;
 
-}
+      font-size:
+        11px;
 
+      line-height:
+        1.4;
 
-.hero p {
+      color:
+        var(--muted);
+    }
 
-  margin:0;
+    .tag {
+      display:
+        inline-flex;
 
-  color:#62666d;
+      margin-top:
+        5px;
 
-  font-size:13px;
+      padding:
+        4px 8px;
 
-}
+      border-radius:
+        999px;
 
+      background:
+        #f1f3f5;
 
-.quick {
+      font-size:
+        10px;
 
-  display:grid;
+      font-weight:
+        800;
 
-  grid-template-columns:
-    1fr 1fr;
+      color:
+        #555;
+    }
 
-  gap:8px;
+    .pinMissing {
+      margin-left:
+        6px;
 
-  margin-top:14px;
+      color:
+        #b45309;
+    }
 
-}
+    .empty {
+      padding:
+        24px 12px;
 
+      border:
+        1px dashed #cfd4db;
 
-.quick button {
+      border-radius:
+        14px;
 
-  min-height:62px;
+      text-align:
+        center;
 
-  border:0;
+      color:
+        var(--muted);
 
-  border-radius:14px;
+      font-size:
+        13px;
+    }
 
-  background:#fff;
+    .mapWrap {
+      height:
+        62vh;
 
-  text-align:left;
+      min-height:
+        450px;
 
-  padding:11px;
+      position:
+        relative;
 
-  box-shadow:
-    0 3px 12px
-    rgba(0,0,0,.05);
+      background:
+        #dbe4ed;
+    }
 
-  font-weight:850;
+    .map {
+      position:
+        absolute;
 
-}
+      inset:
+        0;
+    }
 
+    .mapTools {
+      position:
+        absolute;
 
-.quick span {
+      right:
+        10px;
 
-  display:block;
+      top:
+        10px;
 
-  font-size:21px;
+      z-index:
+        5;
 
-  margin-bottom:3px;
+      display:
+        flex;
 
-}
+      flex-direction:
+        column;
 
+      gap:
+        7px;
+    }
 
-.days,
-.modes {
+    .mapTools button {
+      min-height:
+        42px;
 
-  display:flex;
+      border:
+        1px solid #d8dce2;
 
-  gap:7px;
+      border-radius:
+        12px;
 
-  overflow-x:auto;
+      background:
+        rgba(255,255,255,.96);
 
-}
+      padding:
+        0 10px;
 
+      font-size:
+        12px;
 
-.pill {
+      font-weight:
+        900;
 
-  min-height:38px;
+      box-shadow:
+        var(--shadow);
+    }
 
-  border:
-    1px solid var(--line);
+    .mapTools button.active {
+      background:
+        #171717;
 
-  border-radius:999px;
+      color:
+        #fff;
+    }
 
-  background:#fff;
+    .mapLegend {
+      position:
+        absolute;
 
-  padding:
-    0 13px;
+      left:
+        10px;
 
-  font-size:13px;
+      bottom:
+        10px;
 
-  font-weight:800;
+      z-index:
+        5;
 
-  white-space:nowrap;
+      background:
+        rgba(255,255,255,.95);
 
-}
+      padding:
+        8px 10px;
 
+      border-radius:
+        12px;
 
-.pill.active {
+      font-size:
+        10px;
 
-  background:#171717;
+      box-shadow:
+        var(--shadow);
+    }
 
-  color:#fff;
+    .marker {
+      width:
+        34px;
 
-  border-color:#171717;
+      height:
+        34px;
 
-}
+      border-radius:
+        18px 18px 18px 5px;
 
+      transform:
+        rotate(-45deg);
 
-/* 검색 */
+      border:
+        3px solid #fff;
 
-.searchBox {
+      display:
+        grid;
 
-  background:#fff;
+      place-items:
+        center;
 
-  padding:
-    10px 12px;
+      box-shadow:
+        0 3px 10px
+        rgba(0,0,0,.25);
+    }
 
-  border-bottom:
-    1px solid var(--line);
+    .marker span {
+      transform:
+        rotate(45deg);
 
-  position:relative;
+      font-size:
+        15px;
+    }
 
-  z-index:12;
+    .currentMarker {
+      width:
+        24px;
 
-}
+      height:
+        24px;
 
+      border-radius:
+        50%;
 
-.searchRow {
+      background:
+        #3478f6;
 
-  display:grid;
+      border:
+        4px solid #fff;
 
-  grid-template-columns:
-    1fr auto;
+      box-shadow:
+        0 0 0 4px
+        rgba(52,120,246,.2),
+        0 3px 10px
+        rgba(0,0,0,.25);
+    }
 
-  gap:7px;
+    .scheduleItem {
+      display:
+        grid;
 
-}
+      grid-template-columns:
+        36px minmax(0,1fr) auto;
 
+      gap:
+        8px;
 
-.searchRow input {
+      align-items:
+        center;
 
-  height:46px;
+      padding:
+        9px;
 
-  width:100%;
+      border:
+        1px solid var(--line);
 
-  border:
-    1px solid #d5d9df;
+      border-radius:
+        13px;
 
-  border-radius:13px;
+      margin-bottom:
+        7px;
 
-  padding:
-    0 13px;
+      background:
+        #fff;
+    }
 
-  font-size:16px;
+    .num {
+      width:
+        31px;
 
-  outline:none;
+      height:
+        31px;
 
-}
+      border-radius:
+        50%;
 
+      display:
+        grid;
 
-.searchRow input:focus {
+      place-items:
+        center;
 
-  border-color:#8d929a;
+      background:
+        #171717;
 
-  box-shadow:
-    0 0 0 3px
-    rgba(0,0,0,.04);
+      color:
+        #fff;
 
-}
+      font-size:
+        12px;
 
+      font-weight:
+        900;
+    }
 
-.searchBtn {
+    .scheduleName {
+      font-size:
+        13px;
 
-  height:46px;
+      font-weight:
+        900;
 
-  border:0;
+      white-space:
+        nowrap;
 
-  border-radius:13px;
+      overflow:
+        hidden;
 
-  background:#171717;
+      text-overflow:
+        ellipsis;
+    }
 
-  color:#fff;
+    .scheduleSub {
+      font-size:
+        11px;
 
-  padding:
-    0 17px;
+      color:
+        var(--muted);
 
-  font-weight:900;
+      margin-top:
+        2px;
 
-}
+      white-space:
+        nowrap;
 
+      overflow:
+        hidden;
 
-.searchTools {
+      text-overflow:
+        ellipsis;
+    }
 
-  display:flex;
+    .iconBtn {
+      width:
+        31px;
 
-  gap:7px;
+      height:
+        31px;
 
-  overflow-x:auto;
+      border:
+        1px solid #dcdfe4;
 
-  margin-top:8px;
+      border-radius:
+        9px;
 
-}
+      background:
+        #fff;
 
+      font-weight:
+        900;
+    }
 
-.searchTools select {
+    .routeBox {
+      padding:
+        12px;
 
-  height:38px;
+      border-radius:
+        14px;
 
-  border:
-    1px solid #d9dde2;
+      background:
+        #f8fafc;
 
-  border-radius:11px;
+      margin-top:
+        10px;
+    }
 
-  background:#fff;
+    .routeBox b {
+      font-size:
+        13px;
+    }
 
-  padding:
-    0 10px;
+    .routeButtons {
+      display:
+        flex;
 
-  font-weight:750;
+      gap:
+        7px;
 
-}
+      flex-wrap:
+        wrap;
 
+      margin-top:
+        8px;
+    }
 
-.hint {
+    .bottom {
+      position:
+        fixed;
 
-  margin-top:7px;
+      left:
+        50%;
 
-  color:
-    var(--muted);
+      transform:
+        translateX(-50%);
 
-  font-size:11px;
+      bottom:
+        0;
 
-}
+      z-index:
+        50;
 
+      width:
+        min(920px,100%);
 
-/* 검색결과 */
+      height:
+        67px;
 
-.results {
+      padding-bottom:
+        env(safe-area-inset-bottom);
 
-  display:none;
+      display:
+        grid;
 
-  background:#fff;
+      grid-template-columns:
+        repeat(4,1fr);
 
-  border-bottom:
-    1px solid var(--line);
+      background:
+        rgba(255,255,255,.97);
 
-  max-height:340px;
+      backdrop-filter:
+        blur(14px);
 
-  overflow:auto;
+      border:
+        1px solid var(--line);
 
-  position:relative;
+      border-bottom:
+        0;
 
-  z-index:11;
+      border-radius:
+        16px 16px 0 0;
+    }
 
-}
+    .bottom button {
+      border:
+        0;
 
+      background:
+        transparent;
 
-.results.show {
-  display:block;
-}
+      color:
+        #858991;
 
+      font-size:
+        11px;
 
-.result {
+      font-weight:
+        800;
+    }
 
-  padding:
-    11px 12px;
+    .bottom button span {
+      display:
+        block;
 
-  border-bottom:
-    1px solid var(--line);
+      font-size:
+        20px;
 
-}
+      margin-bottom:
+        2px;
+    }
 
+    .bottom button.active {
+      color:
+        #111;
+    }
 
-.resultName {
+    .sheetBack {
+      position:
+        fixed;
 
-  font-size:14px;
+      inset:
+        0;
 
-  font-weight:900;
+      z-index:
+        100;
 
-}
+      background:
+        rgba(0,0,0,.38);
 
+      display:
+        none;
 
-.resultNative {
+      align-items:
+        flex-end;
 
-  margin-top:2px;
+      justify-content:
+        center;
+    }
 
-  color:#475569;
+    .sheetBack.show {
+      display:
+        flex;
+    }
 
-  font-size:11px;
+    .sheet {
+      width:
+        min(620px,100%);
 
-}
+      background:
+        #fff;
 
+      border-radius:
+        20px 20px 0 0;
 
-.resultAddress {
+      padding:
+        16px 14px
+        calc(18px + env(safe-area-inset-bottom));
 
-  margin-top:3px;
+      max-height:
+        88vh;
 
-  color:
-    var(--muted);
+      overflow:
+        auto;
+    }
 
-  font-size:11px;
+    .sheet h3 {
+      margin:
+        0 0 12px;
+    }
 
-  line-height:1.4;
+    .field {
+      margin-bottom:
+        10px;
+    }
 
-}
+    .field label {
+      display:
+        block;
 
+      margin-bottom:
+        5px;
 
-.actions {
+      font-size:
+        11px;
 
-  display:flex;
+      font-weight:
+        800;
 
-  flex-wrap:wrap;
+      color:
+        #666;
+    }
 
-  gap:6px;
+    .field input,
+    .field select,
+    .field textarea {
+      width:
+        100%;
 
-  margin-top:8px;
+      border:
+        1px solid #d7dbe1;
 
-}
+      border-radius:
+        11px;
 
+      padding:
+        10px 11px;
 
-.btn {
+      background:
+        #fff;
+    }
 
-  min-height:36px;
+    .field textarea {
+      min-height:
+        74px;
 
-  border:
-    1px solid #d9dce1;
+      resize:
+        vertical;
+    }
 
-  border-radius:10px;
+    .sheetActions {
+      display:
+        flex;
 
-  background:#fff;
+      gap:
+        8px;
+    }
 
-  padding:
-    6px 10px;
+    .sheetActions button {
+      flex:
+        1;
+    }
 
-  font-size:12px;
+    @media(min-width:800px) {
 
-  font-weight:850;
+      .mapWrap {
+        height:
+          650px;
+      }
 
-}
+      .quick {
+        grid-template-columns:
+          repeat(4,1fr);
+      }
+    }
 
-
-.btn.primary {
-
-  background:
-    var(--blue);
-
-  border-color:
-    var(--blue);
-
-  color:#fff;
-
-}
-
-
-.btn.dark {
-
-  background:#171717;
-
-  border-color:#171717;
-
-  color:#fff;
-
-}
-
-
-.btn.danger {
-  color:var(--red);
-}
-
-
-.status {
-
-  display:none;
-
-  padding:
-    9px 12px;
-
-  background:#eef5ff;
-
-  color:#315d92;
-
-  font-size:12px;
-
-  border-bottom:
-    1px solid #dce8f8;
-
-}
-
-
-.status.show {
-  display:block;
-}
-
-
-.status.error {
-
-  background:#fff0f0;
-
-  color:#973232;
-
-}
-
-
-/* 지도 */
-
-.mapWrap {
-
-  position:relative;
-
-  height:54vh;
-
-  min-height:410px;
-
-  background:#dde4ec;
-
-}
-
-
-.map {
-
-  position:absolute;
-
-  inset:0;
-
-}
-
-
-.mapTools {
-
-  position:absolute;
-
-  right:10px;
-
-  top:10px;
-
-  z-index:7;
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:7px;
-
-}
-
-
-.mapTools button {
-
-  min-height:42px;
-
-  border:
-    1px solid #d9dde2;
-
-  border-radius:12px;
-
-  background:
-    rgba(255,255,255,.96);
-
-  box-shadow:
-    0 4px 14px
-    rgba(0,0,0,.12);
-
-  padding:
-    0 10px;
-
-  font-size:12px;
-
-  font-weight:900;
-
-}
-
-
-.mapTools button.active {
-
-  background:#171717;
-
-  color:#fff;
-
-}
-
-
-/* 길찾기 */
-
-.routePanel {
-
-  background:#fff;
-
-  border-top:
-    1px solid var(--line);
-
-  padding:12px;
-
-}
-
-
-.summary {
-
-  display:flex;
-
-  justify-content:
-    space-between;
-
-  align-items:flex-end;
-
-  gap:8px;
-
-}
-
-
-.routeTime {
-
-  font-size:25px;
-
-  font-weight:950;
-
-}
-
-
-.routeDistance {
-
-  font-size:13px;
-
-  color:
-    var(--muted);
-
-}
-
-
-.stopList {
-
-  display:grid;
-
-  gap:7px;
-
-  margin-top:10px;
-
-}
-
-
-.stop {
-
-  display:grid;
-
-  grid-template-columns:
-    34px minmax(0,1fr) auto;
-
-  gap:8px;
-
-  align-items:center;
-
-  border:
-    1px solid var(--line);
-
-  border-radius:13px;
-
-  padding:9px;
-
-  background:#fff;
-
-}
-
-
-.num {
-
-  width:30px;
-
-  height:30px;
-
-  border-radius:50%;
-
-  display:grid;
-
-  place-items:center;
-
-  background:#171717;
-
-  color:#fff;
-
-  font-size:12px;
-
-  font-weight:900;
-
-}
-
-
-.stopName {
-
-  font-size:13px;
-
-  font-weight:900;
-
-  overflow:hidden;
-
-  text-overflow:ellipsis;
-
-  white-space:nowrap;
-
-}
-
-
-.stopSub {
-
-  font-size:11px;
-
-  color:
-    var(--muted);
-
-  overflow:hidden;
-
-  text-overflow:ellipsis;
-
-  white-space:nowrap;
-
-  margin-top:2px;
-
-}
-
-
-.icon {
-
-  width:31px;
-
-  height:31px;
-
-  border:
-    1px solid #dcdfe4;
-
-  border-radius:9px;
-
-  background:#fff;
-
-  font-weight:900;
-
-}
-
-
-.empty {
-
-  padding:
-    22px 12px;
-
-  border:
-    1px dashed #ccd0d6;
-
-  border-radius:14px;
-
-  color:
-    var(--muted);
-
-  font-size:13px;
-
-  text-align:center;
-
-}
-
-
-.routeBtns {
-
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:7px;
-
-  margin-top:10px;
-
-}
-
-
-/* 핀 */
-
-.marker {
-
-  width:34px;
-
-  height:34px;
-
-  border-radius:
-    18px 18px 18px 5px;
-
-  transform:
-    rotate(-45deg);
-
-  border:
-    3px solid #fff;
-
-  display:grid;
-
-  place-items:center;
-
-  box-shadow:
-    0 3px 11px
-    rgba(0,0,0,.28);
-
-  background:#171717;
-
-}
-
-
-.marker span {
-
-  transform:
-    rotate(45deg);
-
-  color:#fff;
-
-  font-size:12px;
-
-  font-weight:950;
-
-}
-
-
-.me {
-
-  width:22px;
-
-  height:22px;
-
-  border-radius:50%;
-
-  background:#3478f6;
-
-  border:
-    4px solid #fff;
-
-  box-shadow:
-    0 0 0 5px
-    rgba(52,120,246,.2),
-    0 3px 9px
-    rgba(0,0,0,.25);
-
-}
-
-
-.startMarker {
-
-  width:28px;
-
-  height:28px;
-
-  border-radius:50%;
-
-  background:#16a34a;
-
-  border:
-    4px solid #fff;
-
-  box-shadow:
-    0 3px 10px
-    rgba(0,0,0,.24);
-
-}
-
-
-/* 찜 */
-
-.favorite {
-
-  padding:
-    11px 0;
-
-  border-bottom:
-    1px solid var(--line);
-
-}
-
-
-.tag {
-
-  display:inline-block;
-
-  margin-top:5px;
-
-  padding:
-    4px 8px;
-
-  border-radius:999px;
-
-  background:#f1f3f5;
-
-  font-size:11px;
-
-  font-weight:800;
-
-  color:#555;
-
-}
-
-
-/* 하단메뉴 */
-
-.bottom {
-
-  position:fixed;
-
-  left:0;
-
-  right:0;
-
-  bottom:0;
-
-  z-index:50;
-
-  height:66px;
-
-  padding-bottom:
-    env(safe-area-inset-bottom);
-
-  background:
-    rgba(255,255,255,.97);
-
-  backdrop-filter:
-    blur(14px);
-
-  border-top:
-    1px solid var(--line);
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(4,1fr);
-
-}
-
-
-.bottom button {
-
-  border:0;
-
-  background:transparent;
-
-  color:#858991;
-
-  font-size:11px;
-
-  font-weight:800;
-
-}
-
-
-.bottom span {
-
-  display:block;
-
-  font-size:20px;
-
-  margin-bottom:2px;
-
-}
-
-
-.bottom button.active {
-  color:#111;
-}
-
-
-@media(min-width:820px) {
-
-  .app {
-
-    max-width:1100px;
-
-    margin:auto;
-
-  }
-
-
-  .mapWrap {
-    height:650px;
-  }
-
-
-  .bottom {
-
-    left:50%;
-
-    transform:
-      translateX(-50%);
-
-    max-width:720px;
-
-    border-left:
-      1px solid var(--line);
-
-    border-right:
-      1px solid var(--line);
-
-    border-radius:
-      16px 16px 0 0;
-
-  }
-
-}
-
-</style>
-
+  </style>
 </head>
-
-
 
 <body>
 
-
 <div class="app">
 
+  <header class="top">
 
-<header class="top">
+    <h1>
+      🇯🇵 후쿠오카 여행
+    </h1>
 
-<h1>
-🇯🇵 후쿠오카 여행
-</h1>
+    <p>
+      한국어 지도 · 장소 저장 · 날짜별 일정 · Google Maps 동선
+    </p>
 
-<p>
-장소명·주소 검색 → 앱 안에서 바로 길찾기
-</p>
-
-</header>
-
+  </header>
 
 
-<main>
+  <main>
 
 
-<section
-id="homeView"
-class="view active"
->
+    <!-- 홈 -->
 
-<div class="page">
+    <section
+      id="homeView"
+      class="view active"
+    >
 
-
-<div class="hero">
-
-<small>
-FUKUOKA TRIP
-</small>
-
-<h2>
-오늘은 어디로<br>
-가볼까? 🇯🇵
-</h2>
-
-<p>
-한국어 장소명이나 일본 주소를 검색해도 돼.
-</p>
+      <div class="page">
 
 
-<div class="quick">
+        <div class="hero">
 
-<button data-go="map">
+          <small>
+            FUKUOKA TRIP
+          </small>
 
-<span>
-🔎
-</span>
+          <h2>
+            저장해두고<br>
+            갈 곳만 일정에 넣자 ✈️
+          </h2>
 
-장소·주소 찾기
-
-</button>
-
-
-<button data-go="schedule">
-
-<span>
-🗓️
-</span>
-
-일정 보기
-
-</button>
+          <p>
+            맛집·카페는 일단 저장만 해두고,
+            실제 갈 곳만 날짜별 일정에 넣으면 돼.
+          </p>
 
 
-<button data-go="favorites">
+          <div class="quick">
 
-<span>
-❤️
-</span>
+            <button data-go="map">
 
-찜한 장소
+              <span>
+                🗺️
+              </span>
 
-</button>
+              지도 보기
+
+            </button>
 
 
-<button id="homeLocation">
+            <button data-go="saved">
 
-<span>
-📍
-</span>
+              <span>
+                📌
+              </span>
 
-현재 위치
+              저장한 장소
 
-</button>
+            </button>
+
+
+            <button data-go="schedule">
+
+              <span>
+                🗓️
+              </span>
+
+              일정 보기
+
+            </button>
+
+
+            <button id="homeGoogleSearch">
+
+              <span>
+                🔎
+              </span>
+
+              구글맵 검색
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <div
+          class="card"
+          style="margin-top:10px"
+        >
+
+          <div class="stats">
+
+
+            <div class="stat">
+
+              <b id="statSaved">
+                0
+              </b>
+
+              <span>
+                저장 장소
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <b id="statDay">
+                0
+              </b>
+
+              <span>
+                선택일 일정
+              </span>
+
+            </div>
+
+
+            <div class="stat">
+
+              <b id="statCategories">
+                0
+              </b>
+
+              <span>
+                카테고리
+              </span>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <div class="title">
+            여행 날짜
+          </div>
+
+          <div
+            class="days"
+            data-day-tabs
+          ></div>
+
+        </div>
+
+
+
+        <div class="card">
+
+          <div class="title">
+            선택한 날 일정
+          </div>
+
+          <div id="homeSchedule"></div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- 지도 -->
+
+    <section
+      id="mapView"
+      class="view"
+    >
+
+
+      <div
+        class="page"
+        style="padding-bottom:0"
+      >
+
+
+        <div class="card">
+
+
+          <div class="title">
+            장소 찾기 / 빠른 저장
+          </div>
+
+
+          <div class="searchbar">
+
+
+            <input
+              id="quickName"
+              type="search"
+              placeholder="예: 이치란 텐진점 / 캐널시티"
+              autocomplete="off"
+            />
+
+
+            <button
+              id="googleSearchBtn"
+              class="btn dark"
+            >
+              Google 검색
+            </button>
+
+
+          </div>
+
+
+
+          <div class="searchHelp">
+
+
+            <select
+              id="quickCategory"
+              class="btn"
+            >
+
+              <option value="restaurant">
+                🍜 맛집
+              </option>
+
+              <option value="cafe">
+                ☕ 카페
+              </option>
+
+              <option value="shopping">
+                🛍️ 쇼핑
+              </option>
+
+              <option value="tour">
+                📸 관광
+              </option>
+
+              <option value="hotel">
+                🏨 숙소
+              </option>
+
+              <option value="etc">
+                📍 기타
+              </option>
+
+            </select>
+
+
+
+            <button
+              id="quickSaveBtn"
+              class="btn primary"
+            >
+              📌 이 이름으로 저장
+            </button>
+
+
+            <button
+              id="manualAddBtn"
+              class="btn"
+            >
+              상세 입력
+            </button>
+
+
+          </div>
+
+
+
+          <div class="notice">
+
+            Google Maps에서 정확한 가게를 찾고 돌아온 뒤
+            이름·주소·링크를 저장하면 돼.
+            저장만 해두고 일정에는 나중에 넣어도 돼.
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <div class="mapWrap">
+
+
+        <div
+          id="map"
+          class="map"
+        ></div>
+
+
+        <div class="mapTools">
+
+
+          <button id="currentLocationBtn">
+            📍 현재 위치
+          </button>
+
+
+          <button id="newPinBtn">
+            ➕ 지도 찍어 새 장소
+          </button>
+
+
+          <button id="fitSavedBtn">
+            📌 저장 핀 전체
+          </button>
+
+
+        </div>
+
+
+
+        <div class="mapLegend">
+
+          한국어 우선 지도 · 📍 없는 장소는
+          저장목록에서 위치를 찍어주면 돼
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- 저장 -->
+
+    <section
+      id="savedView"
+      class="view"
+    >
+
+      <div class="page">
+
+
+        <div class="card">
+
+          <div class="title">
+            📌 저장한 장소
+          </div>
+
+
+          <div
+            class="chips"
+            id="categoryFilters"
+          ></div>
+
+
+          <div
+            class="searchbar"
+            style="
+              margin-top:10px;
+              grid-template-columns:1fr
+            "
+          >
+
+            <input
+              id="savedSearch"
+              type="search"
+              placeholder="저장한 장소에서 검색"
+            />
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="card">
+
+          <div id="savedList"></div>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- 일정 -->
+
+    <section
+      id="scheduleView"
+      class="view"
+    >
+
+      <div class="page">
+
+
+        <div class="card">
+
+          <div class="title">
+            여행 날짜
+          </div>
+
+          <div
+            class="days"
+            data-day-tabs
+          ></div>
+
+        </div>
+
+
+
+        <div class="card">
+
+
+          <div class="title">
+            방문 순서
+          </div>
+
+
+          <div id="scheduleList"></div>
+
+
+
+          <div class="routeBox">
+
+
+            <b>
+              Google Maps 동선
+            </b>
+
+
+            <div
+              class="modes"
+              style="margin-top:8px"
+            >
+
+
+              <button
+                class="pill active"
+                data-travel-mode="walking"
+              >
+                🚶 도보
+              </button>
+
+
+              <button
+                class="pill"
+                data-travel-mode="transit"
+              >
+                🚇 대중교통
+              </button>
+
+
+              <button
+                class="pill"
+                data-travel-mode="driving"
+              >
+                🚗 자동차
+              </button>
+
+
+            </div>
+
+
+
+            <div
+              id="routeButtons"
+              class="routeButtons"
+            ></div>
+
+
+
+            <div
+              class="muted"
+              style="margin-top:7px"
+            >
+
+              일정이 많으면 모바일 경유지 제한 때문에
+              자동으로 여러 구간으로 나눠서 버튼을 만들어.
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+  </main>
 
 </div>
 
-</div>
 
 
-
-<div
-class="card"
-style="margin-top:10px"
->
-
-<div class="title">
-여행 날짜
-</div>
-
-<div
-class="days"
-data-day-tabs
-></div>
-
-</div>
-
-
-
-<div class="card">
-
-<div class="title">
-선택한 날 일정
-</div>
-
-<div id="homeSchedule"></div>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-
-<!-- 지도 -->
-
-<section
-id="mapView"
-class="view"
->
-
-
-<div class="searchBox">
-
-
-<div class="searchRow">
-
-<input
-id="searchInput"
-type="search"
-autocomplete="off"
-placeholder="텐진역 / 이치란 / 福岡市中央区天神2丁目"
->
-
-
-<button
-id="searchBtn"
-class="searchBtn"
->
-검색
-</button>
-
-</div>
-
-
-
-<div class="searchTools">
-
-
-<select id="category">
-
-<option value="restaurant">
-🍜 맛집
-</option>
-
-<option value="cafe">
-☕ 카페
-</option>
-
-<option value="shopping">
-🛍️ 쇼핑
-</option>
-
-<option value="tour">
-📸 관광
-</option>
-
-<option value="hotel">
-🏨 숙소
-</option>
-
-<option value="etc">
-📍 기타
-</option>
-
-</select>
-
-
-
-<div class="modes">
-
-<button
-class="pill active"
-data-mode="walking"
->
-🚶 도보
-</button>
-
-
-<button
-class="pill"
-data-mode="driving"
->
-🚗 자동차
-</button>
-
-
-<button
-class="pill"
-data-mode="cycling"
->
-🚲 자전거
-</button>
-
-</div>
-
-
-</div>
-
-
-
-<div class="hint">
-
-장소명·역 이름·일본어/영문 주소를 한 칸에서 검색해.
-입력하면 후보도 자동으로 뜬다.
-
-</div>
-
-
-</div>
-
-
-
-<div
-id="status"
-class="status"
-></div>
-
-
-<div
-id="results"
-class="results"
-></div>
-
-
-
-<div class="mapWrap">
-
-
-<div
-id="map"
-class="map"
-></div>
-
-
-
-<div class="mapTools">
-
-
-<button id="currentBtn">
-📍 현재위치
-</button>
-
-
-<button id="pickStartBtn">
-🟢 출발지 찍기
-</button>
-
-
-<button id="pickDestBtn">
-🎯 목적지 찍기
-</button>
-
-
-<button id="fitBtn">
-🧭 경로 전체
-</button>
-
-
-</div>
-
-
-</div>
-
-
-
-<div class="routePanel">
-
-
-<div class="summary">
-
-<div>
-
-<div class="muted">
-현재 길찾기
-</div>
-
-<div
-id="routeTime"
-class="routeTime"
->
-경로 없음
-</div>
-
-</div>
-
-
-<div
-id="routeDistance"
-class="routeDistance"
-></div>
-
-</div>
-
-
-
-<div
-id="routeMessage"
-class="muted"
-style="margin-top:5px"
->
-
-검색 결과에서
-‘바로 길찾기’를 눌러줘.
-
-</div>
-
-
-<div
-id="navStops"
-class="stopList"
-></div>
-
-
-<div class="routeBtns">
-
-<button
-id="refreshBtn"
-class="btn primary"
->
-🔄 경로 갱신
-</button>
-
-
-<button
-id="saveRouteBtn"
-class="btn"
->
-현재 경로를 일정에 추가
-</button>
-
-
-<button
-id="clearRouteBtn"
-class="btn danger"
->
-경로 종료
-</button>
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-
-<!-- 일정 -->
-
-<section
-id="scheduleView"
-class="view"
->
-
-<div class="page">
-
-
-<div class="card">
-
-<div class="title">
-여행 날짜
-</div>
-
-<div
-class="days"
-data-day-tabs
-></div>
-
-</div>
-
-
-
-<div class="card">
-
-<div class="title">
-방문 순서
-</div>
-
-<div id="scheduleList"></div>
-
-
-<div class="actions">
-
-<button
-id="scheduleRouteBtn"
-class="btn primary"
->
-📍 이 일정 전체 길찾기
-</button>
-
-
-<button
-id="scheduleMapBtn"
-class="btn"
->
-🗺️ 지도에서 보기
-</button>
-
-</div>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-
-<!-- 찜 -->
-
-<section
-id="favoritesView"
-class="view"
->
-
-<div class="page">
-
-<div class="card">
-
-<div class="title">
-❤️ 찜한 장소
-</div>
-
-<div id="favoriteList"></div>
-
-</div>
-
-</div>
-
-</section>
-
-
-</main>
-
-</div>
-
-
+<!-- 하단 메뉴 -->
 
 <nav class="bottom">
 
 
-<button
-class="active"
-data-view="home"
->
+  <button
+    class="active"
+    data-view="home"
+  >
 
-<span>
-🏠
-</span>
+    <span>
+      🏠
+    </span>
 
-홈
+    홈
 
-</button>
-
-
-<button data-view="map">
-
-<span>
-🗺️
-</span>
-
-지도
-
-</button>
+  </button>
 
 
-<button data-view="schedule">
+  <button data-view="map">
 
-<span>
-🗓️
-</span>
+    <span>
+      🗺️
+    </span>
 
-일정
+    지도
 
-</button>
+  </button>
 
 
-<button data-view="favorites">
+  <button data-view="saved">
 
-<span>
-❤️
-</span>
+    <span>
+      📌
+    </span>
 
-찜
+    저장
 
-</button>
+  </button>
+
+
+  <button data-view="schedule">
+
+    <span>
+      🗓️
+    </span>
+
+    일정
+
+  </button>
 
 
 </nav>
+
+
+
+<!-- 장소 저장창 -->
+
+<div
+  id="placeSheetBack"
+  class="sheetBack"
+>
+
+  <div class="sheet">
+
+
+    <h3 id="sheetTitle">
+      장소 저장
+    </h3>
+
+
+
+    <div class="field">
+
+      <label>
+        장소 이름
+      </label>
+
+      <input
+        id="placeName"
+        placeholder="예: 이치란 텐진점"
+      />
+
+    </div>
+
+
+
+    <div class="field">
+
+      <label>
+        카테고리
+      </label>
+
+
+      <select id="placeCategory">
+
+        <option value="restaurant">
+          🍜 맛집
+        </option>
+
+        <option value="cafe">
+          ☕ 카페
+        </option>
+
+        <option value="shopping">
+          🛍️ 쇼핑
+        </option>
+
+        <option value="tour">
+          📸 관광
+        </option>
+
+        <option value="hotel">
+          🏨 숙소
+        </option>
+
+        <option value="etc">
+          📍 기타
+        </option>
+
+      </select>
+
+
+    </div>
+
+
+
+    <div class="field">
+
+      <label>
+        주소 또는 검색용 문구
+      </label>
+
+      <input
+        id="placeAddress"
+        placeholder="예: 후쿠오카 텐진 / 일본어 주소"
+      />
+
+    </div>
+
+
+
+    <div class="field">
+
+      <label>
+        Google Maps 링크 (선택)
+      </label>
+
+      <input
+        id="placeGoogleUrl"
+        placeholder="구글맵 공유 링크가 있으면 붙여넣기"
+      />
+
+    </div>
+
+
+
+    <div class="field">
+
+      <label>
+        메모 (선택)
+      </label>
+
+      <textarea
+        id="placeNote"
+        placeholder="먹고 싶은 메뉴, 예약시간 등"
+      ></textarea>
+
+    </div>
+
+
+
+    <div
+      class="muted"
+      id="coordHint"
+      style="margin-bottom:10px"
+    ></div>
+
+
+
+    <div class="sheetActions">
+
+      <button
+        id="sheetCancel"
+        class="btn"
+      >
+        취소
+      </button>
+
+
+      <button
+        id="sheetSave"
+        class="btn primary"
+      >
+        저장
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+<!-- 일정 날짜 선택 -->
+
+<div
+  id="daySheetBack"
+  class="sheetBack"
+>
+
+  <div class="sheet">
+
+
+    <h3>
+      어느 일정에 넣을까?
+    </h3>
+
+
+    <div
+      class="days"
+      id="dayPickButtons"
+    ></div>
+
+
+    <div
+      class="sheetActions"
+      style="margin-top:12px"
+    >
+
+      <button
+        id="daySheetCancel"
+        class="btn"
+      >
+        닫기
+      </button>
+
+    </div>
+
+
+  </div>
+
+</div>
 
 
 
@@ -1658,220 +1822,485 @@ data-view="home"
 (() => {
 
 
-const WORKER =
-"https://orange-recipe-d340fukuoka-route.wnals4836.workers.dev";
+const KEY =
+  window.APP_CONFIG
+  ?.MAPTILER_KEY
+  || "";
 
 
-const STORAGE =
-"fukuoka-trip-v8";
+if (
+  !KEY ||
+  KEY.includes("여기에")
+) {
+
+  alert(
+    "config.js에 MapTiler 키를 먼저 넣어줘."
+  );
+
+}
+
 
 
 const FUKUOKA = {
-lat:33.5902,
-lng:130.4017
+
+  lng:
+    130.4017,
+
+  lat:
+    33.5902
+
 };
+
+
+
+const STORAGE =
+  "fukuoka-trip-maptiler-v2";
+
+
+const OLD_STORAGE =
+  "fukuoka-trip-v8";
 
 
 
 const categoryInfo = {
 
-restaurant:{
-label:"맛집",
-emoji:"🍜",
-color:"#ef5350"
-},
+  all: {
 
-cafe:{
-label:"카페",
-emoji:"☕",
-color:"#a66b45"
-},
+    label:
+      "전체",
 
-shopping:{
-label:"쇼핑",
-emoji:"🛍️",
-color:"#8e61d4"
-},
+    emoji:
+      "📌",
 
-tour:{
-label:"관광",
-emoji:"📸",
-color:"#2f6fed"
-},
+    color:
+      "#171717"
 
-hotel:{
-label:"숙소",
-emoji:"🏨",
-color:"#16a34a"
-},
-
-etc:{
-label:"기타",
-emoji:"📍",
-color:"#6b7280"
-}
-
-};
+  },
 
 
+  restaurant: {
 
-const KO_RULES = [
+    label:
+      "맛집",
 
-[
-/天神駅|Tenjin Station/i,
-"텐진역"
-],
+    emoji:
+      "🍜",
 
-[
-/博多駅|Hakata Station/i,
-"하카타역"
-],
+    color:
+      "#ef5350"
 
-[
-/福岡空港|Fukuoka Airport/i,
-"후쿠오카공항"
-],
-
-[
-/キャナルシティ博多|Canal City Hakata/i,
-"캐널시티 하카타"
-],
-
-[
-/大濠公園|Ohori Park/i,
-"오호리공원"
-],
-
-[
-/福岡タワー|Fukuoka Tower/i,
-"후쿠오카타워"
-],
-
-[
-/太宰府天満宮|Dazaifu Tenmangu/i,
-"다자이후 텐만구"
-],
-
-[
-/中洲川端駅|Nakasu-Kawabata Station/i,
-"나카스카와바타역"
-],
-
-[
-/天神南駅|Tenjin-minami Station/i,
-"텐진미나미역"
-],
-
-[
-/櫛田神社|Kushida Shrine/i,
-"구시다신사"
-],
-
-[
-/天神地下街/i,
-"텐진지하상가"
-],
-
-[
-/ららぽーと福岡/i,
-"라라포트 후쿠오카"
-],
-
-[
-/マリンワールド海の中道/i,
-"마린월드 우미노나카미치"
-],
-
-[
-/海の中道海浜公園/i,
-"우미노나카미치 해변공원"
-],
-
-[
-/柳橋連合市場/i,
-"야나기바시 시장"
-]
-
-];
+  },
 
 
+  cafe: {
 
-const baseState = {
+    label:
+      "카페",
 
-selectedDay:
-"day1",
+    emoji:
+      "☕",
 
-routeMode:
-"walking",
+    color:
+      "#9a6a45"
 
-days:{
-day1:[],
-day2:[],
-day3:[]
-},
+  },
 
-favorites:[],
 
-navStops:[],
+  shopping: {
 
-manualStart:null,
+    label:
+      "쇼핑",
 
-useManualStart:false
+    emoji:
+      "🛍️",
+
+    color:
+      "#8e61d4"
+
+  },
+
+
+  tour: {
+
+    label:
+      "관광",
+
+    emoji:
+      "📸",
+
+    color:
+      "#2f6fed"
+
+  },
+
+
+  hotel: {
+
+    label:
+      "숙소",
+
+    emoji:
+      "🏨",
+
+    color:
+      "#16a34a"
+
+  },
+
+
+  etc: {
+
+    label:
+      "기타",
+
+    emoji:
+      "📍",
+
+    color:
+      "#6b7280"
+
+  }
 
 };
 
 
 
-let state =
-loadState();
+const blankState =
+  () => ({
 
+    selectedDay:
+      "day1",
 
-let map;
+    travelMode:
+      "walking",
 
-let mapReady =
-false;
+    places:
+      [],
 
-let currentLocation =
-null;
+    days: {
 
-let pickMode =
-null;
+      day1:
+        [],
 
-let searchTimer =
-null;
+      day2:
+        [],
 
-let searchAbort =
-null;
+      day3:
+        []
 
-let lastRoute =
-null;
+    }
 
-let lastSegments =
-[];
-
-
-let routeMarkers =
-[];
-
-let savedMarkers =
-[];
-
-let previewMarker =
-null;
-
-let currentMarker =
-null;
-
-let startMarker =
-null;
+  });
 
 
 
-function clone(x) {
+const uid =
+  () =>
 
-return JSON.parse(
-JSON.stringify(x)
-);
+    crypto.randomUUID
+
+    ?
+
+    crypto.randomUUID()
+
+    :
+
+    Date.now()
+    +
+    "-"
+    +
+    Math.random();
+
+
+
+const esc =
+  value =>
+
+    String(
+      value ?? ""
+    )
+    .replace(
+
+      /[&<>"']/g,
+
+      char => ({
+
+        "&":
+          "&amp;",
+
+        "<":
+          "&lt;",
+
+        ">":
+          "&gt;",
+
+        '"':
+          "&quot;",
+
+        "'":
+          "&#039;"
+
+      })[char]
+
+    );
+
+
+
+const dayLabel =
+  day =>
+
+    day === "day1"
+
+    ?
+
+    "1일차"
+
+    :
+
+    day === "day2"
+
+    ?
+
+    "2일차"
+
+    :
+
+    "3일차";
+
+
+
+const normalize =
+  value =>
+
+    String(
+      value || ""
+    )
+    .toLowerCase()
+    .replace(
+      /\s+/g,
+      ""
+    )
+    .trim();
+
+
+
+/* =========================
+   기존 앱 자료 일부 이동
+========================= */
+
+function migrateOld() {
+
+
+  try {
+
+
+    const old =
+      JSON.parse(
+
+        localStorage.getItem(
+          OLD_STORAGE
+        )
+
+        ||
+
+        "null"
+
+      );
+
+
+    if (!old) {
+
+      return null;
+
+    }
+
+
+
+    const state =
+      blankState();
+
+
+    const byKey =
+      new Map();
+
+
+
+    const addPlace =
+      place => {
+
+
+        if (
+          !place ||
+          !place.name
+        ) {
+
+          return null;
+
+        }
+
+
+        const key =
+
+          `${normalize(
+            place.name
+          )}|${Number(
+            place.lat || 0
+          ).toFixed(5)}|${Number(
+            place.lng || 0
+          ).toFixed(5)}`;
+
+
+        if (
+          byKey.has(key)
+        ) {
+
+          return byKey.get(
+            key
+          );
+
+        }
+
+
+        const id =
+          uid();
+
+
+        state.places.push({
+
+          id,
+
+          name:
+            place.name,
+
+          address:
+            place.address || "",
+
+          lat:
+            Number.isFinite(
+              Number(place.lat)
+            )
+
+            ?
+
+            Number(place.lat)
+
+            :
+
+            null,
+
+          lng:
+            Number.isFinite(
+              Number(place.lng)
+            )
+
+            ?
+
+            Number(place.lng)
+
+            :
+
+            null,
+
+          category:
+            place.category ||
+            "etc",
+
+          googleUrl:
+            "",
+
+          note:
+            ""
+
+        });
+
+
+        byKey.set(
+          key,
+          id
+        );
+
+
+        return id;
+
+      };
+
+
+
+    (
+      old.favorites ||
+      []
+    )
+    .forEach(
+      addPlace
+    );
+
+
+
+    [
+      "day1",
+      "day2",
+      "day3"
+    ]
+    .forEach(
+      day => {
+
+
+        (
+          old.days?.[day]
+          ||
+          []
+        )
+        .forEach(
+          place => {
+
+
+            const id =
+              addPlace(
+                place
+              );
+
+
+            if (
+              id &&
+              !state.days[
+                day
+              ]
+              .includes(id)
+            ) {
+
+              state.days[
+                day
+              ]
+              .push(id);
+
+            }
+
+
+          }
+        );
+
+
+      }
+    );
+
+
+    state.selectedDay =
+      old.selectedDay
+      ||
+      "day1";
+
+
+    return state;
+
+
+  }
+
+  catch {
+
+    return null;
+
+  }
+
 
 }
 
@@ -1879,2790 +2308,2423 @@ JSON.stringify(x)
 
 function loadState() {
 
-try {
 
-const saved =
-JSON.parse(
-localStorage.getItem(
-STORAGE
-) || "null"
-);
+  try {
 
 
-if (!saved) {
+    const saved =
+      JSON.parse(
 
-return clone(
-baseState
-);
+        localStorage.getItem(
+          STORAGE
+        )
+
+        ||
+
+        "null"
+
+      );
+
+
+    if (saved) {
+
+
+      return {
+
+        ...blankState(),
+
+        ...saved,
+
+        days: {
+
+          ...blankState().days,
+
+          ...(saved.days || {})
+
+        },
+
+        places:
+
+          Array.isArray(
+            saved.places
+          )
+
+          ?
+
+          saved.places
+
+          :
+
+          []
+
+      };
+
+
+    }
+
+
+  }
+
+  catch {}
+
+
+  const migrated =
+    migrateOld();
+
+
+  if (migrated) {
+
+
+    localStorage.setItem(
+
+      STORAGE,
+
+      JSON.stringify(
+        migrated
+      )
+
+    );
+
+
+    return migrated;
+
+  }
+
+
+  return blankState();
 
 }
 
 
-return {
 
-...clone(baseState),
+let state =
+  loadState();
 
-...saved,
 
-days:{
+let selectedCategoryFilter =
+  "all";
 
-...clone(
-baseState.days
-),
 
-...(saved.days || {})
+let map;
 
-},
+let mapReady =
+  false;
 
-favorites:
-Array.isArray(
-saved.favorites
-)
-?
-saved.favorites
-:
-[],
 
-navStops:
-Array.isArray(
-saved.navStops
-)
-?
-saved.navStops
-:
-[]
+let savedMarkers =
+  [];
 
-};
 
-}
+let currentMarker =
+  null;
 
-catch {
 
-return clone(
-baseState
-);
+let pickMode =
+  null;
 
-}
 
-}
+let pendingPinPlaceId =
+  null;
+
+
+let editingPlaceId =
+  null;
+
+
+let draftCoords =
+  null;
+
+
+let dayPickPlaceId =
+  null;
 
 
 
 function saveState() {
 
-localStorage.setItem(
-STORAGE,
-JSON.stringify(state)
-);
+  localStorage.setItem(
+
+    STORAGE,
+
+    JSON.stringify(
+      state
+    )
+
+  );
 
 }
 
 
 
-function currentSchedule() {
+function getPlace(id) {
 
-return (
-state.days[
-state.selectedDay
-] || []
-);
-
-}
-
-
-
-function dayLabel(day) {
-
-if (
-day === "day1"
-) {
-return "1일차";
-}
-
-if (
-day === "day2"
-) {
-return "2일차";
-}
-
-return "3일차";
+  return state.places
+    .find(
+      place =>
+        place.id === id
+    );
 
 }
 
 
 
-function makeId() {
-
-return (
-crypto.randomUUID
-?
-crypto.randomUUID()
-:
-Date.now()
-+
-"-"
-+
-Math.random()
-);
-
-}
-
-
-
-function esc(value) {
-
-return String(
-value ?? ""
-)
-.replace(
-
-/[&<>"']/g,
-
-char => ({
-
-"&":"&amp;",
-
-"<":"&lt;",
-
-">":"&gt;",
-
-'"':"&quot;",
-
-"'":"&#039;"
-
-})[char]
-
-);
-
-}
-
-
-
-function samePlace(a,b) {
-
-return (
-
-Math.abs(
-Number(a.lat) -
-Number(b.lat)
-)
-<
-0.00002
-
-&&
-
-Math.abs(
-Number(a.lng) -
-Number(b.lng)
-)
-<
-0.00002
-
-);
-
-}
-
-
-
-function koName(text) {
-
-const value =
-String(text || "");
-
-
-for (
-const [rule,korean]
-of KO_RULES
+function dayPlaces(
+  day =
+    state.selectedDay
 ) {
 
-if (
-rule.test(value)
-) {
-
-return korean;
-
-}
-
-}
-
-
-return value;
-
-}
-
-
-
-function formatDistance(meters) {
-
-if (
-meters >= 1000
-) {
-
-return (
-meters / 1000
-)
-.toFixed(
-meters >= 10000
-?
-0
-:
-1
-)
-+
-"km";
-
-}
-
-
-return (
-Math.round(meters)
-+
-"m"
-);
+  return (
+    state.days[
+      day
+    ]
+    ||
+    []
+  )
+  .map(
+    getPlace
+  )
+  .filter(
+    Boolean
+  );
 
 }
 
 
 
-function formatDuration(seconds) {
+/* =========================
+   MapTiler 지도
+========================= */
 
-const minutes =
-Math.round(
-seconds / 60
-);
-
-
-if (
-minutes < 60
-) {
-
-return (
-minutes +
-"분"
-);
-
-}
+maptilersdk.config.apiKey =
+  KEY;
 
 
-const hours =
-Math.floor(
-minutes / 60
-);
+maptilersdk.config.primaryLanguage =
+  maptilersdk.Language.KOREAN;
 
 
-const remain =
-minutes % 60;
-
-
-return (
-
-hours +
-"시간 " +
-
-(
-remain
-?
-remain + "분"
-:
-""
-)
-
-);
-
-}
-
-
-
-function modeLabel() {
-
-if (
-state.routeMode ===
-"walking"
-) {
-
-return "🚶 도보";
-
-}
-
-
-if (
-state.routeMode ===
-"driving"
-) {
-
-return "🚗 자동차";
-
-}
-
-
-return "🚲 자전거";
-
-}
-
-
-
-function showStatus(
-text,
-error=false
-) {
-
-const el =
-document.getElementById(
-"status"
-);
-
-
-el.textContent =
-text;
-
-
-el.classList.toggle(
-"show",
-Boolean(text)
-);
-
-
-el.classList.toggle(
-"error",
-Boolean(text) &&
-error
-);
-
-}
-
-
-
-/* ========================
-   MAP
-======================== */
 
 function initMap() {
 
-map =
-new maplibregl.Map({
 
-container:
-"map",
+  map =
+    new maptilersdk.Map({
 
-style:
-"https://tiles.openfreemap.org/styles/liberty",
+      container:
+        "map",
 
-center:[
-FUKUOKA.lng,
-FUKUOKA.lat
-],
+      style:
+        maptilersdk
+        .MapStyle
+        .STREETS,
 
-zoom:
-12.6
+      center: [
 
-});
+        FUKUOKA.lng,
 
+        FUKUOKA.lat
 
-map.addControl(
+      ],
 
-new maplibregl.NavigationControl({
-showCompass:false
-}),
+      zoom:
+        12.6
 
-"bottom-right"
+    });
 
-);
 
 
+  map.on(
+    "load",
+    () => {
 
-map.on(
-"load",
-() => {
 
-mapReady =
-true;
+      mapReady =
+        true;
 
 
-/*
-가능한 지도 글자를
-한국어 → 영어 → 일본어/현지어
-순으로 표시
-*/
+      try {
 
-localizeLabels();
+        map.setLanguage(
+          maptilersdk
+          .Language
+          .KOREAN
+        );
 
+      }
 
-map.addSource(
-"route",
-{
+      catch {}
 
-type:
-"geojson",
 
-data:{
-type:
-"FeatureCollection",
-features:[]
-}
-
-}
-);
-
-
-map.addLayer({
-
-id:
-"route-bg",
-
-type:
-"line",
-
-source:
-"route",
-
-paint:{
-
-"line-color":
-"#ffffff",
-
-"line-width":
-9,
-
-"line-opacity":
-0.95
-
-}
-
-});
-
-
-map.addLayer({
-
-id:
-"route-line",
-
-type:
-"line",
-
-source:
-"route",
-
-paint:{
-
-"line-color":
-"#2563eb",
-
-"line-width":
-6,
-
-"line-opacity":
-0.96
-
-}
-
-});
-
-
-refreshMarkers();
-
-}
-);
-
-
-
-map.on(
-"click",
-async event => {
-
-
-if (!pickMode) {
-return;
-}
-
-
-const place = {
-
-id:
-makeId(),
-
-name:
-
-pickMode === "start"
-?
-"지도에서 지정한 출발지"
-:
-"지도에서 지정한 목적지",
-
-address:
-
-event.lngLat.lat
-.toFixed(6)
-
-+
-", "
-
-+
-event.lngLat.lng
-.toFixed(6),
-
-lat:
-event.lngLat.lat,
-
-lng:
-event.lngLat.lng,
-
-category:
-"etc"
-
-};
-
-
-if (
-pickMode ===
-"start"
-) {
-
-state.manualStart =
-place;
-
-state.useManualStart =
-true;
-
-
-saveState();
-
-setStartMarker();
-
-
-showStatus(
-"출발지를 지도에서 지정했어."
-);
-
-
-if (
-state.navStops.length
-) {
-
-await calculateRoute();
-
-}
-
-}
-
-else {
-
-state.navStops =
-[place];
-
-
-saveState();
-
-renderNavStops();
-
-refreshMarkers();
-
-
-await calculateRoute();
-
-}
-
-
-setPickMode(null);
-
-}
-);
-
-}
-
-
-
-function localizeLabels() {
-
-const targets =
-new Set([
-
-"place",
-
-"poi",
-
-"transportation_name",
-
-"water_name",
-
-"waterway",
-
-"park",
-
-"aerodrome_label"
-
-]);
-
-
-const layers =
-map.getStyle()
-?.layers || [];
-
-
-for (
-const layer of layers
-) {
-
-if (
-layer.type !==
-"symbol"
-) {
-continue;
-}
-
-
-if (
-!targets.has(
-layer["source-layer"]
-)
-) {
-continue;
-}
-
-
-/*
-도로번호 아이콘 등은
-건드리지 않음
-*/
-
-if (
-/shield|ref|route.?number/i
-.test(layer.id)
-) {
-continue;
-}
-
-
-const textField =
-map.getLayoutProperty(
-layer.id,
-"text-field"
-);
-
-
-if (
-textField ===
-undefined
-) {
-continue;
-}
-
-
-try {
-
-map.setLayoutProperty(
-
-layer.id,
-
-"text-field",
-
-[
-"coalesce",
-
-[
-"get",
-"name:ko"
-],
-
-[
-"get",
-"name_ko"
-],
-
-[
-"get",
-"name:en"
-],
-
-[
-"get",
-"name_en"
-],
-
-[
-"get",
-"name"
-]
-
-]
-
-);
-
-}
-
-catch {}
-
-}
-
-}
-
-
-
-function clearMarkers(array) {
-
-array.forEach(
-marker =>
-marker.remove()
-);
-
-
-array.length =
-0;
-
-}
-
-
-
-function refreshMarkers() {
-
-if (!mapReady) {
-return;
-}
-
-
-clearMarkers(
-routeMarkers
-);
-
-
-clearMarkers(
-savedMarkers
-);
-
-
-
-currentSchedule()
-.forEach(
-place => {
-
-
-const info =
-categoryInfo[
-place.category ||
-"etc"
-];
-
-
-const el =
-document.createElement(
-"div"
-);
-
-
-el.className =
-"marker";
-
-
-el.style.background =
-info.color;
-
-
-el.innerHTML =
-`<span>${info.emoji}</span>`;
-
-
-const marker =
-new maplibregl.Marker({
-
-element:el,
-
-anchor:"bottom"
-
-})
-
-.setLngLat([
-place.lng,
-place.lat
-])
-
-.setPopup(
-
-new maplibregl.Popup({
-offset:25
-})
-
-.setHTML(
-
-`<b>${esc(
-koName(place.name)
-)}</b>`
-
-)
-
-)
-
-.addTo(map);
-
-
-savedMarkers.push(
-marker
-);
-
-}
-);
-
-
-
-state.navStops
-.forEach(
-(place,index) => {
-
-
-const el =
-document.createElement(
-"div"
-);
-
-
-el.className =
-"marker";
-
-
-el.innerHTML =
-`<span>${index+1}</span>`;
-
-
-const marker =
-new maplibregl.Marker({
-
-element:el,
-
-anchor:"bottom"
-
-})
-
-.setLngLat([
-place.lng,
-place.lat
-])
-
-.setPopup(
-
-new maplibregl.Popup({
-offset:25
-})
-
-.setHTML(
-
-`<b>${index+1}. ${esc(
-koName(place.name)
-)}</b>`
-
-)
-
-)
-
-.addTo(map);
-
-
-routeMarkers.push(
-marker
-);
-
-}
-);
-
-
-setStartMarker();
-
-}
-
-
-
-function setCurrentMarker(
-fly=false
-) {
-
-if (
-!mapReady ||
-!currentLocation
-) {
-return;
-}
-
-
-if (
-currentMarker
-) {
-
-currentMarker.remove();
-
-}
-
-
-const el =
-document.createElement(
-"div"
-);
-
-
-el.className =
-"me";
-
-
-currentMarker =
-new maplibregl.Marker({
-element:el
-})
-
-.setLngLat([
-currentLocation.lng,
-currentLocation.lat
-])
-
-.setPopup(
-
-new maplibregl.Popup({
-offset:18
-})
-
-.setHTML(
-"<b>현재 위치</b>"
-)
-
-)
-
-.addTo(map);
-
-
-if (fly) {
-
-map.flyTo({
-
-center:[
-currentLocation.lng,
-currentLocation.lat
-],
-
-zoom:
-15.5
-
-});
-
-}
-
-}
-
-
-
-function setStartMarker() {
-
-if (
-startMarker
-) {
-
-startMarker.remove();
-
-startMarker =
-null;
-
-}
-
-
-if (
-!mapReady ||
-!state.useManualStart ||
-!state.manualStart
-) {
-return;
-}
-
-
-const el =
-document.createElement(
-"div"
-);
-
-
-el.className =
-"startMarker";
-
-
-startMarker =
-new maplibregl.Marker({
-element:el
-})
-
-.setLngLat([
-state.manualStart.lng,
-state.manualStart.lat
-])
-
-.setPopup(
-
-new maplibregl.Popup({
-offset:18
-})
-
-.setHTML(
-"<b>직접 지정 출발지</b>"
-)
-
-)
-
-.addTo(map);
-
-}
-
-
-
-/* ========================
-   위치
-======================== */
-
-function distanceKm(a,b) {
-
-const R =
-6371;
-
-
-const toRad =
-value =>
-value * Math.PI / 180;
-
-
-const dLat =
-toRad(
-b.lat -
-a.lat
-);
-
-
-const dLng =
-toRad(
-b.lng -
-a.lng
-);
-
-
-const value =
-
-Math.sin(
-dLat/2
-) ** 2
-
-+
-
-Math.cos(
-toRad(a.lat)
-)
-
-*
-
-Math.cos(
-toRad(b.lat)
-)
-
-*
-
-Math.sin(
-dLng/2
-) ** 2;
-
-
-return (
-2 *
-R *
-Math.asin(
-Math.sqrt(value)
-)
-);
-
-}
-
-
-
-function getCurrentLocation(
-force=false
-) {
-
-if (
-currentLocation &&
-!force
-) {
-
-return Promise.resolve(
-currentLocation
-);
-
-}
-
-
-if (
-!navigator.geolocation
-) {
-
-return Promise.reject(
-
-new Error(
-"이 기기에서는 위치 기능을 사용할 수 없어."
-)
-
-);
-
-}
-
-
-return new Promise(
-(resolve,reject) => {
-
-
-navigator.geolocation
-.getCurrentPosition(
-
-position => {
-
-
-currentLocation = {
-
-lat:
-position.coords.latitude,
-
-lng:
-position.coords.longitude
-
-};
-
-
-setCurrentMarker(
-false
-);
-
-
-resolve(
-currentLocation
-);
-
-},
-
-error => {
-
-
-reject(
-
-new Error(
-
-error.code === 1
-
-?
-
-"브라우저 위치 권한을 허용해줘."
-
-:
-
-"현재 위치를 가져오지 못했어."
-
-)
-
-);
-
-},
-
-{
-
-enableHighAccuracy:
-true,
-
-timeout:
-12000,
-
-maximumAge:
-10000
-
-}
-
-);
-
-}
-);
-
-}
-
-
-
-async function getRouteStart() {
-
-if (
-state.useManualStart &&
-state.manualStart
-) {
-
-return state.manualStart;
-
-}
-
-
-const location =
-await getCurrentLocation();
-
-
-/*
-한국에서 테스트할 경우
-후쿠오카까지 도보경로를
-계산하는 실수를 막음
-*/
-
-if (
-distanceKm(
-location,
-FUKUOKA
-) > 200
-) {
-
-throw new Error(
-
-"현재 위치가 후쿠오카에서 멀리 있어. 한국에서 테스트 중이면 ‘출발지 찍기’로 후쿠오카 안의 출발지를 먼저 찍어줘."
-
-);
-
-}
-
-
-return {
-
-...location,
-
-name:
-"현재 위치"
-
-};
-
-}
-
-
-
-/* ========================
-   검색
-======================== */
-
-function featureToPlace(
-feature
-) {
-
-const properties =
-feature.properties || {};
-
-
-const coordinates =
-feature.geometry
-?.coordinates || [];
-
-
-const nativeName =
-
-properties.name ||
-
-properties.label ||
-
-"검색 장소";
-
-
-return {
-
-id:
-makeId(),
-
-name:
-koName(
-nativeName
-),
-
-nativeName,
+      renderMapMarkers();
 
-address:
 
-properties.label
+    }
+  );
 
-||
 
-[
-properties.locality,
-properties.region,
-properties.country
-]
-.filter(Boolean)
-.join(", "),
 
-lat:
-Number(
-coordinates[1]
-),
+  map.on(
+    "click",
+    event => {
 
-lng:
-Number(
-coordinates[0]
-),
 
-category:
-document
-.getElementById(
-"category"
-)
-.value
+      if (!pickMode) {
 
-};
+        return;
 
-}
-
-
-
-async function requestSearch(
-path,
-query
-) {
-
-if (
-searchAbort
-) {
-
-searchAbort.abort();
-
-}
-
-
-searchAbort =
-new AbortController();
-
-
-const response =
-await fetch(
-
-`${WORKER}${path}?q=${encodeURIComponent(query)}`,
-
-{
-signal:
-searchAbort.signal
-}
-
-);
-
-
-const data =
-await response.json();
-
-
-if (
-!response.ok
-) {
-
-throw new Error(
-
-data.error ||
-
-`검색 오류 ${response.status}`
-
-);
-
-}
-
-
-return data;
-
-}
-
-
-
-async function fullSearch() {
-
-const input =
-document.getElementById(
-"searchInput"
-);
-
-
-const query =
-input.value.trim();
-
-
-if (!query) {
-
-showStatus(
-"검색어 또는 주소를 입력해줘.",
-true
-);
-
-return;
-
-}
-
-
-const button =
-document.getElementById(
-"searchBtn"
-);
-
-
-button.disabled =
-true;
-
-
-button.textContent =
-"검색중";
-
-
-showStatus(
-"후쿠오카 주변에서 찾는 중..."
-);
-
-
-try {
-
-const data =
-await requestSearch(
-
-"/search",
-
-query
-
-);
-
-
-renderResults(
-data.features || []
-);
-
-}
-
-catch(error) {
-
-if (
-error.name !==
-"AbortError"
-) {
-
-showStatus(
-
-"검색 실패: " +
-error.message,
-
-true
-
-);
-
-}
-
-}
-
-finally {
-
-button.disabled =
-false;
-
-
-button.textContent =
-"검색";
-
-}
-
-}
-
-
-
-async function autocomplete() {
-
-const query =
-document
-.getElementById(
-"searchInput"
-)
-.value
-.trim();
-
-
-if (
-query.length < 2
-) {
-
-hideResults();
-
-return;
-
-}
-
-
-try {
-
-const data =
-await requestSearch(
-
-"/autocomplete",
-
-query
-
-);
-
-
-renderResults(
-data.features || [],
-true
-);
-
-}
-
-catch(error) {
-
-if (
-error.name !==
-"AbortError"
-) {
-
-console.warn(error);
-
-}
-
-}
-
-}
-
-
-
-function hideResults() {
-
-document
-.getElementById(
-"results"
-)
-.classList
-.remove(
-"show"
-);
-
-}
-
-
-
-function renderResults(
-features,
-compact=false
-) {
-
-const box =
-document.getElementById(
-"results"
-);
-
-
-box.innerHTML =
-"";
-
-
-const places =
-features
-
-.map(
-featureToPlace
-)
-
-.filter(
-place =>
-Number.isFinite(
-place.lat
-)
-&&
-Number.isFinite(
-place.lng
-)
-);
-
-
-const unique =
-[];
-
-
-for (
-const place of places
-) {
-
-if (
-!unique.some(
-item =>
-samePlace(
-item,
-place
-)
-)
-) {
+      }
 
-unique.push(
-place
-);
 
-}
-
-
-if (
-unique.length > 8
-) {
-break;
-}
-
-}
-
-
-if (
-!unique.length
-) {
-
-showStatus(
-
-"검색 결과가 없어. 일본어 주소나 영문 주소도 한번 넣어봐."
-
-);
-
-
-hideResults();
-
-return;
-
-}
-
-
-showStatus("");
-
-
-box.classList.add(
-"show"
-);
-
-
-
-unique.forEach(
-place => {
-
-
-const row =
-document.createElement(
-"div"
-);
-
-
-row.className =
-"result";
-
-
-row.innerHTML = `
-
-<div class="resultName">
-${esc(place.name)}
-</div>
-
-${
-place.nativeName !==
-place.name
-?
-`
-<div class="resultNative">
-${esc(place.nativeName)}
-</div>
-`
-:
-""
-}
-
-<div class="resultAddress">
-${esc(place.address)}
-</div>
-
-<div class="actions">
-
-<button class="btn primary go">
-📍 바로 길찾기
-</button>
-
-<button class="btn wp">
-＋ 경유지
-</button>
-
-<button class="btn sch">
-＋ 일정
-</button>
-
-<button class="btn fav">
-♡ 찜
-</button>
-
-<button class="btn prev">
-지도보기
-</button>
-
-</div>
-
-`;
-
-
-row
-.querySelector(
-".go"
-)
-.onclick =
-async () => {
-
-
-state.navStops =
-[place];
-
-
-saveState();
-
-
-renderNavStops();
-
-refreshMarkers();
-
-hideResults();
-
-
-await calculateRoute();
-
-};
-
-
-
-row
-.querySelector(
-".wp"
-)
-.onclick =
-async () => {
-
-
-if (
-!state.navStops
-.some(
-item =>
-samePlace(
-item,
-place
-)
-)
-) {
-
-state.navStops
-.push(
-place
-);
-
-}
-
-
-saveState();
 
+      if (
+        pickMode ===
+        "new"
+      ) {
 
-renderNavStops();
 
-refreshMarkers();
+        draftCoords = {
 
-hideResults();
+          lng:
+            event.lngLat.lng,
 
+          lat:
+            event.lngLat.lat
 
-await calculateRoute();
+        };
 
-};
 
+        openPlaceSheet({
 
+          name:
 
-row
-.querySelector(
-".sch"
-)
-.onclick =
-() =>
-addSchedule(
-place
-);
+            document
+            .getElementById(
+              "quickName"
+            )
+            .value
+            .trim(),
 
+          category:
 
+            document
+            .getElementById(
+              "quickCategory"
+            )
+            .value,
 
-row
-.querySelector(
-".fav"
-)
-.onclick =
-() =>
-addFavorite(
-place
-);
+          address:
+            "",
 
+          lat:
+            event.lngLat.lat,
 
+          lng:
+            event.lngLat.lng
 
-row
-.querySelector(
-".prev"
-)
-.onclick =
-() =>
-previewPlace(
-place
-);
+        });
 
 
+      }
 
-box.appendChild(
-row
-);
 
-}
-);
-
-
-
-if (
-compact &&
-unique.length > 5
-) {
-
-while (
-box.children.length > 5
-) {
-
-box.lastElementChild
-.remove();
-
-}
-
-}
-
-}
-
-
-
-function previewPlace(
-place
-) {
-
-changeView(
-"map"
-);
-
-
-if (
-previewMarker
-) {
-
-previewMarker.remove();
-
-}
-
-
-previewMarker =
-new maplibregl.Marker({
-color:"#f59e0b"
-})
-
-.setLngLat([
-place.lng,
-place.lat
-])
-
-.setPopup(
-
-new maplibregl.Popup({
-offset:24
-})
-
-.setHTML(
-
-`
-<b>
-${esc(place.name)}
-</b>
-
-<br>
-
-<small>
-${esc(place.address)}
-</small>
-`
-
-)
-
-)
+      else if (
 
-.addTo(map);
+        pickMode ===
+        "existing"
 
+        &&
 
-previewMarker
-.togglePopup();
+        pendingPinPlaceId
 
+      ) {
 
-map.flyTo({
 
-center:[
-place.lng,
-place.lat
-],
+        const place =
+          getPlace(
+            pendingPinPlaceId
+          );
 
-zoom:
-16
 
-});
+        if (place) {
 
-}
-
-
-
-/* ========================
-   길찾기
-======================== */
-
-async function calculateRoute() {
-
-if (
-!state.navStops.length
-) {
-
-setSummary(
-
-null,
-
-"검색 결과에서 ‘바로 길찾기’를 눌러줘."
-
-);
-
-
-clearRouteLine();
-
-return;
-
-}
-
 
-setSummary(
+          place.lng =
+            event.lngLat.lng;
 
-"계산 중...",
 
-"실제 도로 경로를 계산하고 있어."
+          place.lat =
+            event.lngLat.lat;
 
-);
 
+          saveState();
 
-try {
 
+          renderAll();
 
-const start =
-await getRouteStart();
 
+          renderMapMarkers();
 
-const coordinates = [
 
-[
-start.lng,
-start.lat
-],
+          map.flyTo({
 
-...state.navStops
-.map(
-place => [
-place.lng,
-place.lat
-]
-)
+            center: [
 
-];
+              place.lng,
 
+              place.lat
 
-const response =
-await fetch(
+            ],
 
-`${WORKER}/route`,
+            zoom:
+              16
 
-{
+          });
 
-method:
-"POST",
 
-headers:{
-"Content-Type":
-"application/json"
-},
+          alert(
 
-body:
-JSON.stringify({
+            `${place.name} 위치를 저장했어.`
 
-profile:
-state.routeMode,
+          );
 
-coordinates
 
-})
+        }
 
-}
-
-);
-
-
-const data =
-await response.json();
 
+      }
 
-if (
-!response.ok
-) {
 
-throw new Error(
+      setPickMode(
+        null
+      );
 
-data.error?.message ||
 
-data.error ||
+      pendingPinPlaceId =
+        null;
 
-data.message ||
 
-`길찾기 오류 ${response.status}`
+    }
+  );
 
-);
 
 }
-
-
-lastRoute =
-data;
-
-
-lastSegments =
-
-data.features?.[0]
-?.properties
-?.segments
-
-||
-
-[];
-
-
-drawRoute(
-data
-);
-
-
-renderNavStops();
-
-
-const summary =
 
-data.features?.[0]
-?.properties
-?.summary;
 
 
-if (
-summary
+function markerElement(
+  place
 ) {
 
 
-document
-.getElementById(
-"routeTime"
-)
-.textContent =
-formatDuration(
-summary.duration
-);
+  const info =
+
+    categoryInfo[
+      place.category
+    ]
+
+    ||
+
+    categoryInfo.etc;
 
 
-document
-.getElementById(
-"routeDistance"
-)
-.textContent =
-formatDistance(
-summary.distance
-);
+  const el =
+    document.createElement(
+      "div"
+    );
 
 
-document
-.getElementById(
-"routeMessage"
-)
-.textContent =
-
-`${modeLabel()} · ${start.name || "출발지"} → ${state.navStops[state.navStops.length-1].name}`;
-
-}
-
-else {
-
-setSummary(
-
-"경로 완료",
-
-modeLabel() +
-" 경로를 표시했어."
-
-);
-
-}
+  el.className =
+    "marker";
 
 
-refreshMarkers();
-
-}
-
-catch(error) {
-
-setSummary(
-
-"길찾기 실패",
-
-error.message
-
-);
+  el.style.background =
+    info.color;
 
 
-alert(
-error.message
-);
+  el.innerHTML =
+    `<span>${info.emoji}</span>`;
 
-}
+
+  return el;
 
 }
 
 
 
-function drawRoute(
-geojson
+function renderMapMarkers() {
+
+
+  if (!mapReady) {
+
+    return;
+
+  }
+
+
+  savedMarkers
+  .forEach(
+    marker =>
+      marker.remove()
+  );
+
+
+  savedMarkers =
+    [];
+
+
+  state.places
+  .forEach(
+    place => {
+
+
+      if (
+
+        !Number.isFinite(
+          Number(place.lng)
+        )
+
+        ||
+
+        !Number.isFinite(
+          Number(place.lat)
+        )
+
+      ) {
+
+        return;
+
+      }
+
+
+      const marker =
+
+        new maptilersdk.Marker({
+
+          element:
+            markerElement(
+              place
+            ),
+
+          anchor:
+            "bottom"
+
+        })
+
+        .setLngLat([
+
+          place.lng,
+
+          place.lat
+
+        ])
+
+        .setPopup(
+
+          new maptilersdk.Popup({
+
+            offset:
+              25
+
+          })
+
+          .setHTML(
+
+            `<b>${esc(
+              place.name
+            )}</b>
+
+            <br>
+
+            <small>
+              ${esc(
+                place.address || ""
+              )}
+            </small>`
+
+          )
+
+        )
+
+        .addTo(
+          map
+        );
+
+
+      savedMarkers.push(
+        marker
+      );
+
+
+    }
+  );
+
+
+}
+
+
+
+function fitSaved() {
+
+
+  if (!mapReady) {
+
+    return;
+
+  }
+
+
+  const points =
+
+    state.places
+    .filter(
+      place =>
+
+        Number.isFinite(
+          Number(place.lng)
+        )
+
+        &&
+
+        Number.isFinite(
+          Number(place.lat)
+        )
+
+    );
+
+
+  if (!points.length) {
+
+
+    map.flyTo({
+
+      center: [
+
+        FUKUOKA.lng,
+
+        FUKUOKA.lat
+
+      ],
+
+      zoom:
+        12.6
+
+    });
+
+
+    return;
+
+  }
+
+
+  if (
+    points.length ===
+    1
+  ) {
+
+
+    map.flyTo({
+
+      center: [
+
+        points[0].lng,
+
+        points[0].lat
+
+      ],
+
+      zoom:
+        15.5
+
+    });
+
+
+    return;
+
+  }
+
+
+  const bounds =
+    new maptilersdk
+    .LngLatBounds();
+
+
+  points
+  .forEach(
+    place =>
+
+      bounds.extend([
+
+        place.lng,
+
+        place.lat
+
+      ])
+
+  );
+
+
+  map.fitBounds(
+
+    bounds,
+
+    {
+
+      padding:
+        60,
+
+      maxZoom:
+        15
+
+    }
+
+  );
+
+
+}
+
+
+
+function setPickMode(
+  mode
 ) {
 
-if (
-!mapReady ||
-!map.getSource(
-"route"
-)
+
+  pickMode =
+    mode;
+
+
+  document
+  .getElementById(
+    "newPinBtn"
+  )
+  .classList
+  .toggle(
+
+    "active",
+
+    mode === "new"
+
+  );
+
+
+  if (mode) {
+
+
+    alert(
+
+      mode === "new"
+
+      ?
+
+      "지도에서 저장할 위치를 한 번 눌러줘."
+
+      :
+
+      "지도에서 이 장소의 위치를 한 번 눌러줘."
+
+    );
+
+
+  }
+
+
+}
+
+
+
+/* =========================
+   Google Maps
+========================= */
+
+function googleSearchUrl(
+  query
 ) {
 
-return;
+
+  return (
+
+    "https://www.google.com/maps/search/?api=1&query="
+
+    +
+
+    encodeURIComponent(
+      query ||
+      "Fukuoka"
+    )
+
+  );
 
 }
 
 
-map
-.getSource(
-"route"
-)
-.setData(
-geojson
-);
 
-
-const coordinates =
-
-geojson.features?.[0]
-?.geometry
-?.coordinates
-
-||
-
-[];
-
-
-if (
-!coordinates.length
+function placeGoogleUrl(
+  place
 ) {
 
-return;
 
-}
+  return (
 
+    place.googleUrl
+    ?.trim()
 
-const bounds =
-new maplibregl
-.LngLatBounds();
+    ||
 
+    googleSearchUrl(
 
-coordinates.forEach(
-coordinate =>
-bounds.extend(
-coordinate
-)
-);
+      `${place.name} ${place.address || "Fukuoka Japan"}`
 
+    )
 
-map.fitBounds(
-
-bounds,
-
-{
-
-padding:
-55,
-
-maxZoom:
-16,
-
-duration:
-650
-
-}
-
-);
+  );
 
 }
 
 
 
-function clearRouteLine() {
-
-lastRoute =
-null;
-
-
-lastSegments =
-[];
-
-
-if (
-mapReady &&
-map.getSource(
-"route"
-)
+function googleToken(
+  place
 ) {
 
-map
-.getSource(
-"route"
-)
-.setData({
 
-type:
-"FeatureCollection",
+  if (
 
-features:[]
+    Number.isFinite(
+      Number(place.lat)
+    )
 
-});
+    &&
+
+    Number.isFinite(
+      Number(place.lng)
+    )
+
+  ) {
+
+
+    return (
+
+      `${place.lat},${place.lng}`
+
+    );
+
+  }
+
+
+  return (
+
+    `${place.name} ${place.address || "Fukuoka Japan"}`
+
+  );
 
 }
 
-}
 
 
+/* 구글맵 긴 주소에 좌표가 있으면 자동 추출 */
 
-function setSummary(
-title,
-message
+function parseGoogleCoords(
+  url
 ) {
 
-document
-.getElementById(
-"routeTime"
-)
-.textContent =
-title ||
-"경로 없음";
+
+  const text =
+    String(
+      url || ""
+    );
 
 
-document
-.getElementById(
-"routeDistance"
-)
-.textContent =
-"";
+  let match =
+
+    text.match(
+
+      /@(-?\d+\.\d+),(-?\d+\.\d+)/
+
+    );
 
 
-document
-.getElementById(
-"routeMessage"
-)
-.textContent =
-message || "";
-
-}
+  if (match) {
 
 
+    return {
 
-/* 경유지 */
+      lat:
+        Number(
+          match[1]
+        ),
 
-function renderNavStops() {
+      lng:
+        Number(
+          match[2]
+        )
 
-const box =
-document.getElementById(
-"navStops"
-);
-
-
-box.innerHTML =
-"";
-
-
-state.navStops
-.forEach(
-(place,index) => {
+    };
 
 
-const segment =
-lastSegments[
-index
-];
+  }
 
 
-const row =
-document.createElement(
-"div"
-);
+
+  match =
+    text.match(
+
+      /!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/
+
+    );
 
 
-row.className =
-"stop";
+  if (match) {
 
 
-row.innerHTML = `
+    return {
 
-<div class="num">
-${index+1}
-</div>
+      lat:
+        Number(
+          match[1]
+        ),
 
+      lng:
+        Number(
+          match[2]
+        )
 
-<div>
-
-<div class="stopName">
-${esc(place.name)}
-</div>
-
-
-<div class="stopSub">
-
-${
-segment
-
-?
-
-`${formatDuration(segment.duration)} · ${formatDistance(segment.distance)}`
-
-:
-
-(
-index ===
-state.navStops.length-1
-
-?
-
-"목적지"
-
-:
-
-"경유지"
-)
-
-}
-
-</div>
-
-</div>
+    };
 
 
-<div>
-
-<button class="icon up">
-↑
-</button>
-
-<button class="icon down">
-↓
-</button>
-
-<button class="icon remove">
-×
-</button>
-
-</div>
-
-`;
+  }
 
 
-row
-.querySelector(
-".up"
-)
-.disabled =
-index === 0;
+
+  try {
 
 
-row
-.querySelector(
-".down"
-)
-.disabled =
-
-index ===
-state.navStops.length-1;
+    const parsed =
+      new URL(
+        text
+      );
 
 
-row
-.querySelector(
-".up"
-)
-.onclick =
-() =>
-moveNav(
-index,
--1
-);
+    const query =
+
+      parsed
+      .searchParams
+      .get(
+        "query"
+      )
+
+      ||
+
+      parsed
+      .searchParams
+      .get(
+        "destination"
+      );
 
 
-row
-.querySelector(
-".down"
-)
-.onclick =
-() =>
-moveNav(
-index,
-1
-);
+    if (query) {
 
 
-row
-.querySelector(
-".remove"
-)
-.onclick =
-() =>
-removeNav(
-index
-);
+      const coordinateMatch =
+
+        query.match(
+
+          /^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/
+
+        );
 
 
-box.appendChild(
-row
-);
+      if (
+        coordinateMatch
+      ) {
 
-}
-);
+
+        return {
+
+          lat:
+            Number(
+              coordinateMatch[1]
+            ),
+
+          lng:
+            Number(
+              coordinateMatch[2]
+            )
+
+        };
+
+
+      }
+
+
+    }
+
+
+  }
+
+  catch {}
+
+
+  return null;
 
 }
 
 
 
-async function moveNav(
-index,
-direction
+function openGoogleFromQuick() {
+
+
+  const query =
+
+    document
+    .getElementById(
+      "quickName"
+    )
+    .value
+    .trim()
+
+    ||
+
+    "후쿠오카 맛집";
+
+
+  window.open(
+
+    googleSearchUrl(
+
+      query +
+      " Fukuoka"
+
+    ),
+
+    "_blank"
+
+  );
+
+
+}
+
+
+
+/* =========================
+   장소 저장 / 수정
+========================= */
+
+function openPlaceSheet(
+  seed = {},
+  editId = null
 ) {
 
-const target =
-index +
-direction;
+
+  editingPlaceId =
+    editId;
 
 
-if (
-target < 0 ||
-target >=
-state.navStops.length
+  draftCoords =
+
+    Number.isFinite(
+      Number(seed.lng)
+    )
+
+    &&
+
+    Number.isFinite(
+      Number(seed.lat)
+    )
+
+    ?
+
+    {
+
+      lng:
+        Number(
+          seed.lng
+        ),
+
+      lat:
+        Number(
+          seed.lat
+        )
+
+    }
+
+    :
+
+    null;
+
+
+  document
+  .getElementById(
+    "sheetTitle"
+  )
+  .textContent =
+
+    editId
+
+    ?
+
+    "장소 수정"
+
+    :
+
+    "장소 저장";
+
+
+  document
+  .getElementById(
+    "placeName"
+  )
+  .value =
+    seed.name || "";
+
+
+  document
+  .getElementById(
+    "placeCategory"
+  )
+  .value =
+    seed.category ||
+    "restaurant";
+
+
+  document
+  .getElementById(
+    "placeAddress"
+  )
+  .value =
+    seed.address || "";
+
+
+  document
+  .getElementById(
+    "placeGoogleUrl"
+  )
+  .value =
+    seed.googleUrl || "";
+
+
+  document
+  .getElementById(
+    "placeNote"
+  )
+  .value =
+    seed.note || "";
+
+
+  document
+  .getElementById(
+    "coordHint"
+  )
+  .textContent =
+
+    draftCoords
+
+    ?
+
+    `📍 지도 위치 있음: ${draftCoords.lat.toFixed(5)}, ${draftCoords.lng.toFixed(5)}`
+
+    :
+
+    "📍 지도 위치 없음 — 나중에 저장목록에서 '핀 위치'로 지정 가능";
+
+
+  document
+  .getElementById(
+    "placeSheetBack"
+  )
+  .classList
+  .add(
+    "show"
+  );
+
+
+}
+
+
+
+function closePlaceSheet() {
+
+
+  document
+  .getElementById(
+    "placeSheetBack"
+  )
+  .classList
+  .remove(
+    "show"
+  );
+
+
+  editingPlaceId =
+    null;
+
+
+  draftCoords =
+    null;
+
+}
+
+
+
+function savePlaceFromSheet() {
+
+
+  const name =
+
+    document
+    .getElementById(
+      "placeName"
+    )
+    .value
+    .trim();
+
+
+  if (!name) {
+
+
+    alert(
+      "장소 이름을 입력해줘."
+    );
+
+
+    return;
+
+  }
+
+
+
+  const googleUrl =
+
+    document
+    .getElementById(
+      "placeGoogleUrl"
+    )
+    .value
+    .trim();
+
+
+
+  const parsedCoords =
+    parseGoogleCoords(
+      googleUrl
+    );
+
+
+  if (parsedCoords) {
+
+    draftCoords =
+      parsedCoords;
+
+  }
+
+
+
+  const data = {
+
+    name,
+
+    category:
+
+      document
+      .getElementById(
+        "placeCategory"
+      )
+      .value,
+
+    address:
+
+      document
+      .getElementById(
+        "placeAddress"
+      )
+      .value
+      .trim(),
+
+    googleUrl,
+
+    note:
+
+      document
+      .getElementById(
+        "placeNote"
+      )
+      .value
+      .trim(),
+
+    lat:
+
+      draftCoords
+      ?.lat
+      ??
+      null,
+
+    lng:
+
+      draftCoords
+      ?.lng
+      ??
+      null
+
+  };
+
+
+
+  if (editingPlaceId) {
+
+
+    const place =
+      getPlace(
+        editingPlaceId
+      );
+
+
+    if (place) {
+
+      Object.assign(
+        place,
+        data
+      );
+
+    }
+
+
+  }
+
+  else {
+
+
+    const duplicate =
+
+      state.places
+      .find(
+        place =>
+
+          normalize(
+            place.name
+          )
+
+          ===
+
+          normalize(
+            name
+          )
+
+          &&
+
+          normalize(
+            place.address
+          )
+
+          ===
+
+          normalize(
+            data.address
+          )
+
+      );
+
+
+    if (duplicate) {
+
+
+      alert(
+        "이미 저장한 장소 같아."
+      );
+
+
+      return;
+
+    }
+
+
+
+    state.places.unshift({
+
+      id:
+        uid(),
+
+      ...data,
+
+      createdAt:
+        Date.now()
+
+    });
+
+
+  }
+
+
+  saveState();
+
+
+  closePlaceSheet();
+
+
+  renderAll();
+
+
+  renderMapMarkers();
+
+}
+
+
+
+function quickSave() {
+
+
+  const name =
+
+    document
+    .getElementById(
+      "quickName"
+    )
+    .value
+    .trim();
+
+
+  if (!name) {
+
+
+    alert(
+      "장소 이름을 먼저 입력해줘."
+    );
+
+
+    return;
+
+  }
+
+
+  openPlaceSheet({
+
+    name,
+
+    category:
+
+      document
+      .getElementById(
+        "quickCategory"
+      )
+      .value,
+
+    address:
+      ""
+
+  });
+
+
+}
+
+
+
+function editPlace(id) {
+
+
+  const place =
+    getPlace(id);
+
+
+  if (place) {
+
+    openPlaceSheet(
+      place,
+      id
+    );
+
+  }
+
+}
+
+
+
+function removePlace(id) {
+
+
+  if (
+    !confirm(
+      "이 장소를 저장 목록에서 삭제할까?"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  state.places =
+
+    state.places
+    .filter(
+      place =>
+        place.id !== id
+    );
+
+
+  Object
+  .keys(
+    state.days
+  )
+  .forEach(
+    day => {
+
+
+      state.days[
+        day
+      ] =
+
+        state.days[
+          day
+        ]
+        .filter(
+          placeId =>
+            placeId !== id
+        );
+
+
+    }
+  );
+
+
+  saveState();
+
+
+  renderAll();
+
+
+  renderMapMarkers();
+
+}
+
+
+
+function pinPlace(id) {
+
+
+  pendingPinPlaceId =
+    id;
+
+
+  changeView(
+    "map"
+  );
+
+
+  setTimeout(
+    () =>
+
+      setPickMode(
+        "existing"
+      ),
+
+    150
+  );
+
+}
+
+
+
+/* =========================
+   일정에 장소 추가
+========================= */
+
+function openDaySheet(
+  placeId
 ) {
 
-return;
+
+  dayPickPlaceId =
+    placeId;
+
+
+  const box =
+
+    document
+    .getElementById(
+      "dayPickButtons"
+    );
+
+
+  box.innerHTML =
+    "";
+
+
+  [
+    "day1",
+    "day2",
+    "day3"
+  ]
+  .forEach(
+    day => {
+
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+        "pill";
+
+
+      button.textContent =
+        dayLabel(
+          day
+        );
+
+
+      button.onclick =
+        () => {
+
+
+          if (
+            !state.days[
+              day
+            ]
+            .includes(
+              placeId
+            )
+          ) {
+
+
+            state.days[
+              day
+            ]
+            .push(
+              placeId
+            );
+
+
+          }
+
+
+          saveState();
+
+
+          renderAll();
+
+
+          document
+          .getElementById(
+            "daySheetBack"
+          )
+          .classList
+          .remove(
+            "show"
+          );
+
+
+          alert(
+
+            `${dayLabel(day)} 일정에 추가했어.`
+
+          );
+
+
+        };
+
+
+      box.appendChild(
+        button
+      );
+
+
+    }
+  );
+
+
+  document
+  .getElementById(
+    "daySheetBack"
+  )
+  .classList
+  .add(
+    "show"
+  );
 
 }
 
 
-[
-state.navStops[index],
-state.navStops[target]
-]
-=
-[
-state.navStops[target],
-state.navStops[index]
-];
+
+/* =========================
+   저장 목록
+========================= */
+
+function renderCategoryFilters() {
 
 
-saveState();
+  const box =
 
-renderNavStops();
+    document
+    .getElementById(
+      "categoryFilters"
+    );
 
-refreshMarkers();
+
+  box.innerHTML =
+    "";
 
 
-await calculateRoute();
+  Object
+  .entries(
+    categoryInfo
+  )
+  .forEach(
+    ([key,info]) => {
+
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.className =
+
+        "pill"
+
+        +
+
+        (
+          selectedCategoryFilter
+          ===
+          key
+
+          ?
+
+          " active"
+
+          :
+
+          ""
+        );
+
+
+      button.textContent =
+
+        `${info.emoji} ${info.label}`;
+
+
+      button.onclick =
+        () => {
+
+
+          selectedCategoryFilter =
+            key;
+
+
+          renderCategoryFilters();
+
+
+          renderSaved();
+
+
+        };
+
+
+      box.appendChild(
+        button
+      );
+
+
+    }
+  );
 
 }
 
 
 
-async function removeNav(
-index
+function renderSaved() {
+
+
+  const box =
+
+    document
+    .getElementById(
+      "savedList"
+    );
+
+
+  const query =
+
+    normalize(
+
+      document
+      .getElementById(
+        "savedSearch"
+      )
+      ?.value
+      ||
+      ""
+
+    );
+
+
+  const list =
+
+    state.places
+    .filter(
+      place =>
+
+
+        (
+          selectedCategoryFilter
+          ===
+          "all"
+
+          ||
+
+          place.category
+          ===
+          selectedCategoryFilter
+        )
+
+        &&
+
+        (
+          !query
+
+          ||
+
+          normalize(
+
+            place.name
+            +
+            " "
+            +
+            place.address
+            +
+            " "
+            +
+            place.note
+
+          )
+          .includes(
+            query
+          )
+
+        )
+
+    );
+
+
+  if (!list.length) {
+
+
+    box.innerHTML =
+
+      `<div class="empty">
+
+        저장한 장소가 없어.
+
+        <br><br>
+
+        지도 화면에서 이름만 빠르게 저장해도 돼.
+
+      </div>`;
+
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    "";
+
+
+  list
+  .forEach(
+    place => {
+
+
+      const info =
+
+        categoryInfo[
+          place.category
+        ]
+
+        ||
+
+        categoryInfo.etc;
+
+
+      const hasPin =
+
+        Number.isFinite(
+          Number(place.lng)
+        )
+
+        &&
+
+        Number.isFinite(
+          Number(place.lat)
+        );
+
+
+      const element =
+
+        document.createElement(
+          "div"
+        );
+
+
+      element.className =
+        "place";
+
+
+      element.innerHTML = `
+
+        <div class="placeHead">
+
+
+          <div class="emoji">
+
+            ${info.emoji}
+
+          </div>
+
+
+          <div class="placeBody">
+
+
+            <div class="placeName">
+
+              ${esc(place.name)}
+
+              ${
+                hasPin
+
+                ?
+
+                ""
+
+                :
+
+                `<span class="pinMissing">
+                  핀 없음
+                </span>`
+              }
+
+            </div>
+
+
+            <div class="placeSub">
+
+              ${esc(
+                place.address
+                ||
+                place.note
+                ||
+                "주소/메모 없음"
+              )}
+
+            </div>
+
+
+            <span class="tag">
+
+              ${info.label}
+
+            </span>
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <div class="actions">
+
+
+          <button class="btn google">
+
+            Google Maps
+
+          </button>
+
+
+          <button class="btn primary day">
+
+            ＋ 일정
+
+          </button>
+
+
+          <button class="btn pin">
+
+            ${
+              hasPin
+
+              ?
+
+              "지도보기"
+
+              :
+
+              "📍 핀 위치"
+            }
+
+          </button>
+
+
+          <button class="btn edit">
+
+            수정
+
+          </button>
+
+
+          <button class="btn danger del">
+
+            삭제
+
+          </button>
+
+
+        </div>
+
+      `;
+
+
+      element
+      .querySelector(
+        ".google"
+      )
+      .onclick =
+        () =>
+
+          window.open(
+
+            placeGoogleUrl(
+              place
+            ),
+
+            "_blank"
+
+          );
+
+
+      element
+      .querySelector(
+        ".day"
+      )
+      .onclick =
+        () =>
+
+          openDaySheet(
+            place.id
+          );
+
+
+      element
+      .querySelector(
+        ".pin"
+      )
+      .onclick =
+        () =>
+
+
+          hasPin
+
+          ?
+
+          showSavedOnMap(
+            place
+          )
+
+          :
+
+          pinPlace(
+            place.id
+          );
+
+
+      element
+      .querySelector(
+        ".edit"
+      )
+      .onclick =
+        () =>
+
+          editPlace(
+            place.id
+          );
+
+
+      element
+      .querySelector(
+        ".del"
+      )
+      .onclick =
+        () =>
+
+          removePlace(
+            place.id
+          );
+
+
+      box.appendChild(
+        element
+      );
+
+
+    }
+  );
+
+}
+
+
+
+function showSavedOnMap(
+  place
 ) {
 
-state.navStops.splice(
-index,
-1
-);
+
+  changeView(
+    "map"
+  );
 
 
-saveState();
-
-renderNavStops();
-
-refreshMarkers();
+  setTimeout(
+    () => {
 
 
-if (
-state.navStops.length
-) {
+      map.flyTo({
 
-await calculateRoute();
+        center: [
 
-}
+          place.lng,
 
-else {
+          place.lat
 
-clearRouteLine();
+        ],
+
+        zoom:
+          16
+
+      });
 
 
-setSummary(
+    },
 
-null,
-
-"검색 결과에서 ‘바로 길찾기’를 눌러줘."
-
-);
-
-}
+    120
+  );
 
 }
 
 
 
-/* ========================
-   일정 / 찜
-======================== */
-
-function addSchedule(
-place
-) {
-
-const schedule =
-currentSchedule();
-
-
-if (
-schedule.some(
-item =>
-samePlace(
-item,
-place
-)
-)
-) {
-
-alert(
-"이미 이 날짜 일정에 있어."
-);
-
-return;
-
-}
-
-
-schedule.push({
-
-...place,
-
-id:
-makeId()
-
-});
-
-
-saveState();
-
-renderAll();
-
-
-alert(
-dayLabel(
-state.selectedDay
-)
-+
-" 일정에 추가했어."
-);
-
-}
-
-
-
-function addFavorite(
-place
-) {
-
-if (
-state.favorites.some(
-item =>
-samePlace(
-item,
-place
-)
-)
-) {
-
-alert(
-"이미 찜한 장소야."
-);
-
-return;
-
-}
-
-
-state.favorites.push({
-
-...place,
-
-id:
-makeId()
-
-});
-
-
-saveState();
-
-renderAll();
-
-
-alert(
-"찜에 추가했어. ❤️"
-);
-
-}
-
-
+/* =========================
+   날짜 UI
+========================= */
 
 function renderDays() {
 
-document
-.querySelectorAll(
-"[data-day-tabs]"
-)
-.forEach(
-box => {
+
+  document
+  .querySelectorAll(
+    "[data-day-tabs]"
+  )
+  .forEach(
+    box => {
 
 
-box.innerHTML =
-"";
+      box.innerHTML =
+        "";
 
 
-[
-["day1","1일차"],
-["day2","2일차"],
-["day3","3일차"]
-]
-.forEach(
-([value,label]) => {
+      [
+        "day1",
+        "day2",
+        "day3"
+      ]
+      .forEach(
+        day => {
 
 
-const button =
-document.createElement(
-"button"
-);
+          const button =
+            document.createElement(
+              "button"
+            );
 
 
-button.className =
+          button.className =
 
-"pill"
+            "pill"
 
-+
+            +
 
-(
-state.selectedDay ===
-value
-?
-" active"
-:
-""
-);
+            (
+              state.selectedDay
+              ===
+              day
 
+              ?
 
-button.textContent =
-label;
+              " active"
 
+              :
 
-button.onclick =
-() => {
-
-state.selectedDay =
-value;
-
-saveState();
-
-renderAll();
-
-};
+              ""
+            );
 
 
-box.appendChild(
-button
-);
+          button.textContent =
+            dayLabel(
+              day
+            );
+
+
+          button.onclick =
+            () => {
+
+
+              state.selectedDay =
+                day;
+
+
+              saveState();
+
+
+              renderAll();
+
+
+            };
+
+
+          box.appendChild(
+            button
+          );
+
+
+        }
+      );
+
+
+    }
+  );
 
 }
-);
-
-}
-);
-
-}
 
 
+
+/* =========================
+   홈
+========================= */
 
 function renderHome() {
 
-const box =
-document.getElementById(
-"homeSchedule"
-);
+
+  document
+  .getElementById(
+    "statSaved"
+  )
+  .textContent =
+    state.places.length;
 
 
-const schedule =
-currentSchedule();
+  document
+  .getElementById(
+    "statDay"
+  )
+  .textContent =
+    state.days[
+      state.selectedDay
+    ]
+    .length;
 
 
-box.innerHTML =
+  document
+  .getElementById(
+    "statCategories"
+  )
+  .textContent =
 
-schedule.length
+    new Set(
 
-?
+      state.places
+      .map(
+        place =>
+          place.category
+      )
 
-schedule
-.map(
-(place,index) => `
+    )
+    .size;
 
-<div class="stop">
 
-<div class="num">
-${index+1}
-</div>
+  const box =
 
-<div>
+    document
+    .getElementById(
+      "homeSchedule"
+    );
 
-<div class="stopName">
-${esc(place.name)}
-</div>
 
-<div class="stopSub">
-${esc(place.address || "")}
-</div>
+  const list =
+    dayPlaces();
 
-</div>
 
-<div></div>
+  box.innerHTML =
 
-</div>
+    list.length
 
-`
-)
-.join("")
+    ?
 
-:
+    list
+    .map(
+      (place,index) => `
 
-`
 
-<div class="empty">
+        <div class="scheduleItem">
 
-아직 일정이 없어.
 
-<br><br>
+          <div class="num">
 
-지도에서 검색해서
-일정에 추가해줘.
+            ${index + 1}
 
-</div>
+          </div>
 
-`;
+
+          <div>
+
+
+            <div class="scheduleName">
+
+              ${esc(place.name)}
+
+            </div>
+
+
+            <div class="scheduleSub">
+
+              ${esc(
+                place.address || ""
+              )}
+
+            </div>
+
+
+          </div>
+
+
+          <button
+            class="iconBtn"
+            onclick="window.__openPlaceGoogle('${place.id}')"
+          >
+
+            ↗
+
+          </button>
+
+
+        </div>
+
+
+      `
+    )
+    .join("")
+
+    :
+
+    `
+
+      <div class="empty">
+
+        아직 일정이 없어.
+
+        <br><br>
+
+        저장한 장소에서 일정에 추가해줘.
+
+      </div>
+
+    `;
+
+}
+
+
+
+/* =========================
+   일정
+========================= */
+
+function moveSchedule(
+  index,
+  direction
+) {
+
+
+  const list =
+    state.days[
+      state.selectedDay
+    ];
+
+
+  const target =
+    index +
+    direction;
+
+
+  if (
+
+    target < 0
+
+    ||
+
+    target >=
+    list.length
+
+  ) {
+
+    return;
+
+  }
+
+
+  [
+
+    list[index],
+
+    list[target]
+
+  ] = [
+
+    list[target],
+
+    list[index]
+
+  ];
+
+
+  saveState();
+
+
+  renderAll();
+
+}
+
+
+
+function removeSchedule(
+  index
+) {
+
+
+  state.days[
+    state.selectedDay
+  ]
+  .splice(
+    index,
+    1
+  );
+
+
+  saveState();
+
+
+  renderAll();
 
 }
 
@@ -4670,1189 +4732,1100 @@ ${esc(place.address || "")}
 
 function renderSchedule() {
 
-const box =
-document.getElementById(
-"scheduleList"
-);
+
+  const box =
+
+    document
+    .getElementById(
+      "scheduleList"
+    );
 
 
-const schedule =
-currentSchedule();
+  const list =
+    dayPlaces();
 
 
-box.innerHTML =
-"";
+  box.innerHTML =
+    "";
 
 
-if (
-!schedule.length
+  if (!list.length) {
+
+
+    box.innerHTML =
+
+      `<div class="empty">
+
+        ${dayLabel(
+          state.selectedDay
+        )} 일정이 비어있어.
+
+      </div>`;
+
+  }
+
+
+  list
+  .forEach(
+    (place,index) => {
+
+
+      const element =
+
+        document.createElement(
+          "div"
+        );
+
+
+      element.className =
+        "scheduleItem";
+
+
+      element.innerHTML = `
+
+
+        <div class="num">
+
+          ${index + 1}
+
+        </div>
+
+
+        <div>
+
+
+          <div class="scheduleName">
+
+            ${esc(place.name)}
+
+          </div>
+
+
+          <div class="scheduleSub">
+
+            ${esc(
+              place.address || ""
+            )}
+
+          </div>
+
+
+        </div>
+
+
+        <div>
+
+
+          <button class="iconBtn up">
+
+            ↑
+
+          </button>
+
+
+          <button class="iconBtn down">
+
+            ↓
+
+          </button>
+
+
+          <button class="iconBtn remove">
+
+            ×
+
+          </button>
+
+
+        </div>
+
+
+      `;
+
+
+      element
+      .querySelector(
+        ".up"
+      )
+      .disabled =
+        index === 0;
+
+
+      element
+      .querySelector(
+        ".down"
+      )
+      .disabled =
+
+        index ===
+        list.length - 1;
+
+
+      element
+      .querySelector(
+        ".up"
+      )
+      .onclick =
+        () =>
+
+          moveSchedule(
+            index,
+            -1
+          );
+
+
+      element
+      .querySelector(
+        ".down"
+      )
+      .onclick =
+        () =>
+
+          moveSchedule(
+            index,
+            1
+          );
+
+
+      element
+      .querySelector(
+        ".remove"
+      )
+      .onclick =
+        () =>
+
+          removeSchedule(
+            index
+          );
+
+
+      box.appendChild(
+        element
+      );
+
+
+    }
+  );
+
+
+  renderRouteButtons();
+
+}
+
+
+
+/* =========================
+   Google Maps 일정 동선
+========================= */
+
+function buildDirectionsUrl(
+  places
 ) {
 
-box.innerHTML = `
 
-<div class="empty">
+  if (!places.length) {
 
-${dayLabel(
-state.selectedDay
-)}
+    return null;
 
-일정이 비어있어.
-
-</div>
-
-`;
-
-return;
-
-}
+  }
 
 
+  if (
+    places.length ===
+    1
+  ) {
 
-schedule.forEach(
-(place,index) => {
+    return placeGoogleUrl(
+      places[0]
+    );
 
-
-const row =
-document.createElement(
-"div"
-);
-
-
-row.className =
-"stop";
+  }
 
 
-row.innerHTML = `
-
-<div class="num">
-${index+1}
-</div>
+  const params =
+    new URLSearchParams();
 
 
-<div>
-
-<div class="stopName">
-${esc(place.name)}
-</div>
-
-<div class="stopSub">
-${esc(place.address || "")}
-</div>
-
-</div>
+  params.set(
+    "api",
+    "1"
+  );
 
 
-<div>
+  params.set(
 
-<button class="icon up">
-↑
-</button>
+    "origin",
 
-<button class="icon down">
-↓
-</button>
+    googleToken(
+      places[0]
+    )
 
-<button class="icon remove">
-×
-</button>
-
-</div>
-
-`;
+  );
 
 
-row
-.querySelector(
-".up"
-)
-.disabled =
-index === 0;
+  params.set(
+
+    "destination",
+
+    googleToken(
+      places[
+        places.length - 1
+      ]
+    )
+
+  );
 
 
-row
-.querySelector(
-".down"
-)
-.disabled =
+  params.set(
 
-index ===
-schedule.length-1;
+    "travelmode",
 
+    state.travelMode
 
-row
-.querySelector(
-".up"
-)
-.onclick =
-() =>
-moveSchedule(
-index,
--1
-);
+  );
 
 
-row
-.querySelector(
-".down"
-)
-.onclick =
-() =>
-moveSchedule(
-index,
-1
-);
+  if (
+    places.length > 2
+  ) {
 
 
-row
-.querySelector(
-".remove"
-)
-.onclick =
-() => {
+    params.set(
 
-schedule.splice(
-index,
-1
-);
+      "waypoints",
 
-saveState();
+      places
+      .slice(
+        1,
+        -1
+      )
+      .map(
+        googleToken
+      )
+      .join("|")
 
-renderAll();
-
-};
+    );
 
 
-box.appendChild(
-row
-);
+  }
 
-}
-);
+
+  return (
+
+    "https://www.google.com/maps/dir/?"
+
+    +
+
+    params.toString()
+
+  );
 
 }
 
 
 
-function moveSchedule(
-index,
-direction
+function splitRoute(
+  list,
+  maxPlaces = 5
 ) {
 
-const schedule =
-currentSchedule();
+
+  if (
+    list.length <=
+    maxPlaces
+  ) {
+
+    return [
+      list
+    ];
+
+  }
 
 
-const target =
-index +
-direction;
+  const chunks =
+    [];
 
 
-if (
-target < 0 ||
-target >=
-schedule.length
-) {
-
-return;
-
-}
+  let start =
+    0;
 
 
-[
-schedule[index],
-schedule[target]
-]
-=
-[
-schedule[target],
-schedule[index]
-];
+  while (
+    start <
+    list.length - 1
+  ) {
 
 
-saveState();
+    const end =
 
-renderAll();
+      Math.min(
 
-}
+        start
+        +
+        maxPlaces,
 
+        list.length
 
-
-function renderFavorites() {
-
-const box =
-document.getElementById(
-"favoriteList"
-);
+      );
 
 
-box.innerHTML =
-"";
+    chunks.push(
+
+      list.slice(
+        start,
+        end
+      )
+
+    );
 
 
-if (
-!state.favorites.length
-) {
+    start =
+      end - 1;
 
-box.innerHTML = `
 
-<div class="empty">
-아직 찜한 장소가 없어. ❤️
-</div>
+  }
 
-`;
 
-return;
+  return chunks;
 
 }
 
 
 
-state.favorites
-.forEach(
-(place,index) => {
+function renderRouteButtons() {
 
 
-const info =
-categoryInfo[
-place.category ||
-"etc"
-];
+  const box =
+
+    document
+    .getElementById(
+      "routeButtons"
+    );
 
 
-const div =
-document.createElement(
-"div"
-);
+  const list =
+    dayPlaces();
 
 
-div.className =
-"favorite";
+  box.innerHTML =
+    "";
 
 
-div.innerHTML = `
-
-<div class="resultName">
-
-${info.emoji}
-
-${esc(place.name)}
-
-</div>
+  if (!list.length) {
 
 
-<span class="tag">
+    box.innerHTML =
 
-${info.label}
+      `<span class="muted">
 
-</span>
+        일정을 추가하면
+        Google Maps 동선을 열 수 있어.
 
-
-<div class="actions">
-
-<button class="btn primary go">
-길찾기
-</button>
-
-<button class="btn sch">
-${dayLabel(state.selectedDay)} 추가
-</button>
-
-<button class="btn map">
-지도
-</button>
-
-<button class="btn danger del">
-삭제
-</button>
-
-</div>
-
-`;
+      </span>`;
 
 
-div
-.querySelector(
-".go"
-)
-.onclick =
-async () => {
+    return;
+
+  }
 
 
-state.navStops =
-[place];
+  const chunks =
+    splitRoute(
+      list,
+      5
+    );
 
 
-saveState();
+  chunks
+  .forEach(
+    (chunk,index) => {
 
 
-changeView(
-"map"
-);
+      const button =
+        document.createElement(
+          "button"
+        );
 
 
-renderNavStops();
-
-refreshMarkers();
-
-
-await calculateRoute();
-
-};
+      button.className =
+        "btn primary";
 
 
+      button.textContent =
 
-div
-.querySelector(
-".sch"
-)
-.onclick =
-() =>
-addSchedule(
-place
-);
+        chunks.length === 1
 
+        ?
 
+        "🗺️ Google Maps로 동선 열기"
 
-div
-.querySelector(
-".map"
-)
-.onclick =
-() =>
-previewPlace(
-place
-);
+        :
+
+        `🗺️ ${index + 1}구간 (${chunk[0].name} → ${chunk[chunk.length - 1].name})`;
 
 
+      button.onclick =
+        () =>
 
-div
-.querySelector(
-".del"
-)
-.onclick =
-() => {
+          window.open(
 
+            buildDirectionsUrl(
+              chunk
+            ),
 
-state.favorites.splice(
-index,
-1
-);
+            "_blank"
 
-
-saveState();
-
-renderAll();
-
-};
+          );
 
 
-box.appendChild(
-div
-);
+      box.appendChild(
+        button
+      );
 
-}
-);
+
+    }
+  );
 
 }
 
 
 
-function renderModes() {
-
-document
-.querySelectorAll(
-"[data-mode]"
-)
-.forEach(
-button => {
+function renderTravelModes() {
 
 
-button.classList.toggle(
+  document
+  .querySelectorAll(
+    "[data-travel-mode]"
+  )
+  .forEach(
+    button => {
 
-"active",
 
-button.dataset.mode ===
-state.routeMode
+      button
+      .classList
+      .toggle(
 
-);
+        "active",
+
+        button.dataset
+        .travelMode
+
+        ===
+
+        state.travelMode
+
+      );
+
+
+    }
+  );
 
 }
-);
-
-}
 
 
+
+/* =========================
+   전체 렌더
+========================= */
 
 function renderAll() {
 
-renderDays();
 
-renderHome();
-
-renderSchedule();
-
-renderFavorites();
-
-renderModes();
-
-renderNavStops();
+  renderDays();
 
 
-if (
-mapReady
-) {
+  renderHome();
 
-refreshMarkers();
 
-}
+  renderCategoryFilters();
+
+
+  renderSaved();
+
+
+  renderSchedule();
+
+
+  renderTravelModes();
 
 }
 
 
 
-/* ========================
-   화면
-======================== */
+/* =========================
+   화면 이동
+========================= */
 
 function changeView(
-view
+  view
 ) {
 
-document
-.querySelectorAll(
-".view"
-)
-.forEach(
-item =>
-item.classList.remove(
-"active"
-)
-);
+
+  document
+  .querySelectorAll(
+    ".view"
+  )
+  .forEach(
+    element =>
+
+      element
+      .classList
+      .remove(
+        "active"
+      )
+
+  );
 
 
-document
-.getElementById(
-view +
-"View"
-)
-.classList.add(
-"active"
-);
+  document
+  .getElementById(
+    view +
+    "View"
+  )
+  .classList
+  .add(
+    "active"
+  );
 
 
-document
-.querySelectorAll(
-".bottom button"
-)
-.forEach(
-button => {
+  document
+  .querySelectorAll(
+    ".bottom button"
+  )
+  .forEach(
+    button => {
 
 
-button.classList.toggle(
+      button
+      .classList
+      .toggle(
 
-"active",
+        "active",
 
-button.dataset.view ===
-view
+        button.dataset.view
+        ===
+        view
 
-);
-
-}
-);
-
-
-if (
-view === "map"
-) {
-
-setTimeout(
-() => {
-
-map.resize();
-
-refreshMarkers();
+      );
 
 
-if (
-lastRoute
-) {
-
-drawRoute(
-lastRoute
-);
-
-}
-
-},
-100
-);
-
-}
+    }
+  );
 
 
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
-
-}
+  if (
+    view ===
+    "map"
+  ) {
 
 
-
-function fitRoute() {
-
-if (
-lastRoute
-) {
-
-drawRoute(
-lastRoute
-);
-
-return;
-
-}
+    setTimeout(
+      () => {
 
 
-const points =
-[
-...state.navStops
-];
+        map.resize();
 
 
-if (
-state.useManualStart &&
-state.manualStart
-) {
-
-points.unshift(
-state.manualStart
-);
-
-}
-
-else if (
-currentLocation
-) {
-
-points.unshift(
-currentLocation
-);
-
-}
+        renderMapMarkers();
 
 
-if (
-!points.length
-) {
-return;
-}
+      },
+
+      100
+    );
 
 
-const bounds =
-new maplibregl
-.LngLatBounds();
+  }
 
 
-points.forEach(
-place =>
-bounds.extend([
-place.lng,
-place.lat
-])
-);
+  window.scrollTo({
 
+    top:
+      0,
 
-if (
-points.length === 1
-) {
+    behavior:
+      "smooth"
 
-map.flyTo({
-
-center:[
-points[0].lng,
-points[0].lat
-],
-
-zoom:
-15.5
-
-});
-
-}
-
-else {
-
-map.fitBounds(
-
-bounds,
-
-{
-padding:60,
-maxZoom:15
-}
-
-);
-
-}
+  });
 
 }
 
 
 
-function setPickMode(
-mode
-) {
+/* =========================
+   전역 Google 열기
+========================= */
 
-pickMode =
-mode;
-
-
-document
-.getElementById(
-"pickStartBtn"
-)
-.classList.toggle(
-
-"active",
-
-mode === "start"
-
-);
+window.__openPlaceGoogle =
+  id => {
 
 
-document
-.getElementById(
-"pickDestBtn"
-)
-.classList.toggle(
-
-"active",
-
-mode === "dest"
-
-);
+    const place =
+      getPlace(
+        id
+      );
 
 
-if (
-mode
-) {
+    if (place) {
 
-showStatus(
 
-mode === "start"
+      window.open(
 
-?
+        placeGoogleUrl(
+          place
+        ),
 
-"지도에서 출발할 위치를 한 번 눌러줘."
+        "_blank"
 
-:
+      );
 
-"지도에서 목적지로 쓸 위치를 한 번 눌러줘."
 
-);
+    }
 
-}
 
-}
+  };
 
 
 
-/* ========================
+/* =========================
    이벤트
-======================== */
+========================= */
+
+document
+.querySelectorAll(
+  ".bottom button"
+)
+.forEach(
+  button => {
+
+
+    button.onclick =
+      () =>
+
+        changeView(
+          button.dataset.view
+        );
+
+
+  }
+);
+
+
+
+document
+.querySelectorAll(
+  "[data-go]"
+)
+.forEach(
+  button => {
+
+
+    button.onclick =
+      () =>
+
+        changeView(
+          button.dataset.go
+        );
+
+
+  }
+);
+
+
 
 document
 .getElementById(
-"searchBtn"
+  "homeGoogleSearch"
 )
 .onclick =
-fullSearch;
+  () =>
+
+    window.open(
+
+      googleSearchUrl(
+        "후쿠오카 맛집"
+      ),
+
+      "_blank"
+
+    );
 
 
 
 document
 .getElementById(
-"searchInput"
+  "googleSearchBtn"
+)
+.onclick =
+  openGoogleFromQuick;
+
+
+
+document
+.getElementById(
+  "quickName"
 )
 .addEventListener(
-"keydown",
-event => {
+  "keydown",
+  event => {
 
 
-if (
-event.key ===
-"Enter"
-) {
+    if (
+      event.key ===
+      "Enter"
+    ) {
 
-clearTimeout(
-searchTimer
-);
 
-fullSearch();
+      openGoogleFromQuick();
 
-}
 
-}
+    }
+
+
+  }
 );
 
 
 
 document
 .getElementById(
-"searchInput"
+  "quickSaveBtn"
+)
+.onclick =
+  quickSave;
+
+
+
+document
+.getElementById(
+  "manualAddBtn"
+)
+.onclick =
+  () =>
+
+    openPlaceSheet({
+
+      name:
+
+        document
+        .getElementById(
+          "quickName"
+        )
+        .value
+        .trim(),
+
+      category:
+
+        document
+        .getElementById(
+          "quickCategory"
+        )
+        .value
+
+    });
+
+
+
+document
+.getElementById(
+  "sheetCancel"
+)
+.onclick =
+  closePlaceSheet;
+
+
+
+document
+.getElementById(
+  "sheetSave"
+)
+.onclick =
+  savePlaceFromSheet;
+
+
+
+document
+.getElementById(
+  "placeSheetBack"
 )
 .addEventListener(
-"input",
-() => {
+  "click",
+  event => {
 
 
-clearTimeout(
-searchTimer
-);
+    if (
+      event.target.id ===
+      "placeSheetBack"
+    ) {
 
 
-searchTimer =
-setTimeout(
-autocomplete,
-650
-);
-
-}
-);
+      closePlaceSheet();
 
 
-
-document
-.getElementById(
-"currentBtn"
-)
-.onclick =
-async () => {
+    }
 
 
-try {
-
-state.useManualStart =
-false;
-
-
-saveState();
-
-
-const location =
-await getCurrentLocation(
-true
-);
-
-
-setCurrentMarker(
-true
-);
-
-
-setStartMarker();
-
-
-showStatus(
-"현재 위치를 출발지로 사용할게."
-);
-
-
-if (
-state.navStops.length
-) {
-
-await calculateRoute();
-
-}
-
-}
-
-catch(error) {
-
-alert(
-error.message
-);
-
-}
-
-};
-
-
-
-document
-.getElementById(
-"pickStartBtn"
-)
-.onclick =
-() =>
-setPickMode(
-
-pickMode === "start"
-
-?
-
-null
-
-:
-
-"start"
-
+  }
 );
 
 
 
 document
 .getElementById(
-"pickDestBtn"
+  "daySheetCancel"
 )
 .onclick =
-() =>
-setPickMode(
+  () =>
 
-pickMode === "dest"
+    document
+    .getElementById(
+      "daySheetBack"
+    )
+    .classList
+    .remove(
+      "show"
+    );
 
-?
 
-null
 
-:
+document
+.getElementById(
+  "daySheetBack"
+)
+.addEventListener(
+  "click",
+  event => {
 
-"dest"
 
+    if (
+      event.target.id ===
+      "daySheetBack"
+    ) {
+
+
+      event.currentTarget
+      .classList
+      .remove(
+        "show"
+      );
+
+
+    }
+
+
+  }
 );
 
 
 
 document
 .getElementById(
-"fitBtn"
+  "savedSearch"
 )
-.onclick =
-fitRoute;
+.addEventListener(
+  "input",
+  renderSaved
+);
 
 
 
 document
 .getElementById(
-"refreshBtn"
+  "newPinBtn"
 )
 .onclick =
-() =>
-calculateRoute();
+  () =>
+
+    setPickMode(
+
+      pickMode === "new"
+
+      ?
+
+      null
+
+      :
+
+      "new"
+
+    );
 
 
 
 document
 .getElementById(
-"clearRouteBtn"
+  "fitSavedBtn"
 )
 .onclick =
-() => {
-
-
-state.navStops =
-[];
-
-
-saveState();
-
-
-clearRouteLine();
-
-renderNavStops();
-
-refreshMarkers();
-
-
-setSummary(
-
-null,
-
-"검색 결과에서 ‘바로 길찾기’를 눌러줘."
-
-);
-
-};
+  fitSaved;
 
 
 
 document
 .getElementById(
-"saveRouteBtn"
+  "currentLocationBtn"
 )
 .onclick =
-() => {
+  () => {
 
 
-if (
-!state.navStops.length
-) {
+    if (
+      !navigator.geolocation
+    ) {
 
-alert(
-"현재 경로가 없어."
-);
 
-return;
+      alert(
+        "이 기기에서는 위치 기능을 사용할 수 없어."
+      );
 
-}
 
+      return;
 
-let count =
-0;
+    }
 
 
-state.navStops
-.forEach(
-place => {
+    navigator
+    .geolocation
+    .getCurrentPosition(
 
+      position => {
 
-if (
-!currentSchedule()
-.some(
-item =>
-samePlace(
-item,
-place
-)
-)
-) {
 
-currentSchedule()
-.push({
+        const location = [
 
-...place,
+          position.coords.longitude,
 
-id:
-makeId()
+          position.coords.latitude
 
-});
+        ];
 
 
-count++;
+        if (
+          currentMarker
+        ) {
 
-}
 
-}
-);
+          currentMarker.remove();
 
 
-saveState();
+        }
 
-renderAll();
 
+        const element =
+          document.createElement(
+            "div"
+          );
 
-alert(
 
-`${dayLabel(
-state.selectedDay
-)} 일정에 ${count}곳 추가했어.`
+        element.className =
+          "currentMarker";
 
-);
 
-};
+        currentMarker =
 
+          new maptilersdk.Marker({
 
+            element
 
-document
-.getElementById(
-"scheduleRouteBtn"
-)
-.onclick =
-async () => {
+          })
 
+          .setLngLat(
+            location
+          )
 
-if (
-!currentSchedule()
-.length
-) {
+          .setPopup(
 
-alert(
-"일정을 먼저 추가해줘."
-);
+            new maptilersdk.Popup({
 
-return;
+              offset:
+                18
 
-}
+            })
 
+            .setHTML(
+              "<b>현재 위치</b>"
+            )
 
-state.navStops =
-clone(
-currentSchedule()
-);
+          )
 
+          .addTo(
+            map
+          );
 
-saveState();
 
+        map.flyTo({
 
-changeView(
-"map"
-);
+          center:
+            location,
 
+          zoom:
+            15.5
 
-renderNavStops();
+        });
 
-refreshMarkers();
 
+      },
 
-await calculateRoute();
 
-};
+      () => {
 
 
+        alert(
+          "브라우저 위치 권한을 허용해줘."
+        );
 
-document
-.getElementById(
-"scheduleMapBtn"
-)
-.onclick =
-() => {
 
+      },
 
-changeView(
-"map"
-);
 
+      {
 
-setTimeout(
-fitRoute,
-150
-);
+        enableHighAccuracy:
+          true,
 
-};
+        timeout:
+          12000
 
+      }
 
+    );
 
-document
-.getElementById(
-"homeLocation"
-)
-.onclick =
-async () => {
 
-
-changeView(
-"map"
-);
-
-
-setTimeout(
-
-async () => {
-
-try {
-
-state.useManualStart =
-false;
-
-
-saveState();
-
-
-const location =
-await getCurrentLocation(
-true
-);
-
-
-setCurrentMarker(
-true
-);
-
-}
-
-catch(error) {
-
-alert(
-error.message
-);
-
-}
-
-},
-
-180
-
-);
-
-};
+  };
 
 
 
 document
 .querySelectorAll(
-"[data-mode]"
+  "[data-travel-mode]"
 )
 .forEach(
-button => {
+  button => {
 
 
-button.onclick =
-async () => {
+    button.onclick =
+      () => {
 
 
-state.routeMode =
-button.dataset.mode;
+        state.travelMode =
+
+          button.dataset
+          .travelMode;
 
 
-saveState();
-
-renderModes();
+        saveState();
 
 
-if (
-state.navStops.length
-) {
-
-await calculateRoute();
-
-}
-
-};
-
-}
-);
+        renderTravelModes();
 
 
-
-document
-.querySelectorAll(
-".bottom button"
-)
-.forEach(
-button => {
+        renderRouteButtons();
 
 
-button.onclick =
-() =>
-changeView(
-button.dataset.view
-);
-
-}
-);
+      };
 
 
-
-document
-.querySelectorAll(
-"[data-go]"
-)
-.forEach(
-button => {
-
-
-button.onclick =
-() =>
-changeView(
-button.dataset.go
-);
-
-}
+  }
 );
 
 
@@ -5861,6 +5834,7 @@ button.dataset.go
 
 initMap();
 
+
 renderAll();
 
 
@@ -5868,7 +5842,5 @@ renderAll();
 
 </script>
 
-
 </body>
-
 </html>
