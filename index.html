@@ -1,1817 +1,1469 @@
 <!doctype html>
 <html lang="ko">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>후쿠오카 여행</title>
-
-  <script src="config.js"></script>
-
-  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.umd.min.js"></script>
-
-  <link
-    rel="stylesheet"
-    href="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.css"
-  />
-
-  <style>
-    :root {
-      --bg: #f6f7f9;
-      --card: #fff;
-      --text: #16181c;
-      --muted: #747982;
-      --line: #e5e7eb;
-      --blue: #2563eb;
-      --dark: #171717;
-      --danger: #dc2626;
-      --shadow: 0 7px 24px rgba(0,0,0,.08);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Noto Sans KR",
-        sans-serif;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .app {
-      max-width: 920px;
-      margin: 0 auto;
-      min-height: 100vh;
-      padding-bottom: 78px;
-    }
-
-    .top {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      padding: 13px 14px;
-
-      background:
-        rgba(255,255,255,.96);
-
-      backdrop-filter:
-        blur(12px);
-
-      border-bottom:
-        1px solid var(--line);
-    }
-
-    .top h1 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .top p {
-      margin: 4px 0 0;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .view {
-      display: none;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    .page {
-      padding: 12px;
-    }
-
-    .card {
-      background: var(--card);
 
-      border:
-        1px solid var(--line);
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1,viewport-fit=cover"
+>
+
+<title>후쿠오카 여행</title>
+
+<style>
+
+:root{
+  --bg:#f6f7f9;
+  --card:#fff;
+  --text:#16181c;
+  --muted:#747982;
+  --line:#e6e8ec;
+  --blue:#2563eb;
+  --dark:#171717;
+  --danger:#dc2626;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Noto Sans KR",
+    sans-serif;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  max-width:860px;
+  margin:auto;
+  min-height:100vh;
+  padding-bottom:74px;
+}
+
+.top{
+  position:sticky;
+  top:0;
+  z-index:20;
+
+  padding:13px 14px;
+
+  background:
+    rgba(255,255,255,.97);
+
+  backdrop-filter:
+    blur(12px);
+
+  border-bottom:
+    1px solid var(--line);
+}
+
+.top h1{
+  margin:0;
+  font-size:20px;
+}
+
+.top p{
+  margin:4px 0 0;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.view{
+  display:none;
+}
+
+.view.active{
+  display:block;
+}
+
+.page{
+  padding:12px;
+}
+
+.card{
+  background:#fff;
 
-      border-radius:
-        17px;
+  border:
+    1px solid var(--line);
 
-      padding:
-        14px;
+  border-radius:
+    17px;
 
-      margin-bottom:
-        10px;
+  padding:
+    14px;
 
-      box-shadow:
-        0 2px 10px rgba(0,0,0,.02);
-    }
+  margin-bottom:
+    10px;
+}
 
-    .title {
-      font-size: 16px;
-      font-weight: 900;
-      margin-bottom: 10px;
-    }
+.title{
+  font-size:16px;
+  font-weight:900;
+  margin-bottom:10px;
+}
 
-    .muted {
-      font-size: 12px;
-      color: var(--muted);
-    }
+.muted{
+  color:var(--muted);
+  font-size:12px;
+}
 
-    .hero {
-      padding: 22px;
+.hero{
+  padding:21px;
 
-      border-radius:
-        22px;
+  border-radius:
+    21px;
 
-      background:
-        linear-gradient(
-          135deg,
-          #e8f2ff,
-          #fff1e8
-        );
-    }
+  background:
+    linear-gradient(
+      135deg,
+      #e8f2ff,
+      #fff0e8
+    );
+}
 
-    .hero small {
-      font-weight: 900;
-      color: #64748b;
-    }
+.hero small{
+  font-weight:900;
+  color:#64748b;
+}
 
-    .hero h2 {
-      font-size: 28px;
-      line-height: 1.15;
-      margin: 7px 0;
-    }
+.hero h2{
+  font-size:27px;
+  line-height:1.16;
 
-    .hero p {
-      margin: 0;
-      color: #5e636b;
-      font-size: 13px;
-    }
+  margin:
+    7px 0;
+}
 
-    .quick {
-      display: grid;
+.hero p{
+  margin:0;
+  color:#62666d;
+  font-size:13px;
+}
 
-      grid-template-columns:
-        1fr 1fr;
+.quick{
+  display:grid;
 
-      gap: 8px;
-      margin-top: 15px;
-    }
+  grid-template-columns:
+    1fr 1fr;
 
-    .quick button {
-      min-height: 64px;
+  gap:8px;
 
-      border: 0;
+  margin-top:
+    14px;
+}
 
-      border-radius:
-        15px;
+.quick button{
+  min-height:63px;
 
-      background: #fff;
+  border:0;
 
-      padding: 11px;
+  border-radius:
+    14px;
 
-      text-align: left;
+  background:#fff;
 
-      font-weight: 850;
+  padding:11px;
 
-      box-shadow:
-        0 3px 12px
-        rgba(0,0,0,.05);
-    }
+  text-align:left;
 
-    .quick button span {
-      display: block;
-      font-size: 22px;
-      margin-bottom: 3px;
-    }
+  font-weight:850;
 
-    .stats {
-      display: grid;
+  box-shadow:
+    0 3px 12px
+    rgba(0,0,0,.05);
+}
 
-      grid-template-columns:
-        repeat(3,1fr);
+.quick span{
+  display:block;
+  font-size:21px;
+  margin-bottom:3px;
+}
 
-      gap: 8px;
-    }
+.stats{
+  display:grid;
 
-    .stat {
-      padding: 12px;
+  grid-template-columns:
+    repeat(3,1fr);
 
-      border-radius:
-        14px;
+  gap:8px;
+}
 
-      background:
-        #f8fafc;
+.stat{
+  background:#f8fafc;
 
-      text-align:
-        center;
-    }
+  border-radius:
+    13px;
 
-    .stat b {
-      display: block;
-      font-size: 19px;
-    }
+  padding:11px;
 
-    .stat span {
-      font-size: 11px;
-      color: var(--muted);
-    }
+  text-align:center;
+}
 
-    .days,
-    .chips,
-    .modes {
-      display: flex;
-      gap: 7px;
-      overflow-x: auto;
-    }
+.stat b{
+  display:block;
+  font-size:20px;
+}
 
-    .pill {
-      min-height: 38px;
+.stat span{
+  font-size:11px;
+  color:var(--muted);
+}
 
-      border:
-        1px solid var(--line);
+.row{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
 
-      border-radius:
-        999px;
+.days,
+.chips,
+.modes{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+}
 
-      background:
-        #fff;
+.pill{
+  min-height:38px;
 
-      padding:
-        0 13px;
+  border:
+    1px solid var(--line);
 
-      font-size:
-        13px;
+  border-radius:
+    999px;
 
-      font-weight:
-        850;
+  background:#fff;
 
-      white-space:
-        nowrap;
-    }
+  padding:
+    0 13px;
 
-    .pill.active {
-      background:
-        var(--dark);
+  font-size:13px;
+  font-weight:850;
 
-      border-color:
-        var(--dark);
+  white-space:
+    nowrap;
+}
 
-      color:
-        #fff;
-    }
+.pill.active{
+  background:#171717;
+  color:#fff;
+  border-color:#171717;
+}
 
-    .btn {
-      min-height: 38px;
+.btn{
+  min-height:38px;
 
-      border:
-        1px solid #d8dce2;
+  border:
+    1px solid #d9dce2;
 
-      border-radius:
-        11px;
+  border-radius:
+    11px;
 
-      background:
-        #fff;
+  background:#fff;
 
-      padding:
-        7px 11px;
+  padding:
+    7px 11px;
 
-      font-size:
-        12px;
+  font-size:12px;
+  font-weight:850;
+}
 
-      font-weight:
-        850;
-    }
+.btn.primary{
+  background:var(--blue);
+  color:#fff;
+  border-color:var(--blue);
+}
 
-    .btn.primary {
-      background:
-        var(--blue);
+.btn.dark{
+  background:var(--dark);
+  color:#fff;
+  border-color:var(--dark);
+}
 
-      border-color:
-        var(--blue);
+.btn.danger{
+  color:var(--danger);
+}
 
-      color:
-        #fff;
-    }
+.searchRow{
+  display:grid;
 
-    .btn.dark {
-      background:
-        var(--dark);
+  grid-template-columns:
+    1fr auto;
 
-      border-color:
-        var(--dark);
+  gap:8px;
+}
 
-      color:
-        #fff;
-    }
+.searchRow input{
+  height:47px;
 
-    .btn.danger {
-      color:
-        var(--danger);
-    }
+  border:
+    1px solid #d5d9df;
 
-    .actions {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-      margin-top: 9px;
-    }
+  border-radius:
+    13px;
 
-    .searchbar {
-      display: grid;
+  padding:
+    0 13px;
 
-      grid-template-columns:
-        1fr auto;
+  font-size:16px;
 
-      gap:
-        8px;
-    }
+  outline:none;
+}
 
-    .searchbar input {
-      height:
-        47px;
+.searchRow input:focus{
+  border-color:#9ca3af;
 
-      border:
-        1px solid #d5d9df;
+  box-shadow:
+    0 0 0 3px
+    rgba(0,0,0,.04);
+}
 
-      border-radius:
-        13px;
+.notice{
+  margin-top:9px;
 
-      padding:
-        0 13px;
+  padding:
+    10px 11px;
 
-      font-size:
-        16px;
+  border-radius:
+    11px;
 
-      outline:
-        none;
-    }
+  background:#eef5ff;
 
-    .searchbar input:focus {
-      border-color:
-        #9aa0a8;
+  color:#315d92;
 
-      box-shadow:
-        0 0 0 3px
-        rgba(0,0,0,.04);
-    }
+  font-size:12px;
+  line-height:1.45;
+}
 
-    .searchHelp {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
+.place{
+  padding:
+    12px 0;
 
-    .notice {
-      margin-top:
-        8px;
+  border-bottom:
+    1px solid var(--line);
+}
 
-      padding:
-        9px 11px;
+.place:last-child{
+  border-bottom:0;
+}
 
-      border-radius:
-        11px;
+.placeHead{
+  display:flex;
+  gap:9px;
+  align-items:flex-start;
+}
 
-      background:
-        #eef5ff;
+.emoji{
+  width:38px;
+  height:38px;
 
-      color:
-        #315d92;
+  display:grid;
+  place-items:center;
 
-      font-size:
-        12px;
-    }
+  border-radius:
+    12px;
 
-    .place {
-      padding:
-        12px 0;
+  background:#f3f4f6;
 
-      border-bottom:
-        1px solid var(--line);
-    }
+  font-size:20px;
+}
 
-    .place:last-child {
-      border-bottom:
-        0;
-    }
+.placeBody{
+  flex:1;
+  min-width:0;
+}
 
-    .placeHead {
-      display:
-        flex;
+.placeName{
+  font-size:14px;
+  font-weight:900;
+}
 
-      gap:
-        9px;
+.placeSub{
+  margin-top:3px;
 
-      align-items:
-        flex-start;
-    }
+  font-size:11px;
 
-    .emoji {
-      width:
-        36px;
+  color:var(--muted);
 
-      height:
-        36px;
+  line-height:1.45;
+}
 
-      display:
-        grid;
+.tag{
+  display:inline-block;
 
-      place-items:
-        center;
+  margin-top:5px;
 
-      border-radius:
-        11px;
+  padding:
+    4px 8px;
 
-      background:
-        #f3f4f6;
+  border-radius:
+    999px;
 
-      font-size:
-        19px;
-    }
+  background:#f1f3f5;
 
-    .placeBody {
-      flex: 1;
-      min-width: 0;
-    }
+  font-size:10px;
+  font-weight:800;
 
-    .placeName {
-      font-size:
-        14px;
+  color:#555;
+}
 
-      font-weight:
-        900;
-    }
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
 
-    .placeSub {
-      margin-top:
-        3px;
+  margin-top:9px;
+}
 
-      font-size:
-        11px;
+.empty{
+  padding:
+    23px 12px;
 
-      line-height:
-        1.4;
+  border:
+    1px dashed #ccd1d8;
 
-      color:
-        var(--muted);
-    }
+  border-radius:
+    14px;
 
-    .tag {
-      display:
-        inline-flex;
+  text-align:center;
 
-      margin-top:
-        5px;
+  color:var(--muted);
 
-      padding:
-        4px 8px;
+  font-size:13px;
+}
 
-      border-radius:
-        999px;
+.scheduleItem{
+  display:grid;
 
-      background:
-        #f1f3f5;
+  grid-template-columns:
+    34px minmax(0,1fr) auto;
 
-      font-size:
-        10px;
+  gap:8px;
 
-      font-weight:
-        800;
+  align-items:center;
 
-      color:
-        #555;
-    }
+  border:
+    1px solid var(--line);
 
-    .pinMissing {
-      margin-left:
-        6px;
+  border-radius:
+    13px;
 
-      color:
-        #b45309;
-    }
+  padding:9px;
 
-    .empty {
-      padding:
-        24px 12px;
+  margin-bottom:7px;
+}
 
-      border:
-        1px dashed #cfd4db;
+.num{
+  width:30px;
+  height:30px;
 
-      border-radius:
-        14px;
+  border-radius:50%;
 
-      text-align:
-        center;
+  background:#171717;
+  color:#fff;
 
-      color:
-        var(--muted);
+  display:grid;
+  place-items:center;
 
-      font-size:
-        13px;
-    }
+  font-size:12px;
+  font-weight:900;
+}
 
-    .mapWrap {
-      height:
-        62vh;
+.scheduleName{
+  font-size:13px;
+  font-weight:900;
 
-      min-height:
-        450px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
 
-      position:
-        relative;
+.scheduleSub{
+  font-size:11px;
+  color:var(--muted);
 
-      background:
-        #dbe4ed;
-    }
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 
-    .map {
-      position:
-        absolute;
+  margin-top:2px;
+}
 
-      inset:
-        0;
-    }
+.icon{
+  width:31px;
+  height:31px;
 
-    .mapTools {
-      position:
-        absolute;
+  border:
+    1px solid #dcdfe4;
 
-      right:
-        10px;
+  border-radius:
+    9px;
 
-      top:
-        10px;
+  background:#fff;
 
-      z-index:
-        5;
+  font-weight:900;
+}
 
-      display:
-        flex;
+.routeBox{
+  margin-top:10px;
 
-      flex-direction:
-        column;
+  padding:12px;
 
-      gap:
-        7px;
-    }
+  border-radius:
+    14px;
 
-    .mapTools button {
-      min-height:
-        42px;
+  background:#f8fafc;
+}
 
-      border:
-        1px solid #d8dce2;
+.routeButtons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
 
-      border-radius:
-        12px;
+  margin-top:9px;
+}
 
-      background:
-        rgba(255,255,255,.96);
+.bottom{
+  position:fixed;
 
-      padding:
-        0 10px;
+  left:50%;
 
-      font-size:
-        12px;
+  transform:
+    translateX(-50%);
 
-      font-weight:
-        900;
+  bottom:0;
 
-      box-shadow:
-        var(--shadow);
-    }
+  z-index:50;
 
-    .mapTools button.active {
-      background:
-        #171717;
+  width:
+    min(860px,100%);
 
-      color:
-        #fff;
-    }
+  height:66px;
 
-    .mapLegend {
-      position:
-        absolute;
+  padding-bottom:
+    env(safe-area-inset-bottom);
 
-      left:
-        10px;
+  display:grid;
 
-      bottom:
-        10px;
+  grid-template-columns:
+    repeat(4,1fr);
 
-      z-index:
-        5;
+  background:
+    rgba(255,255,255,.97);
 
-      background:
-        rgba(255,255,255,.95);
+  backdrop-filter:
+    blur(14px);
 
-      padding:
-        8px 10px;
+  border:
+    1px solid var(--line);
 
-      border-radius:
-        12px;
+  border-bottom:0;
 
-      font-size:
-        10px;
+  border-radius:
+    16px 16px 0 0;
+}
 
-      box-shadow:
-        var(--shadow);
-    }
+.bottom button{
+  border:0;
+  background:transparent;
 
-    .marker {
-      width:
-        34px;
+  color:#858991;
 
-      height:
-        34px;
+  font-size:11px;
+  font-weight:800;
+}
 
-      border-radius:
-        18px 18px 18px 5px;
+.bottom span{
+  display:block;
+  font-size:20px;
+  margin-bottom:2px;
+}
 
-      transform:
-        rotate(-45deg);
+.bottom button.active{
+  color:#111;
+}
 
-      border:
-        3px solid #fff;
+.sheetBack{
+  position:fixed;
 
-      display:
-        grid;
+  inset:0;
 
-      place-items:
-        center;
+  z-index:100;
 
-      box-shadow:
-        0 3px 10px
-        rgba(0,0,0,.25);
-    }
+  background:
+    rgba(0,0,0,.38);
 
-    .marker span {
-      transform:
-        rotate(45deg);
+  display:none;
 
-      font-size:
-        15px;
-    }
+  align-items:flex-end;
+  justify-content:center;
+}
 
-    .currentMarker {
-      width:
-        24px;
+.sheetBack.show{
+  display:flex;
+}
 
-      height:
-        24px;
+.sheet{
+  width:
+    min(620px,100%);
 
-      border-radius:
-        50%;
+  background:#fff;
 
-      background:
-        #3478f6;
+  border-radius:
+    20px 20px 0 0;
 
-      border:
-        4px solid #fff;
+  padding:
+    16px 14px
+    calc(
+      18px
+      +
+      env(safe-area-inset-bottom)
+    );
 
-      box-shadow:
-        0 0 0 4px
-        rgba(52,120,246,.2),
-        0 3px 10px
-        rgba(0,0,0,.25);
-    }
+  max-height:90vh;
 
-    .scheduleItem {
-      display:
-        grid;
+  overflow:auto;
+}
 
-      grid-template-columns:
-        36px minmax(0,1fr) auto;
+.sheet h3{
+  margin:
+    0 0 12px;
+}
 
-      gap:
-        8px;
+.field{
+  margin-bottom:10px;
+}
 
-      align-items:
-        center;
+.field label{
+  display:block;
 
-      padding:
-        9px;
+  margin-bottom:5px;
 
-      border:
-        1px solid var(--line);
+  font-size:11px;
+  font-weight:800;
 
-      border-radius:
-        13px;
+  color:#666;
+}
 
-      margin-bottom:
-        7px;
+.field input,
+.field select,
+.field textarea{
+  width:100%;
 
-      background:
-        #fff;
-    }
+  border:
+    1px solid #d7dbe1;
 
-    .num {
-      width:
-        31px;
+  border-radius:
+    11px;
 
-      height:
-        31px;
+  padding:
+    10px 11px;
 
-      border-radius:
-        50%;
+  background:#fff;
+}
 
-      display:
-        grid;
+.field textarea{
+  min-height:75px;
+  resize:vertical;
+}
 
-      place-items:
-        center;
+.sheetActions{
+  display:flex;
+  gap:8px;
+}
 
-      background:
-        #171717;
+.sheetActions button{
+  flex:1;
+}
 
-      color:
-        #fff;
+@media(min-width:800px){
 
-      font-size:
-        12px;
+  .quick{
+    grid-template-columns:
+      repeat(4,1fr);
+  }
 
-      font-weight:
-        900;
-    }
+}
 
-    .scheduleName {
-      font-size:
-        13px;
+</style>
 
-      font-weight:
-        900;
-
-      white-space:
-        nowrap;
-
-      overflow:
-        hidden;
-
-      text-overflow:
-        ellipsis;
-    }
-
-    .scheduleSub {
-      font-size:
-        11px;
-
-      color:
-        var(--muted);
-
-      margin-top:
-        2px;
-
-      white-space:
-        nowrap;
-
-      overflow:
-        hidden;
-
-      text-overflow:
-        ellipsis;
-    }
-
-    .iconBtn {
-      width:
-        31px;
-
-      height:
-        31px;
-
-      border:
-        1px solid #dcdfe4;
-
-      border-radius:
-        9px;
-
-      background:
-        #fff;
-
-      font-weight:
-        900;
-    }
-
-    .routeBox {
-      padding:
-        12px;
-
-      border-radius:
-        14px;
-
-      background:
-        #f8fafc;
-
-      margin-top:
-        10px;
-    }
-
-    .routeBox b {
-      font-size:
-        13px;
-    }
-
-    .routeButtons {
-      display:
-        flex;
-
-      gap:
-        7px;
-
-      flex-wrap:
-        wrap;
-
-      margin-top:
-        8px;
-    }
-
-    .bottom {
-      position:
-        fixed;
-
-      left:
-        50%;
-
-      transform:
-        translateX(-50%);
-
-      bottom:
-        0;
-
-      z-index:
-        50;
-
-      width:
-        min(920px,100%);
-
-      height:
-        67px;
-
-      padding-bottom:
-        env(safe-area-inset-bottom);
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(4,1fr);
-
-      background:
-        rgba(255,255,255,.97);
-
-      backdrop-filter:
-        blur(14px);
-
-      border:
-        1px solid var(--line);
-
-      border-bottom:
-        0;
-
-      border-radius:
-        16px 16px 0 0;
-    }
-
-    .bottom button {
-      border:
-        0;
-
-      background:
-        transparent;
-
-      color:
-        #858991;
-
-      font-size:
-        11px;
-
-      font-weight:
-        800;
-    }
-
-    .bottom button span {
-      display:
-        block;
-
-      font-size:
-        20px;
-
-      margin-bottom:
-        2px;
-    }
-
-    .bottom button.active {
-      color:
-        #111;
-    }
-
-    .sheetBack {
-      position:
-        fixed;
-
-      inset:
-        0;
-
-      z-index:
-        100;
-
-      background:
-        rgba(0,0,0,.38);
-
-      display:
-        none;
-
-      align-items:
-        flex-end;
-
-      justify-content:
-        center;
-    }
-
-    .sheetBack.show {
-      display:
-        flex;
-    }
-
-    .sheet {
-      width:
-        min(620px,100%);
-
-      background:
-        #fff;
-
-      border-radius:
-        20px 20px 0 0;
-
-      padding:
-        16px 14px
-        calc(18px + env(safe-area-inset-bottom));
-
-      max-height:
-        88vh;
-
-      overflow:
-        auto;
-    }
-
-    .sheet h3 {
-      margin:
-        0 0 12px;
-    }
-
-    .field {
-      margin-bottom:
-        10px;
-    }
-
-    .field label {
-      display:
-        block;
-
-      margin-bottom:
-        5px;
-
-      font-size:
-        11px;
-
-      font-weight:
-        800;
-
-      color:
-        #666;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      width:
-        100%;
-
-      border:
-        1px solid #d7dbe1;
-
-      border-radius:
-        11px;
-
-      padding:
-        10px 11px;
-
-      background:
-        #fff;
-    }
-
-    .field textarea {
-      min-height:
-        74px;
-
-      resize:
-        vertical;
-    }
-
-    .sheetActions {
-      display:
-        flex;
-
-      gap:
-        8px;
-    }
-
-    .sheetActions button {
-      flex:
-        1;
-    }
-
-    @media(min-width:800px) {
-
-      .mapWrap {
-        height:
-          650px;
-      }
-
-      .quick {
-        grid-template-columns:
-          repeat(4,1fr);
-      }
-    }
-
-  </style>
 </head>
+
 
 <body>
 
+
 <div class="app">
 
-  <header class="top">
 
-    <h1>
-      🇯🇵 후쿠오카 여행
-    </h1>
+<header class="top">
 
-    <p>
-      한국어 지도 · 장소 저장 · 날짜별 일정 · Google Maps 동선
-    </p>
+<h1>
+🇯🇵 후쿠오카 여행
+</h1>
 
-  </header>
+<p>
+맛집·카페 저장은 여기서, 실제 지도·리뷰·길찾기는 Google Maps에서
+</p>
 
+</header>
 
-  <main>
 
 
-    <!-- 홈 -->
+<main>
 
-    <section
-      id="homeView"
-      class="view active"
-    >
 
-      <div class="page">
+<!-- 홈 -->
 
+<section
+id="homeView"
+class="view active"
+>
 
-        <div class="hero">
+<div class="page">
 
-          <small>
-            FUKUOKA TRIP
-          </small>
 
-          <h2>
-            저장해두고<br>
-            갈 곳만 일정에 넣자 ✈️
-          </h2>
+<div class="hero">
 
-          <p>
-            맛집·카페는 일단 저장만 해두고,
-            실제 갈 곳만 날짜별 일정에 넣으면 돼.
-          </p>
+<small>
+FUKUOKA TRIP
+</small>
 
+<h2>
+찾아두고,<br>
+갈 곳만 일정에 넣자 ✈️
+</h2>
 
-          <div class="quick">
+<p>
+저장과 일정은 우리 앱에서 관리하고,
+실제 검색·길찾기는 구글맵을 그대로 사용해.
+</p>
 
-            <button data-go="map">
 
-              <span>
-                🗺️
-              </span>
+<div class="quick">
 
-              지도 보기
 
-            </button>
+<button data-go="search">
 
+<span>
+🔎
+</span>
 
-            <button data-go="saved">
+장소 찾기
 
-              <span>
-                📌
-              </span>
+</button>
 
-              저장한 장소
 
-            </button>
+<button data-go="saved">
 
+<span>
+📌
+</span>
 
-            <button data-go="schedule">
+저장한 장소
 
-              <span>
-                🗓️
-              </span>
+</button>
 
-              일정 보기
 
-            </button>
+<button data-go="schedule">
 
+<span>
+🗓️
+</span>
 
-            <button id="homeGoogleSearch">
+일정 보기
 
-              <span>
-                🔎
-              </span>
+</button>
 
-              구글맵 검색
 
-            </button>
+<button id="openFukuokaMap">
 
-          </div>
+<span>
+🗺️
+</span>
 
-        </div>
+후쿠오카 지도
 
+</button>
 
 
-        <div
-          class="card"
-          style="margin-top:10px"
-        >
-
-          <div class="stats">
-
-
-            <div class="stat">
-
-              <b id="statSaved">
-                0
-              </b>
-
-              <span>
-                저장 장소
-              </span>
-
-            </div>
-
-
-            <div class="stat">
-
-              <b id="statDay">
-                0
-              </b>
-
-              <span>
-                선택일 일정
-              </span>
-
-            </div>
-
-
-            <div class="stat">
-
-              <b id="statCategories">
-                0
-              </b>
-
-              <span>
-                카테고리
-              </span>
-
-            </div>
-
-
-          </div>
-
-        </div>
-
-
-
-        <div class="card">
-
-          <div class="title">
-            여행 날짜
-          </div>
-
-          <div
-            class="days"
-            data-day-tabs
-          ></div>
-
-        </div>
-
-
-
-        <div class="card">
-
-          <div class="title">
-            선택한 날 일정
-          </div>
-
-          <div id="homeSchedule"></div>
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-
-
-    <!-- 지도 -->
-
-    <section
-      id="mapView"
-      class="view"
-    >
-
-
-      <div
-        class="page"
-        style="padding-bottom:0"
-      >
-
-
-        <div class="card">
-
-
-          <div class="title">
-            장소 찾기 / 빠른 저장
-          </div>
-
-
-          <div class="searchbar">
-
-
-            <input
-              id="quickName"
-              type="search"
-              placeholder="예: 이치란 텐진점 / 캐널시티"
-              autocomplete="off"
-            />
-
-
-            <button
-              id="googleSearchBtn"
-              class="btn dark"
-            >
-              Google 검색
-            </button>
-
-
-          </div>
-
-
-
-          <div class="searchHelp">
-
-
-            <select
-              id="quickCategory"
-              class="btn"
-            >
-
-              <option value="restaurant">
-                🍜 맛집
-              </option>
-
-              <option value="cafe">
-                ☕ 카페
-              </option>
-
-              <option value="shopping">
-                🛍️ 쇼핑
-              </option>
-
-              <option value="tour">
-                📸 관광
-              </option>
-
-              <option value="hotel">
-                🏨 숙소
-              </option>
-
-              <option value="etc">
-                📍 기타
-              </option>
-
-            </select>
-
-
-
-            <button
-              id="quickSaveBtn"
-              class="btn primary"
-            >
-              📌 이 이름으로 저장
-            </button>
-
-
-            <button
-              id="manualAddBtn"
-              class="btn"
-            >
-              상세 입력
-            </button>
-
-
-          </div>
-
-
-
-          <div class="notice">
-
-            Google Maps에서 정확한 가게를 찾고 돌아온 뒤
-            이름·주소·링크를 저장하면 돼.
-            저장만 해두고 일정에는 나중에 넣어도 돼.
-
-          </div>
-
-
-        </div>
-
-
-      </div>
-
-
-
-      <div class="mapWrap">
-
-
-        <div
-          id="map"
-          class="map"
-        ></div>
-
-
-        <div class="mapTools">
-
-
-          <button id="currentLocationBtn">
-            📍 현재 위치
-          </button>
-
-
-          <button id="newPinBtn">
-            ➕ 지도 찍어 새 장소
-          </button>
-
-
-          <button id="fitSavedBtn">
-            📌 저장 핀 전체
-          </button>
-
-
-        </div>
-
-
-
-        <div class="mapLegend">
-
-          한국어 우선 지도 · 📍 없는 장소는
-          저장목록에서 위치를 찍어주면 돼
-
-        </div>
-
-
-      </div>
-
-
-    </section>
-
-
-
-    <!-- 저장 -->
-
-    <section
-      id="savedView"
-      class="view"
-    >
-
-      <div class="page">
-
-
-        <div class="card">
-
-          <div class="title">
-            📌 저장한 장소
-          </div>
-
-
-          <div
-            class="chips"
-            id="categoryFilters"
-          ></div>
-
-
-          <div
-            class="searchbar"
-            style="
-              margin-top:10px;
-              grid-template-columns:1fr
-            "
-          >
-
-            <input
-              id="savedSearch"
-              type="search"
-              placeholder="저장한 장소에서 검색"
-            />
-
-          </div>
-
-
-        </div>
-
-
-
-        <div class="card">
-
-          <div id="savedList"></div>
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-
-
-    <!-- 일정 -->
-
-    <section
-      id="scheduleView"
-      class="view"
-    >
-
-      <div class="page">
-
-
-        <div class="card">
-
-          <div class="title">
-            여행 날짜
-          </div>
-
-          <div
-            class="days"
-            data-day-tabs
-          ></div>
-
-        </div>
-
-
-
-        <div class="card">
-
-
-          <div class="title">
-            방문 순서
-          </div>
-
-
-          <div id="scheduleList"></div>
-
-
-
-          <div class="routeBox">
-
-
-            <b>
-              Google Maps 동선
-            </b>
-
-
-            <div
-              class="modes"
-              style="margin-top:8px"
-            >
-
-
-              <button
-                class="pill active"
-                data-travel-mode="walking"
-              >
-                🚶 도보
-              </button>
-
-
-              <button
-                class="pill"
-                data-travel-mode="transit"
-              >
-                🚇 대중교통
-              </button>
-
-
-              <button
-                class="pill"
-                data-travel-mode="driving"
-              >
-                🚗 자동차
-              </button>
-
-
-            </div>
-
-
-
-            <div
-              id="routeButtons"
-              class="routeButtons"
-            ></div>
-
-
-
-            <div
-              class="muted"
-              style="margin-top:7px"
-            >
-
-              일정이 많으면 모바일 경유지 제한 때문에
-              자동으로 여러 구간으로 나눠서 버튼을 만들어.
-
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-
-  </main>
+</div>
 
 </div>
 
 
 
-<!-- 하단 메뉴 -->
+<div
+class="card"
+style="margin-top:10px"
+>
+
+
+<div class="stats">
+
+
+<div class="stat">
+
+<b id="statSaved">
+0
+</b>
+
+<span>
+저장 장소
+</span>
+
+</div>
+
+
+<div class="stat">
+
+<b id="statDay">
+0
+</b>
+
+<span>
+선택일 일정
+</span>
+
+</div>
+
+
+<div class="stat">
+
+<b id="statCategory">
+0
+</b>
+
+<span>
+카테고리
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="title">
+여행 날짜
+</div>
+
+<div
+class="days"
+data-day-tabs
+></div>
+
+</div>
+
+
+
+<div class="card">
+
+<div class="title">
+선택한 날 일정
+</div>
+
+<div id="homeSchedule"></div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- 장소 찾기 -->
+
+<section
+id="searchView"
+class="view"
+>
+
+<div class="page">
+
+
+<div class="card">
+
+
+<div class="title">
+🔎 Google Maps에서 장소 찾기
+</div>
+
+
+<div class="searchRow">
+
+
+<input
+id="googleSearchInput"
+type="search"
+placeholder="텐진역 / 모츠나베 / 카페 / 캐널시티"
+>
+
+
+<button
+id="googleSearchBtn"
+class="btn dark"
+>
+검색
+</button>
+
+
+</div>
+
+
+
+<div
+class="row"
+style="margin-top:8px"
+>
+
+
+<button
+class="btn quickSearch"
+data-query="후쿠오카 맛집"
+>
+🍜 맛집
+</button>
+
+
+<button
+class="btn quickSearch"
+data-query="후쿠오카 카페"
+>
+☕ 카페
+</button>
+
+
+<button
+class="btn quickSearch"
+data-query="후쿠오카 쇼핑"
+>
+🛍️ 쇼핑
+</button>
+
+
+<button
+class="btn quickSearch"
+data-query="후쿠오카 관광지"
+>
+📸 관광
+</button>
+
+
+</div>
+
+
+
+<div class="notice">
+
+검색하면 Google Maps가 열려.
+
+<br>
+
+마음에 드는 장소를 찾은 뒤 돌아와서
+아래의 <b>장소 저장</b>에 이름이나
+Google Maps 공유 링크를 넣으면 돼.
+
+</div>
+
+
+</div>
+
+
+
+<div class="card">
+
+
+<div class="title">
+📌 장소 저장
+</div>
+
+
+<div class="row">
+
+
+<button
+id="newPlaceBtn"
+class="btn primary"
+>
+＋ 새 장소 저장
+</button>
+
+
+<button
+id="pastePlaceBtn"
+class="btn"
+>
+🔗 구글맵 링크로 저장
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- 저장 -->
+
+<section
+id="savedView"
+class="view"
+>
+
+<div class="page">
+
+
+<div class="card">
+
+
+<div class="title">
+📌 저장한 장소
+</div>
+
+
+<div
+class="chips"
+id="categoryFilters"
+></div>
+
+
+<div
+class="searchRow"
+style="
+grid-template-columns:1fr;
+margin-top:10px;
+"
+>
+
+
+<input
+id="savedSearch"
+type="search"
+placeholder="저장한 장소에서 검색"
+>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="card">
+
+<div id="savedList"></div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+<!-- 일정 -->
+
+<section
+id="scheduleView"
+class="view"
+>
+
+<div class="page">
+
+
+<div class="card">
+
+<div class="title">
+여행 날짜
+</div>
+
+<div
+class="days"
+data-day-tabs
+></div>
+
+</div>
+
+
+
+<div class="card">
+
+
+<div class="title">
+방문 순서
+</div>
+
+
+<div id="scheduleList"></div>
+
+
+
+<div class="routeBox">
+
+
+<b>
+Google Maps 동선
+</b>
+
+
+<div
+class="modes"
+style="margin-top:8px"
+>
+
+
+<button
+class="pill active"
+data-mode="walking"
+>
+🚶 도보
+</button>
+
+
+<button
+class="pill"
+data-mode="transit"
+>
+🚇 대중교통
+</button>
+
+
+<button
+class="pill"
+data-mode="driving"
+>
+🚗 자동차
+</button>
+
+
+</div>
+
+
+
+<div
+id="routeButtons"
+class="routeButtons"
+></div>
+
+
+
+<div
+class="muted"
+style="margin-top:8px"
+>
+
+장소가 많으면 구글맵 링크 제한 때문에
+자동으로 여러 구간으로 나눠서 열 수 있게 해놨어.
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</section>
+
+
+</main>
+
+</div>
+
+
+
+<!-- 하단메뉴 -->
 
 <nav class="bottom">
 
 
-  <button
-    class="active"
-    data-view="home"
-  >
+<button
+class="active"
+data-view="home"
+>
 
-    <span>
-      🏠
-    </span>
+<span>
+🏠
+</span>
 
-    홈
+홈
 
-  </button>
-
-
-  <button data-view="map">
-
-    <span>
-      🗺️
-    </span>
-
-    지도
-
-  </button>
+</button>
 
 
-  <button data-view="saved">
+<button data-view="search">
 
-    <span>
-      📌
-    </span>
+<span>
+🔎
+</span>
 
-    저장
+찾기
 
-  </button>
+</button>
 
 
-  <button data-view="schedule">
+<button data-view="saved">
 
-    <span>
-      🗓️
-    </span>
+<span>
+📌
+</span>
 
-    일정
+저장
 
-  </button>
+</button>
+
+
+<button data-view="schedule">
+
+<span>
+🗓️
+</span>
+
+일정
+
+</button>
 
 
 </nav>
 
 
 
-<!-- 장소 저장창 -->
+<!-- 장소 입력창 -->
 
 <div
-  id="placeSheetBack"
-  class="sheetBack"
+id="placeSheetBack"
+class="sheetBack"
 >
 
-  <div class="sheet">
+<div class="sheet">
 
 
-    <h3 id="sheetTitle">
-      장소 저장
-    </h3>
-
-
-
-    <div class="field">
-
-      <label>
-        장소 이름
-      </label>
-
-      <input
-        id="placeName"
-        placeholder="예: 이치란 텐진점"
-      />
-
-    </div>
+<h3 id="sheetTitle">
+장소 저장
+</h3>
 
 
 
-    <div class="field">
+<div class="field">
 
-      <label>
-        카테고리
-      </label>
+<label>
+장소 이름
+</label>
 
-
-      <select id="placeCategory">
-
-        <option value="restaurant">
-          🍜 맛집
-        </option>
-
-        <option value="cafe">
-          ☕ 카페
-        </option>
-
-        <option value="shopping">
-          🛍️ 쇼핑
-        </option>
-
-        <option value="tour">
-          📸 관광
-        </option>
-
-        <option value="hotel">
-          🏨 숙소
-        </option>
-
-        <option value="etc">
-          📍 기타
-        </option>
-
-      </select>
-
-
-    </div>
-
-
-
-    <div class="field">
-
-      <label>
-        주소 또는 검색용 문구
-      </label>
-
-      <input
-        id="placeAddress"
-        placeholder="예: 후쿠오카 텐진 / 일본어 주소"
-      />
-
-    </div>
-
-
-
-    <div class="field">
-
-      <label>
-        Google Maps 링크 (선택)
-      </label>
-
-      <input
-        id="placeGoogleUrl"
-        placeholder="구글맵 공유 링크가 있으면 붙여넣기"
-      />
-
-    </div>
-
-
-
-    <div class="field">
-
-      <label>
-        메모 (선택)
-      </label>
-
-      <textarea
-        id="placeNote"
-        placeholder="먹고 싶은 메뉴, 예약시간 등"
-      ></textarea>
-
-    </div>
-
-
-
-    <div
-      class="muted"
-      id="coordHint"
-      style="margin-bottom:10px"
-    ></div>
-
-
-
-    <div class="sheetActions">
-
-      <button
-        id="sheetCancel"
-        class="btn"
-      >
-        취소
-      </button>
-
-
-      <button
-        id="sheetSave"
-        class="btn primary"
-      >
-        저장
-      </button>
-
-    </div>
-
-
-  </div>
+<input
+id="placeName"
+placeholder="예: 이치란 텐진점"
+>
 
 </div>
 
 
 
-<!-- 일정 날짜 선택 -->
+<div class="field">
 
-<div
-  id="daySheetBack"
-  class="sheetBack"
+<label>
+카테고리
+</label>
+
+
+<select id="placeCategory">
+
+
+<option value="restaurant">
+🍜 맛집
+</option>
+
+
+<option value="cafe">
+☕ 카페
+</option>
+
+
+<option value="shopping">
+🛍️ 쇼핑
+</option>
+
+
+<option value="tour">
+📸 관광
+</option>
+
+
+<option value="hotel">
+🏨 숙소
+</option>
+
+
+<option value="night">
+🍺 술·야식
+</option>
+
+
+<option value="etc">
+📍 기타
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+<div class="field">
+
+<label>
+지역 / 주소
+</label>
+
+<input
+id="placeAddress"
+placeholder="예: 텐진 / 하카타 / 일본어 주소"
 >
 
-  <div class="sheet">
+</div>
 
 
-    <h3>
-      어느 일정에 넣을까?
-    </h3>
+
+<div class="field">
+
+<label>
+Google Maps 링크
+</label>
+
+<input
+id="placeGoogleUrl"
+placeholder="Google Maps 공유 링크 붙여넣기"
+>
+
+</div>
 
 
-    <div
-      class="days"
-      id="dayPickButtons"
-    ></div>
+
+<div class="field">
+
+<label>
+메모
+</label>
+
+<textarea
+id="placeNote"
+placeholder="먹을 메뉴, 예약시간, 가격 등"
+></textarea>
+
+</div>
 
 
-    <div
-      class="sheetActions"
-      style="margin-top:12px"
-    >
 
-      <button
-        id="daySheetCancel"
-        class="btn"
-      >
-        닫기
-      </button>
-
-    </div>
+<div class="sheetActions">
 
 
-  </div>
+<button
+id="sheetCancel"
+class="btn"
+>
+취소
+</button>
+
+
+<button
+id="sheetSave"
+class="btn primary"
+>
+저장
+</button>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- 날짜 선택 -->
+
+<div
+id="daySheetBack"
+class="sheetBack"
+>
+
+<div class="sheet">
+
+
+<h3>
+어느 일정에 넣을까?
+</h3>
+
+
+<div
+class="days"
+id="dayPickButtons"
+></div>
+
+
+<div
+class="sheetActions"
+style="margin-top:12px"
+>
+
+
+<button
+id="daySheetCancel"
+class="btn"
+>
+닫기
+</button>
+
+
+</div>
+
+
+</div>
 
 </div>
 
@@ -1822,4017 +1474,2788 @@
 (() => {
 
 
-const KEY =
-  window.APP_CONFIG
-  ?.MAPTILER_KEY
-  || "";
-
-
-if (
-  !KEY ||
-  KEY.includes("여기에")
-) {
-
-  alert(
-    "config.js에 MapTiler 키를 먼저 넣어줘."
-  );
-
-}
-
-
-
-const FUKUOKA = {
-
-  lng:
-    130.4017,
-
-  lat:
-    33.5902
-
-};
-
-
-
 const STORAGE =
-  "fukuoka-trip-maptiler-v2";
-
-
-const OLD_STORAGE =
-  "fukuoka-trip-v8";
+"fukuoka-google-planner-v1";
 
 
 
 const categoryInfo = {
 
-  all: {
 
-    label:
-      "전체",
-
-    emoji:
-      "📌",
-
-    color:
-      "#171717"
-
-  },
+all:{
+label:"전체",
+emoji:"📌"
+},
 
 
-  restaurant: {
-
-    label:
-      "맛집",
-
-    emoji:
-      "🍜",
-
-    color:
-      "#ef5350"
-
-  },
+restaurant:{
+label:"맛집",
+emoji:"🍜"
+},
 
 
-  cafe: {
-
-    label:
-      "카페",
-
-    emoji:
-      "☕",
-
-    color:
-      "#9a6a45"
-
-  },
+cafe:{
+label:"카페",
+emoji:"☕"
+},
 
 
-  shopping: {
-
-    label:
-      "쇼핑",
-
-    emoji:
-      "🛍️",
-
-    color:
-      "#8e61d4"
-
-  },
+shopping:{
+label:"쇼핑",
+emoji:"🛍️"
+},
 
 
-  tour: {
-
-    label:
-      "관광",
-
-    emoji:
-      "📸",
-
-    color:
-      "#2f6fed"
-
-  },
+tour:{
+label:"관광",
+emoji:"📸"
+},
 
 
-  hotel: {
-
-    label:
-      "숙소",
-
-    emoji:
-      "🏨",
-
-    color:
-      "#16a34a"
-
-  },
+hotel:{
+label:"숙소",
+emoji:"🏨"
+},
 
 
-  etc: {
+night:{
+label:"술·야식",
+emoji:"🍺"
+},
 
-    label:
-      "기타",
 
-    emoji:
-      "📍",
+etc:{
+label:"기타",
+emoji:"📍"
+}
 
-    color:
-      "#6b7280"
-
-  }
 
 };
 
 
 
-const blankState =
-  () => ({
+const blank =
+() => ({
 
-    selectedDay:
-      "day1",
+selectedDay:
+"day1",
 
-    travelMode:
-      "walking",
+travelMode:
+"walking",
 
-    places:
-      [],
+places:[],
 
-    days: {
+days:{
 
-      day1:
-        [],
+day1:[],
 
-      day2:
-        [],
+day2:[],
 
-      day3:
-        []
+day3:[]
 
-    }
+}
 
-  });
+});
 
 
 
 const uid =
-  () =>
+() =>
 
-    crypto.randomUUID
+crypto.randomUUID
 
-    ?
+?
 
-    crypto.randomUUID()
+crypto.randomUUID()
 
-    :
+:
 
-    Date.now()
-    +
-    "-"
-    +
-    Math.random();
+Date.now()
++
+"-"
++
+Math.random();
+
+
+
+const norm =
+value =>
+
+String(
+value || ""
+)
+.toLowerCase()
+.replace(
+/\s+/g,
+""
+)
+.trim();
 
 
 
 const esc =
-  value =>
+value =>
 
-    String(
-      value ?? ""
-    )
-    .replace(
+String(
+value ?? ""
+)
+.replace(
 
-      /[&<>"']/g,
+/[&<>"']/g,
 
-      char => ({
+char => ({
 
-        "&":
-          "&amp;",
+"&":"&amp;",
 
-        "<":
-          "&lt;",
+"<":"&lt;",
 
-        ">":
-          "&gt;",
+">":"&gt;",
 
-        '"':
-          "&quot;",
+'"':"&quot;",
 
-        "'":
-          "&#039;"
+"'":"&#039;"
 
-      })[char]
+})[char]
 
-    );
+);
 
 
 
 const dayLabel =
-  day =>
+day =>
 
-    day === "day1"
+day === "day1"
 
-    ?
+?
 
-    "1일차"
+"1일차"
 
-    :
+:
 
-    day === "day2"
+day === "day2"
 
-    ?
+?
 
-    "2일차"
+"2일차"
 
-    :
+:
 
-    "3일차";
+"3일차";
 
 
 
-const normalize =
-  value =>
+function loadState(){
 
-    String(
-      value || ""
-    )
-    .toLowerCase()
-    .replace(
-      /\s+/g,
-      ""
-    )
-    .trim();
 
+try{
 
 
-/* =========================
-   기존 앱 자료 일부 이동
-========================= */
+const saved =
+JSON.parse(
 
-function migrateOld() {
+localStorage.getItem(
+STORAGE
+)
 
+||
 
-  try {
+"null"
 
+);
 
-    const old =
-      JSON.parse(
 
-        localStorage.getItem(
-          OLD_STORAGE
-        )
+if(saved){
 
-        ||
 
-        "null"
+return{
 
-      );
+...blank(),
 
+...saved,
 
-    if (!old) {
+days:{
 
-      return null;
+...blank().days,
 
-    }
+...(saved.days || {})
 
+},
 
+places:
 
-    const state =
-      blankState();
+Array.isArray(
+saved.places
+)
 
+?
 
-    const byKey =
-      new Map();
+saved.places
 
+:
 
+[]
 
-    const addPlace =
-      place => {
-
-
-        if (
-          !place ||
-          !place.name
-        ) {
-
-          return null;
-
-        }
-
-
-        const key =
-
-          `${normalize(
-            place.name
-          )}|${Number(
-            place.lat || 0
-          ).toFixed(5)}|${Number(
-            place.lng || 0
-          ).toFixed(5)}`;
-
-
-        if (
-          byKey.has(key)
-        ) {
-
-          return byKey.get(
-            key
-          );
-
-        }
-
-
-        const id =
-          uid();
-
-
-        state.places.push({
-
-          id,
-
-          name:
-            place.name,
-
-          address:
-            place.address || "",
-
-          lat:
-            Number.isFinite(
-              Number(place.lat)
-            )
-
-            ?
-
-            Number(place.lat)
-
-            :
-
-            null,
-
-          lng:
-            Number.isFinite(
-              Number(place.lng)
-            )
-
-            ?
-
-            Number(place.lng)
-
-            :
-
-            null,
-
-          category:
-            place.category ||
-            "etc",
-
-          googleUrl:
-            "",
-
-          note:
-            ""
-
-        });
-
-
-        byKey.set(
-          key,
-          id
-        );
-
-
-        return id;
-
-      };
-
-
-
-    (
-      old.favorites ||
-      []
-    )
-    .forEach(
-      addPlace
-    );
-
-
-
-    [
-      "day1",
-      "day2",
-      "day3"
-    ]
-    .forEach(
-      day => {
-
-
-        (
-          old.days?.[day]
-          ||
-          []
-        )
-        .forEach(
-          place => {
-
-
-            const id =
-              addPlace(
-                place
-              );
-
-
-            if (
-              id &&
-              !state.days[
-                day
-              ]
-              .includes(id)
-            ) {
-
-              state.days[
-                day
-              ]
-              .push(id);
-
-            }
-
-
-          }
-        );
-
-
-      }
-    );
-
-
-    state.selectedDay =
-      old.selectedDay
-      ||
-      "day1";
-
-
-    return state;
-
-
-  }
-
-  catch {
-
-    return null;
-
-  }
+};
 
 
 }
 
 
 
-function loadState() {
+const old =
+JSON.parse(
+
+localStorage.getItem(
+"fukuoka-trip-maptiler-v2"
+)
+
+||
+
+"null"
+
+);
 
 
-  try {
+if(
+old &&
+Array.isArray(
+old.places
+)
+){
 
 
-    const saved =
-      JSON.parse(
+const migrated = {
 
-        localStorage.getItem(
-          STORAGE
-        )
+...blank(),
 
-        ||
+...old,
 
-        "null"
+days:{
 
-      );
+...blank().days,
 
+...(old.days || {})
 
-    if (saved) {
+}
 
-
-      return {
-
-        ...blankState(),
-
-        ...saved,
-
-        days: {
-
-          ...blankState().days,
-
-          ...(saved.days || {})
-
-        },
-
-        places:
-
-          Array.isArray(
-            saved.places
-          )
-
-          ?
-
-          saved.places
-
-          :
-
-          []
-
-      };
+};
 
 
-    }
+localStorage.setItem(
+
+STORAGE,
+
+JSON.stringify(
+migrated
+)
+
+);
 
 
-  }
-
-  catch {}
+return migrated;
 
 
-  const migrated =
-    migrateOld();
+}
 
 
-  if (migrated) {
+}
+
+catch{}
 
 
-    localStorage.setItem(
+return blank();
 
-      STORAGE,
-
-      JSON.stringify(
-        migrated
-      )
-
-    );
-
-
-    return migrated;
-
-  }
-
-
-  return blankState();
 
 }
 
 
 
 let state =
-  loadState();
+loadState();
 
 
-let selectedCategoryFilter =
-  "all";
-
-
-let map;
-
-let mapReady =
-  false;
-
-
-let savedMarkers =
-  [];
-
-
-let currentMarker =
-  null;
-
-
-let pickMode =
-  null;
-
-
-let pendingPinPlaceId =
-  null;
+let selectedCategory =
+"all";
 
 
 let editingPlaceId =
-  null;
-
-
-let draftCoords =
-  null;
+null;
 
 
 let dayPickPlaceId =
-  null;
+null;
 
 
 
-function saveState() {
+function save(){
 
-  localStorage.setItem(
 
-    STORAGE,
+localStorage.setItem(
 
-    JSON.stringify(
-      state
-    )
+STORAGE,
 
-  );
+JSON.stringify(
+state
+)
+
+);
+
 
 }
 
 
 
-function getPlace(id) {
+function getPlace(id){
 
-  return state.places
-    .find(
-      place =>
-        place.id === id
-    );
+
+return state.places
+.find(
+place =>
+place.id === id
+);
+
 
 }
 
 
 
 function dayPlaces(
-  day =
-    state.selectedDay
-) {
+day =
+state.selectedDay
+){
 
-  return (
-    state.days[
-      day
-    ]
-    ||
-    []
-  )
-  .map(
-    getPlace
-  )
-  .filter(
-    Boolean
-  );
 
-}
+return(
 
+state.days[
+day
+]
 
+||
 
-/* =========================
-   MapTiler 지도
-========================= */
+[]
 
-maptilersdk.config.apiKey =
-  KEY;
+)
 
+.map(
+getPlace
+)
 
-maptilersdk.config.primaryLanguage =
-  maptilersdk.Language.KOREAN;
-
-
-
-function initMap() {
-
-
-  map =
-    new maptilersdk.Map({
-
-      container:
-        "map",
-
-      style:
-        maptilersdk
-        .MapStyle
-        .STREETS,
-
-      center: [
-
-        FUKUOKA.lng,
-
-        FUKUOKA.lat
-
-      ],
-
-      zoom:
-        12.6
-
-    });
-
-
-
-  map.on(
-    "load",
-    () => {
-
-
-      mapReady =
-        true;
-
-
-      try {
-
-        map.setLanguage(
-          maptilersdk
-          .Language
-          .KOREAN
-        );
-
-      }
-
-      catch {}
-
-
-      renderMapMarkers();
-
-
-    }
-  );
-
-
-
-  map.on(
-    "click",
-    event => {
-
-
-      if (!pickMode) {
-
-        return;
-
-      }
-
-
-
-      if (
-        pickMode ===
-        "new"
-      ) {
-
-
-        draftCoords = {
-
-          lng:
-            event.lngLat.lng,
-
-          lat:
-            event.lngLat.lat
-
-        };
-
-
-        openPlaceSheet({
-
-          name:
-
-            document
-            .getElementById(
-              "quickName"
-            )
-            .value
-            .trim(),
-
-          category:
-
-            document
-            .getElementById(
-              "quickCategory"
-            )
-            .value,
-
-          address:
-            "",
-
-          lat:
-            event.lngLat.lat,
-
-          lng:
-            event.lngLat.lng
-
-        });
-
-
-      }
-
-
-      else if (
-
-        pickMode ===
-        "existing"
-
-        &&
-
-        pendingPinPlaceId
-
-      ) {
-
-
-        const place =
-          getPlace(
-            pendingPinPlaceId
-          );
-
-
-        if (place) {
-
-
-          place.lng =
-            event.lngLat.lng;
-
-
-          place.lat =
-            event.lngLat.lat;
-
-
-          saveState();
-
-
-          renderAll();
-
-
-          renderMapMarkers();
-
-
-          map.flyTo({
-
-            center: [
-
-              place.lng,
-
-              place.lat
-
-            ],
-
-            zoom:
-              16
-
-          });
-
-
-          alert(
-
-            `${place.name} 위치를 저장했어.`
-
-          );
-
-
-        }
-
-
-      }
-
-
-      setPickMode(
-        null
-      );
-
-
-      pendingPinPlaceId =
-        null;
-
-
-    }
-  );
+.filter(
+Boolean
+);
 
 
 }
 
 
 
-function markerElement(
-  place
-) {
-
-
-  const info =
-
-    categoryInfo[
-      place.category
-    ]
-
-    ||
-
-    categoryInfo.etc;
-
-
-  const el =
-    document.createElement(
-      "div"
-    );
-
-
-  el.className =
-    "marker";
-
-
-  el.style.background =
-    info.color;
-
-
-  el.innerHTML =
-    `<span>${info.emoji}</span>`;
-
-
-  return el;
-
-}
-
-
-
-function renderMapMarkers() {
-
-
-  if (!mapReady) {
-
-    return;
-
-  }
-
-
-  savedMarkers
-  .forEach(
-    marker =>
-      marker.remove()
-  );
-
-
-  savedMarkers =
-    [];
-
-
-  state.places
-  .forEach(
-    place => {
-
-
-      if (
-
-        !Number.isFinite(
-          Number(place.lng)
-        )
-
-        ||
-
-        !Number.isFinite(
-          Number(place.lat)
-        )
-
-      ) {
-
-        return;
-
-      }
-
-
-      const marker =
-
-        new maptilersdk.Marker({
-
-          element:
-            markerElement(
-              place
-            ),
-
-          anchor:
-            "bottom"
-
-        })
-
-        .setLngLat([
-
-          place.lng,
-
-          place.lat
-
-        ])
-
-        .setPopup(
-
-          new maptilersdk.Popup({
-
-            offset:
-              25
-
-          })
-
-          .setHTML(
-
-            `<b>${esc(
-              place.name
-            )}</b>
-
-            <br>
-
-            <small>
-              ${esc(
-                place.address || ""
-              )}
-            </small>`
-
-          )
-
-        )
-
-        .addTo(
-          map
-        );
-
-
-      savedMarkers.push(
-        marker
-      );
-
-
-    }
-  );
-
-
-}
-
-
-
-function fitSaved() {
-
-
-  if (!mapReady) {
-
-    return;
-
-  }
-
-
-  const points =
-
-    state.places
-    .filter(
-      place =>
-
-        Number.isFinite(
-          Number(place.lng)
-        )
-
-        &&
-
-        Number.isFinite(
-          Number(place.lat)
-        )
-
-    );
-
-
-  if (!points.length) {
-
-
-    map.flyTo({
-
-      center: [
-
-        FUKUOKA.lng,
-
-        FUKUOKA.lat
-
-      ],
-
-      zoom:
-        12.6
-
-    });
-
-
-    return;
-
-  }
-
-
-  if (
-    points.length ===
-    1
-  ) {
-
-
-    map.flyTo({
-
-      center: [
-
-        points[0].lng,
-
-        points[0].lat
-
-      ],
-
-      zoom:
-        15.5
-
-    });
-
-
-    return;
-
-  }
-
-
-  const bounds =
-    new maptilersdk
-    .LngLatBounds();
-
-
-  points
-  .forEach(
-    place =>
-
-      bounds.extend([
-
-        place.lng,
-
-        place.lat
-
-      ])
-
-  );
-
-
-  map.fitBounds(
-
-    bounds,
-
-    {
-
-      padding:
-        60,
-
-      maxZoom:
-        15
-
-    }
-
-  );
-
-
-}
-
-
-
-function setPickMode(
-  mode
-) {
-
-
-  pickMode =
-    mode;
-
-
-  document
-  .getElementById(
-    "newPinBtn"
-  )
-  .classList
-  .toggle(
-
-    "active",
-
-    mode === "new"
-
-  );
-
-
-  if (mode) {
-
-
-    alert(
-
-      mode === "new"
-
-      ?
-
-      "지도에서 저장할 위치를 한 번 눌러줘."
-
-      :
-
-      "지도에서 이 장소의 위치를 한 번 눌러줘."
-
-    );
-
-
-  }
-
-
-}
-
-
-
-/* =========================
-   Google Maps
-========================= */
+/* =====================
+   GOOGLE MAPS
+===================== */
 
 function googleSearchUrl(
-  query
-) {
+query
+){
 
 
-  return (
+return(
 
-    "https://www.google.com/maps/search/?api=1&query="
+"https://www.google.com/maps/search/?api=1&query="
 
-    +
++
 
-    encodeURIComponent(
-      query ||
-      "Fukuoka"
-    )
+encodeURIComponent(
+query || "후쿠오카"
+)
 
-  );
+);
+
+
+}
+
+
+
+function placeQuery(
+place
+){
+
+
+return [
+
+place.name,
+
+place.address,
+
+"Fukuoka Japan"
+
+]
+
+.filter(
+Boolean
+)
+
+.join(
+" "
+);
+
 
 }
 
 
 
 function placeGoogleUrl(
-  place
-) {
+place
+){
 
 
-  return (
+return(
 
-    place.googleUrl
-    ?.trim()
+place.googleUrl
+?.trim()
 
-    ||
+||
 
-    googleSearchUrl(
+googleSearchUrl(
 
-      `${place.name} ${place.address || "Fukuoka Japan"}`
+placeQuery(
+place
+)
 
-    )
+)
 
-  );
-
-}
-
-
-
-function googleToken(
-  place
-) {
-
-
-  if (
-
-    Number.isFinite(
-      Number(place.lat)
-    )
-
-    &&
-
-    Number.isFinite(
-      Number(place.lng)
-    )
-
-  ) {
-
-
-    return (
-
-      `${place.lat},${place.lng}`
-
-    );
-
-  }
-
-
-  return (
-
-    `${place.name} ${place.address || "Fukuoka Japan"}`
-
-  );
-
-}
-
-
-
-/* 구글맵 긴 주소에 좌표가 있으면 자동 추출 */
-
-function parseGoogleCoords(
-  url
-) {
-
-
-  const text =
-    String(
-      url || ""
-    );
-
-
-  let match =
-
-    text.match(
-
-      /@(-?\d+\.\d+),(-?\d+\.\d+)/
-
-    );
-
-
-  if (match) {
-
-
-    return {
-
-      lat:
-        Number(
-          match[1]
-        ),
-
-      lng:
-        Number(
-          match[2]
-        )
-
-    };
-
-
-  }
-
-
-
-  match =
-    text.match(
-
-      /!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/
-
-    );
-
-
-  if (match) {
-
-
-    return {
-
-      lat:
-        Number(
-          match[1]
-        ),
-
-      lng:
-        Number(
-          match[2]
-        )
-
-    };
-
-
-  }
-
-
-
-  try {
-
-
-    const parsed =
-      new URL(
-        text
-      );
-
-
-    const query =
-
-      parsed
-      .searchParams
-      .get(
-        "query"
-      )
-
-      ||
-
-      parsed
-      .searchParams
-      .get(
-        "destination"
-      );
-
-
-    if (query) {
-
-
-      const coordinateMatch =
-
-        query.match(
-
-          /^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/
-
-        );
-
-
-      if (
-        coordinateMatch
-      ) {
-
-
-        return {
-
-          lat:
-            Number(
-              coordinateMatch[1]
-            ),
-
-          lng:
-            Number(
-              coordinateMatch[2]
-            )
-
-        };
-
-
-      }
-
-
-    }
-
-
-  }
-
-  catch {}
-
-
-  return null;
-
-}
-
-
-
-function openGoogleFromQuick() {
-
-
-  const query =
-
-    document
-    .getElementById(
-      "quickName"
-    )
-    .value
-    .trim()
-
-    ||
-
-    "후쿠오카 맛집";
-
-
-  window.open(
-
-    googleSearchUrl(
-
-      query +
-      " Fukuoka"
-
-    ),
-
-    "_blank"
-
-  );
+);
 
 
 }
 
 
 
-/* =========================
-   장소 저장 / 수정
-========================= */
+function directionsToPlaceUrl(
+place
+){
+
+
+const params =
+new URLSearchParams({
+
+api:
+"1",
+
+destination:
+placeQuery(
+place
+),
+
+travelmode:
+state.travelMode
+
+});
+
+
+return(
+
+"https://www.google.com/maps/dir/?"
+
++
+
+params.toString()
+
+);
+
+
+}
+
+
+
+function routeToken(
+place
+){
+
+
+return [
+
+place.name,
+
+place.address,
+
+"Fukuoka Japan"
+
+]
+
+.filter(
+Boolean
+)
+
+.join(
+" "
+);
+
+
+}
+
+
+
+function buildRouteUrl(
+list
+){
+
+
+if(!list.length){
+return null;
+}
+
+
+if(
+list.length ===
+1
+){
+
+
+return directionsToPlaceUrl(
+list[0]
+);
+
+
+}
+
+
+const params =
+new URLSearchParams({
+
+api:
+"1",
+
+origin:
+routeToken(
+list[0]
+),
+
+destination:
+routeToken(
+list[
+list.length - 1
+]
+),
+
+travelmode:
+state.travelMode
+
+});
+
+
+if(
+list.length >
+2
+){
+
+
+params.set(
+
+"waypoints",
+
+list
+.slice(
+1,
+-1
+)
+
+.map(
+routeToken
+)
+
+.join(
+"|"
+)
+
+);
+
+
+}
+
+
+return(
+
+"https://www.google.com/maps/dir/?"
+
++
+
+params.toString()
+
+);
+
+
+}
+
+
+
+function routeChunks(
+list
+){
+
+
+if(
+state.travelMode ===
+"transit"
+){
+
+
+const chunks =
+[];
+
+
+for(
+let i = 0;
+i < list.length - 1;
+i++
+){
+
+
+chunks.push([
+
+list[i],
+
+list[i + 1]
+
+]);
+
+
+}
+
+
+return(
+
+chunks.length
+
+?
+
+chunks
+
+:
+
+[
+list
+]
+
+);
+
+
+}
+
+
+
+const max =
+5;
+
+
+if(
+list.length <=
+max
+){
+
+
+return [
+list
+];
+
+
+}
+
+
+const chunks =
+[];
+
+
+let start =
+0;
+
+
+while(
+start <
+list.length - 1
+){
+
+
+const end =
+Math.min(
+
+start +
+max,
+
+list.length
+
+);
+
+
+chunks.push(
+
+list.slice(
+start,
+end
+)
+
+);
+
+
+start =
+end - 1;
+
+
+}
+
+
+return chunks;
+
+
+}
+
+
+
+function deriveNameFromGoogleUrl(
+url
+){
+
+
+try{
+
+
+const parsed =
+new URL(
+url
+);
+
+
+const parts =
+
+decodeURIComponent(
+parsed.pathname
+)
+
+.split(
+"/"
+)
+
+.filter(
+Boolean
+);
+
+
+const placeIndex =
+parts.indexOf(
+"place"
+);
+
+
+if(
+placeIndex >= 0 &&
+parts[
+placeIndex + 1
+]
+){
+
+
+return parts[
+placeIndex + 1
+]
+.replace(
+/\+/g,
+" "
+);
+
+
+}
+
+
+}
+
+catch{}
+
+
+return "";
+
+
+}
+
+
+
+function openGoogleSearch(
+query
+){
+
+
+window.open(
+
+googleSearchUrl(
+
+(
+query ||
+"후쿠오카"
+)
+
++
+" 후쿠오카"
+
+),
+
+"_blank"
+
+);
+
+
+}
+
+
+
+/* =====================
+   화면
+===================== */
+
+function changeView(
+view
+){
+
+
+document
+.querySelectorAll(
+".view"
+)
+.forEach(
+element =>
+
+element
+.classList
+.remove(
+"active"
+)
+
+);
+
+
+document
+.getElementById(
+view +
+"View"
+)
+.classList
+.add(
+"active"
+);
+
+
+document
+.querySelectorAll(
+".bottom button"
+)
+.forEach(
+button => {
+
+
+button
+.classList
+.toggle(
+
+"active",
+
+button.dataset.view ===
+view
+
+);
+
+
+}
+);
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:
+"smooth"
+
+});
+
+
+}
+
+
+
+/* =====================
+   날짜
+===================== */
+
+function renderDays(){
+
+
+document
+.querySelectorAll(
+"[data-day-tabs]"
+)
+.forEach(
+box => {
+
+
+box.innerHTML =
+"";
+
+
+[
+"day1",
+"day2",
+"day3"
+]
+.forEach(
+day => {
+
+
+const button =
+document.createElement(
+"button"
+);
+
+
+button.className =
+
+"pill"
+
++
+
+(
+state.selectedDay ===
+day
+
+?
+
+" active"
+
+:
+
+""
+);
+
+
+button.textContent =
+dayLabel(
+day
+);
+
+
+button.onclick =
+() => {
+
+
+state.selectedDay =
+day;
+
+
+save();
+
+
+renderAll();
+
+
+};
+
+
+box.appendChild(
+button
+);
+
+
+}
+);
+
+
+}
+);
+
+
+}
+
+
+
+/* =====================
+   홈
+===================== */
+
+function renderHome(){
+
+
+document
+.getElementById(
+"statSaved"
+)
+.textContent =
+state.places.length;
+
+
+document
+.getElementById(
+"statDay"
+)
+.textContent =
+state.days[
+state.selectedDay
+]
+.length;
+
+
+document
+.getElementById(
+"statCategory"
+)
+.textContent =
+
+new Set(
+
+state.places
+.map(
+place =>
+place.category
+)
+
+)
+.size;
+
+
+
+const box =
+document
+.getElementById(
+"homeSchedule"
+);
+
+
+const list =
+dayPlaces();
+
+
+if(!list.length){
+
+
+box.innerHTML = `
+
+<div class="empty">
+
+아직 일정이 없어.
+
+<br><br>
+
+저장한 장소에서 일정에 추가해줘.
+
+</div>
+
+`;
+
+
+return;
+
+
+}
+
+
+box.innerHTML =
+"";
+
+
+list.forEach(
+(place,index) => {
+
+
+const element =
+document.createElement(
+"div"
+);
+
+
+element.className =
+"scheduleItem";
+
+
+element.innerHTML = `
+
+<div class="num">
+
+${index + 1}
+
+</div>
+
+
+<div>
+
+<div class="scheduleName">
+
+${esc(place.name)}
+
+</div>
+
+
+<div class="scheduleSub">
+
+${esc(
+place.address
+||
+place.note
+||
+""
+)}
+
+</div>
+
+</div>
+
+
+<button class="icon">
+
+↗
+
+</button>
+
+`;
+
+
+element
+.querySelector(
+"button"
+)
+.onclick =
+() =>
+
+window.open(
+
+placeGoogleUrl(
+place
+),
+
+"_blank"
+
+);
+
+
+box.appendChild(
+element
+);
+
+
+});
+
+
+}
+
+
+
+/* =====================
+   저장 필터
+===================== */
+
+function renderFilters(){
+
+
+const box =
+document
+.getElementById(
+"categoryFilters"
+);
+
+
+box.innerHTML =
+"";
+
+
+Object
+.entries(
+categoryInfo
+)
+.forEach(
+([key,info]) => {
+
+
+const button =
+document.createElement(
+"button"
+);
+
+
+button.className =
+
+"pill"
+
++
+
+(
+selectedCategory ===
+key
+
+?
+
+" active"
+
+:
+
+""
+);
+
+
+button.textContent =
+
+`${info.emoji} ${info.label}`;
+
+
+button.onclick =
+() => {
+
+
+selectedCategory =
+key;
+
+
+renderFilters();
+
+
+renderSaved();
+
+
+};
+
+
+box.appendChild(
+button
+);
+
+
+}
+);
+
+
+}
+
+
+
+/* =====================
+   저장 장소
+===================== */
+
+function renderSaved(){
+
+
+const box =
+document
+.getElementById(
+"savedList"
+);
+
+
+const query =
+
+norm(
+
+document
+.getElementById(
+"savedSearch"
+)
+?.value
+||
+""
+
+);
+
+
+const list =
+
+state.places
+.filter(
+place =>
+
+
+(
+selectedCategory ===
+"all"
+
+||
+
+place.category ===
+selectedCategory
+)
+
+&&
+
+(
+!query
+
+||
+
+norm(
+
+`${place.name} ${place.address} ${place.note}`
+
+)
+.includes(
+query
+)
+
+)
+
+);
+
+
+if(!list.length){
+
+
+box.innerHTML = `
+
+<div class="empty">
+
+저장한 장소가 없어.
+
+<br><br>
+
+찾기 탭에서 맛집·카페를 저장해봐.
+
+</div>
+
+`;
+
+
+return;
+
+
+}
+
+
+box.innerHTML =
+"";
+
+
+list.forEach(
+place => {
+
+
+const info =
+
+categoryInfo[
+place.category
+]
+
+||
+
+categoryInfo.etc;
+
+
+const element =
+document.createElement(
+"div"
+);
+
+
+element.className =
+"place";
+
+
+element.innerHTML = `
+
+
+<div class="placeHead">
+
+
+<div class="emoji">
+
+${info.emoji}
+
+</div>
+
+
+<div class="placeBody">
+
+
+<div class="placeName">
+
+${esc(place.name)}
+
+</div>
+
+
+<div class="placeSub">
+
+${esc(
+
+place.address
+
+||
+
+place.note
+
+||
+
+"메모 없음"
+
+)}
+
+</div>
+
+
+<span class="tag">
+
+${info.label}
+
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="actions">
+
+
+<button class="btn google">
+
+Google Maps
+
+</button>
+
+
+<button class="btn route">
+
+길찾기
+
+</button>
+
+
+<button class="btn primary day">
+
+＋ 일정
+
+</button>
+
+
+<button class="btn edit">
+
+수정
+
+</button>
+
+
+<button class="btn danger del">
+
+삭제
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+element
+.querySelector(
+".google"
+)
+.onclick =
+() =>
+
+window.open(
+
+placeGoogleUrl(
+place
+),
+
+"_blank"
+
+);
+
+
+
+element
+.querySelector(
+".route"
+)
+.onclick =
+() =>
+
+window.open(
+
+directionsToPlaceUrl(
+place
+),
+
+"_blank"
+
+);
+
+
+
+element
+.querySelector(
+".day"
+)
+.onclick =
+() =>
+
+openDaySheet(
+place.id
+);
+
+
+
+element
+.querySelector(
+".edit"
+)
+.onclick =
+() =>
+
+openPlaceSheet(
+place,
+place.id
+);
+
+
+
+element
+.querySelector(
+".del"
+)
+.onclick =
+() =>
+
+removePlace(
+place.id
+);
+
+
+
+box.appendChild(
+element
+);
+
+
+}
+);
+
+
+}
+
+
+
+/* =====================
+   일정
+===================== */
+
+function renderSchedule(){
+
+
+const box =
+document
+.getElementById(
+"scheduleList"
+);
+
+
+const list =
+dayPlaces();
+
+
+box.innerHTML =
+"";
+
+
+if(!list.length){
+
+
+box.innerHTML = `
+
+<div class="empty">
+
+${dayLabel(
+state.selectedDay
+)} 일정이 비어있어.
+
+</div>
+
+`;
+
+
+}
+
+
+list.forEach(
+(place,index) => {
+
+
+const element =
+document.createElement(
+"div"
+);
+
+
+element.className =
+"scheduleItem";
+
+
+element.innerHTML = `
+
+
+<div class="num">
+
+${index + 1}
+
+</div>
+
+
+<div>
+
+
+<div class="scheduleName">
+
+${esc(place.name)}
+
+</div>
+
+
+<div class="scheduleSub">
+
+${esc(
+place.address || ""
+)}
+
+</div>
+
+
+</div>
+
+
+<div>
+
+
+<button class="icon up">
+↑
+</button>
+
+
+<button class="icon down">
+↓
+</button>
+
+
+<button class="icon remove">
+×
+</button>
+
+
+</div>
+
+
+`;
+
+
+element
+.querySelector(
+".up"
+)
+.disabled =
+index === 0;
+
+
+element
+.querySelector(
+".down"
+)
+.disabled =
+
+index ===
+list.length - 1;
+
+
+element
+.querySelector(
+".up"
+)
+.onclick =
+() =>
+
+moveSchedule(
+index,
+-1
+);
+
+
+element
+.querySelector(
+".down"
+)
+.onclick =
+() =>
+
+moveSchedule(
+index,
+1
+);
+
+
+element
+.querySelector(
+".remove"
+)
+.onclick =
+() =>
+
+removeSchedule(
+index
+);
+
+
+box.appendChild(
+element
+);
+
+
+}
+);
+
+
+renderRouteButtons();
+
+
+}
+
+
+
+function renderRouteButtons(){
+
+
+const box =
+document
+.getElementById(
+"routeButtons"
+);
+
+
+const list =
+dayPlaces();
+
+
+box.innerHTML =
+"";
+
+
+if(!list.length){
+
+
+box.innerHTML = `
+
+<span class="muted">
+
+일정을 추가하면
+Google Maps 동선을 열 수 있어.
+
+</span>
+
+`;
+
+
+return;
+
+
+}
+
+
+const chunks =
+routeChunks(
+list
+);
+
+
+chunks.forEach(
+(chunk,index) => {
+
+
+const button =
+document.createElement(
+"button"
+);
+
+
+button.className =
+"btn primary";
+
+
+button.textContent =
+
+chunks.length ===
+1
+
+?
+
+"🗺️ Google Maps로 하루 동선 열기"
+
+:
+
+`🗺️ ${index + 1}구간 · ${chunk[0].name} → ${chunk[chunk.length - 1].name}`;
+
+
+button.onclick =
+() =>
+
+window.open(
+
+buildRouteUrl(
+chunk
+),
+
+"_blank"
+
+);
+
+
+box.appendChild(
+button
+);
+
+
+}
+);
+
+
+}
+
+
+
+/* =====================
+   이동 방식
+===================== */
+
+function renderModes(){
+
+
+document
+.querySelectorAll(
+"[data-mode]"
+)
+.forEach(
+button => {
+
+
+button
+.classList
+.toggle(
+
+"active",
+
+button.dataset.mode ===
+state.travelMode
+
+);
+
+
+}
+);
+
+
+}
+
+
+
+/* =====================
+   장소 입력
+===================== */
 
 function openPlaceSheet(
-  seed = {},
-  editId = null
-) {
+seed = {},
+editId = null
+){
 
 
-  editingPlaceId =
-    editId;
+editingPlaceId =
+editId;
 
 
-  draftCoords =
+document
+.getElementById(
+"sheetTitle"
+)
+.textContent =
 
-    Number.isFinite(
-      Number(seed.lng)
-    )
+editId
 
-    &&
+?
 
-    Number.isFinite(
-      Number(seed.lat)
-    )
+"장소 수정"
 
-    ?
+:
 
-    {
-
-      lng:
-        Number(
-          seed.lng
-        ),
-
-      lat:
-        Number(
-          seed.lat
-        )
-
-    }
-
-    :
-
-    null;
+"장소 저장";
 
 
-  document
-  .getElementById(
-    "sheetTitle"
-  )
-  .textContent =
-
-    editId
-
-    ?
-
-    "장소 수정"
-
-    :
-
-    "장소 저장";
+document
+.getElementById(
+"placeName"
+)
+.value =
+seed.name || "";
 
 
-  document
-  .getElementById(
-    "placeName"
-  )
-  .value =
-    seed.name || "";
+document
+.getElementById(
+"placeCategory"
+)
+.value =
+seed.category ||
+"restaurant";
 
 
-  document
-  .getElementById(
-    "placeCategory"
-  )
-  .value =
-    seed.category ||
-    "restaurant";
+document
+.getElementById(
+"placeAddress"
+)
+.value =
+seed.address || "";
 
 
-  document
-  .getElementById(
-    "placeAddress"
-  )
-  .value =
-    seed.address || "";
+document
+.getElementById(
+"placeGoogleUrl"
+)
+.value =
+seed.googleUrl || "";
 
 
-  document
-  .getElementById(
-    "placeGoogleUrl"
-  )
-  .value =
-    seed.googleUrl || "";
+document
+.getElementById(
+"placeNote"
+)
+.value =
+seed.note || "";
 
 
-  document
-  .getElementById(
-    "placeNote"
-  )
-  .value =
-    seed.note || "";
-
-
-  document
-  .getElementById(
-    "coordHint"
-  )
-  .textContent =
-
-    draftCoords
-
-    ?
-
-    `📍 지도 위치 있음: ${draftCoords.lat.toFixed(5)}, ${draftCoords.lng.toFixed(5)}`
-
-    :
-
-    "📍 지도 위치 없음 — 나중에 저장목록에서 '핀 위치'로 지정 가능";
-
-
-  document
-  .getElementById(
-    "placeSheetBack"
-  )
-  .classList
-  .add(
-    "show"
-  );
+document
+.getElementById(
+"placeSheetBack"
+)
+.classList
+.add(
+"show"
+);
 
 
 }
 
 
 
-function closePlaceSheet() {
+function closePlaceSheet(){
 
 
-  document
-  .getElementById(
-    "placeSheetBack"
-  )
-  .classList
-  .remove(
-    "show"
-  );
+document
+.getElementById(
+"placeSheetBack"
+)
+.classList
+.remove(
+"show"
+);
 
 
-  editingPlaceId =
-    null;
-
-
-  draftCoords =
-    null;
-
-}
-
-
-
-function savePlaceFromSheet() {
-
-
-  const name =
-
-    document
-    .getElementById(
-      "placeName"
-    )
-    .value
-    .trim();
-
-
-  if (!name) {
-
-
-    alert(
-      "장소 이름을 입력해줘."
-    );
-
-
-    return;
-
-  }
-
-
-
-  const googleUrl =
-
-    document
-    .getElementById(
-      "placeGoogleUrl"
-    )
-    .value
-    .trim();
-
-
-
-  const parsedCoords =
-    parseGoogleCoords(
-      googleUrl
-    );
-
-
-  if (parsedCoords) {
-
-    draftCoords =
-      parsedCoords;
-
-  }
-
-
-
-  const data = {
-
-    name,
-
-    category:
-
-      document
-      .getElementById(
-        "placeCategory"
-      )
-      .value,
-
-    address:
-
-      document
-      .getElementById(
-        "placeAddress"
-      )
-      .value
-      .trim(),
-
-    googleUrl,
-
-    note:
-
-      document
-      .getElementById(
-        "placeNote"
-      )
-      .value
-      .trim(),
-
-    lat:
-
-      draftCoords
-      ?.lat
-      ??
-      null,
-
-    lng:
-
-      draftCoords
-      ?.lng
-      ??
-      null
-
-  };
-
-
-
-  if (editingPlaceId) {
-
-
-    const place =
-      getPlace(
-        editingPlaceId
-      );
-
-
-    if (place) {
-
-      Object.assign(
-        place,
-        data
-      );
-
-    }
-
-
-  }
-
-  else {
-
-
-    const duplicate =
-
-      state.places
-      .find(
-        place =>
-
-          normalize(
-            place.name
-          )
-
-          ===
-
-          normalize(
-            name
-          )
-
-          &&
-
-          normalize(
-            place.address
-          )
-
-          ===
-
-          normalize(
-            data.address
-          )
-
-      );
-
-
-    if (duplicate) {
-
-
-      alert(
-        "이미 저장한 장소 같아."
-      );
-
-
-      return;
-
-    }
-
-
-
-    state.places.unshift({
-
-      id:
-        uid(),
-
-      ...data,
-
-      createdAt:
-        Date.now()
-
-    });
-
-
-  }
-
-
-  saveState();
-
-
-  closePlaceSheet();
-
-
-  renderAll();
-
-
-  renderMapMarkers();
-
-}
-
-
-
-function quickSave() {
-
-
-  const name =
-
-    document
-    .getElementById(
-      "quickName"
-    )
-    .value
-    .trim();
-
-
-  if (!name) {
-
-
-    alert(
-      "장소 이름을 먼저 입력해줘."
-    );
-
-
-    return;
-
-  }
-
-
-  openPlaceSheet({
-
-    name,
-
-    category:
-
-      document
-      .getElementById(
-        "quickCategory"
-      )
-      .value,
-
-    address:
-      ""
-
-  });
+editingPlaceId =
+null;
 
 
 }
 
 
 
-function editPlace(id) {
+function savePlace(){
 
 
-  const place =
-    getPlace(id);
+const nameElement =
+document
+.getElementById(
+"placeName"
+);
 
 
-  if (place) {
+const googleUrl =
 
-    openPlaceSheet(
-      place,
-      id
-    );
+document
+.getElementById(
+"placeGoogleUrl"
+)
+.value
+.trim();
 
-  }
+
+let name =
+nameElement
+.value
+.trim();
+
+
+if(
+!name &&
+googleUrl
+){
+
+
+name =
+deriveNameFromGoogleUrl(
+googleUrl
+);
+
+
+}
+
+
+if(!name){
+
+
+alert(
+"장소 이름을 입력해줘."
+);
+
+
+return;
+
 
 }
 
 
 
-function removePlace(id) {
+const data = {
 
 
-  if (
-    !confirm(
-      "이 장소를 저장 목록에서 삭제할까?"
-    )
-  ) {
-
-    return;
-
-  }
+name,
 
 
-  state.places =
+category:
 
-    state.places
-    .filter(
-      place =>
-        place.id !== id
-    );
-
-
-  Object
-  .keys(
-    state.days
-  )
-  .forEach(
-    day => {
+document
+.getElementById(
+"placeCategory"
+)
+.value,
 
 
-      state.days[
-        day
-      ] =
+address:
 
-        state.days[
-          day
-        ]
-        .filter(
-          placeId =>
-            placeId !== id
-        );
+document
+.getElementById(
+"placeAddress"
+)
+.value
+.trim(),
 
 
-    }
-  );
+googleUrl,
 
 
-  saveState();
+note:
+
+document
+.getElementById(
+"placeNote"
+)
+.value
+.trim()
 
 
-  renderAll();
+};
 
 
-  renderMapMarkers();
+
+if(
+editingPlaceId
+){
+
+
+const place =
+getPlace(
+editingPlaceId
+);
+
+
+if(place){
+
+
+Object.assign(
+place,
+data
+);
+
+
+}
+
+
+}
+
+else{
+
+
+const duplicate =
+
+state.places
+.find(
+place =>
+
+norm(
+place.name
+)
+
+===
+
+norm(
+name
+)
+
+&&
+
+norm(
+place.address
+)
+
+===
+
+norm(
+data.address
+)
+
+);
+
+
+if(duplicate){
+
+
+alert(
+"이미 저장한 장소 같아."
+);
+
+
+return;
+
+
+}
+
+
+state.places.unshift({
+
+
+id:
+uid(),
+
+...data,
+
+createdAt:
+Date.now()
+
+
+});
+
 
 }
 
 
 
-function pinPlace(id) {
+save();
 
 
-  pendingPinPlaceId =
-    id;
+closePlaceSheet();
 
 
-  changeView(
-    "map"
-  );
+renderAll();
 
-
-  setTimeout(
-    () =>
-
-      setPickMode(
-        "existing"
-      ),
-
-    150
-  );
 
 }
 
 
 
-/* =========================
-   일정에 장소 추가
-========================= */
+function removePlace(
+id
+){
+
+
+if(
+!confirm(
+"이 장소를 삭제할까?"
+)
+){
+
+
+return;
+
+
+}
+
+
+state.places =
+
+state.places
+.filter(
+place =>
+place.id !== id
+);
+
+
+Object
+.keys(
+state.days
+)
+.forEach(
+day => {
+
+
+state.days[
+day
+] =
+
+state.days[
+day
+]
+.filter(
+placeId =>
+placeId !== id
+);
+
+
+}
+);
+
+
+save();
+
+
+renderAll();
+
+
+}
+
+
+
+/* =====================
+   일정 추가
+===================== */
 
 function openDaySheet(
-  placeId
-) {
+id
+){
 
 
-  dayPickPlaceId =
-    placeId;
+dayPickPlaceId =
+id;
 
 
-  const box =
-
-    document
-    .getElementById(
-      "dayPickButtons"
-    );
-
-
-  box.innerHTML =
-    "";
+const box =
+document
+.getElementById(
+"dayPickButtons"
+);
 
 
-  [
-    "day1",
-    "day2",
-    "day3"
-  ]
-  .forEach(
-    day => {
+box.innerHTML =
+"";
 
 
-      const button =
-        document.createElement(
-          "button"
-        );
+[
+"day1",
+"day2",
+"day3"
+]
+.forEach(
+day => {
 
 
-      button.className =
-        "pill";
+const button =
+document.createElement(
+"button"
+);
 
 
-      button.textContent =
-        dayLabel(
-          day
-        );
+button.className =
+"pill";
 
 
-      button.onclick =
-        () => {
+button.textContent =
+dayLabel(
+day
+);
 
 
-          if (
-            !state.days[
-              day
-            ]
-            .includes(
-              placeId
-            )
-          ) {
+button.onclick =
+() => {
 
 
-            state.days[
-              day
-            ]
-            .push(
-              placeId
-            );
+if(
+!state.days[
+day
+]
+.includes(
+id
+)
+){
 
 
-          }
+state.days[
+day
+]
+.push(
+id
+);
 
-
-          saveState();
-
-
-          renderAll();
-
-
-          document
-          .getElementById(
-            "daySheetBack"
-          )
-          .classList
-          .remove(
-            "show"
-          );
-
-
-          alert(
-
-            `${dayLabel(day)} 일정에 추가했어.`
-
-          );
-
-
-        };
-
-
-      box.appendChild(
-        button
-      );
-
-
-    }
-  );
-
-
-  document
-  .getElementById(
-    "daySheetBack"
-  )
-  .classList
-  .add(
-    "show"
-  );
 
 }
 
 
-
-/* =========================
-   저장 목록
-========================= */
-
-function renderCategoryFilters() {
+save();
 
 
-  const box =
-
-    document
-    .getElementById(
-      "categoryFilters"
-    );
+renderAll();
 
 
-  box.innerHTML =
-    "";
+document
+.getElementById(
+"daySheetBack"
+)
+.classList
+.remove(
+"show"
+);
 
 
-  Object
-  .entries(
-    categoryInfo
-  )
-  .forEach(
-    ([key,info]) => {
+alert(
+
+`${dayLabel(day)}에 추가했어.`
+
+);
 
 
-      const button =
-        document.createElement(
-          "button"
-        );
+};
 
 
-      button.className =
-
-        "pill"
-
-        +
-
-        (
-          selectedCategoryFilter
-          ===
-          key
-
-          ?
-
-          " active"
-
-          :
-
-          ""
-        );
+box.appendChild(
+button
+);
 
 
-      button.textContent =
-
-        `${info.emoji} ${info.label}`;
-
-
-      button.onclick =
-        () => {
+}
+);
 
 
-          selectedCategoryFilter =
-            key;
+document
+.getElementById(
+"daySheetBack"
+)
+.classList
+.add(
+"show"
+);
 
-
-          renderCategoryFilters();
-
-
-          renderSaved();
-
-
-        };
-
-
-      box.appendChild(
-        button
-      );
-
-
-    }
-  );
 
 }
 
 
-
-function renderSaved() {
-
-
-  const box =
-
-    document
-    .getElementById(
-      "savedList"
-    );
-
-
-  const query =
-
-    normalize(
-
-      document
-      .getElementById(
-        "savedSearch"
-      )
-      ?.value
-      ||
-      ""
-
-    );
-
-
-  const list =
-
-    state.places
-    .filter(
-      place =>
-
-
-        (
-          selectedCategoryFilter
-          ===
-          "all"
-
-          ||
-
-          place.category
-          ===
-          selectedCategoryFilter
-        )
-
-        &&
-
-        (
-          !query
-
-          ||
-
-          normalize(
-
-            place.name
-            +
-            " "
-            +
-            place.address
-            +
-            " "
-            +
-            place.note
-
-          )
-          .includes(
-            query
-          )
-
-        )
-
-    );
-
-
-  if (!list.length) {
-
-
-    box.innerHTML =
-
-      `<div class="empty">
-
-        저장한 장소가 없어.
-
-        <br><br>
-
-        지도 화면에서 이름만 빠르게 저장해도 돼.
-
-      </div>`;
-
-
-    return;
-
-  }
-
-
-  box.innerHTML =
-    "";
-
-
-  list
-  .forEach(
-    place => {
-
-
-      const info =
-
-        categoryInfo[
-          place.category
-        ]
-
-        ||
-
-        categoryInfo.etc;
-
-
-      const hasPin =
-
-        Number.isFinite(
-          Number(place.lng)
-        )
-
-        &&
-
-        Number.isFinite(
-          Number(place.lat)
-        );
-
-
-      const element =
-
-        document.createElement(
-          "div"
-        );
-
-
-      element.className =
-        "place";
-
-
-      element.innerHTML = `
-
-        <div class="placeHead">
-
-
-          <div class="emoji">
-
-            ${info.emoji}
-
-          </div>
-
-
-          <div class="placeBody">
-
-
-            <div class="placeName">
-
-              ${esc(place.name)}
-
-              ${
-                hasPin
-
-                ?
-
-                ""
-
-                :
-
-                `<span class="pinMissing">
-                  핀 없음
-                </span>`
-              }
-
-            </div>
-
-
-            <div class="placeSub">
-
-              ${esc(
-                place.address
-                ||
-                place.note
-                ||
-                "주소/메모 없음"
-              )}
-
-            </div>
-
-
-            <span class="tag">
-
-              ${info.label}
-
-            </span>
-
-
-          </div>
-
-
-        </div>
-
-
-
-        <div class="actions">
-
-
-          <button class="btn google">
-
-            Google Maps
-
-          </button>
-
-
-          <button class="btn primary day">
-
-            ＋ 일정
-
-          </button>
-
-
-          <button class="btn pin">
-
-            ${
-              hasPin
-
-              ?
-
-              "지도보기"
-
-              :
-
-              "📍 핀 위치"
-            }
-
-          </button>
-
-
-          <button class="btn edit">
-
-            수정
-
-          </button>
-
-
-          <button class="btn danger del">
-
-            삭제
-
-          </button>
-
-
-        </div>
-
-      `;
-
-
-      element
-      .querySelector(
-        ".google"
-      )
-      .onclick =
-        () =>
-
-          window.open(
-
-            placeGoogleUrl(
-              place
-            ),
-
-            "_blank"
-
-          );
-
-
-      element
-      .querySelector(
-        ".day"
-      )
-      .onclick =
-        () =>
-
-          openDaySheet(
-            place.id
-          );
-
-
-      element
-      .querySelector(
-        ".pin"
-      )
-      .onclick =
-        () =>
-
-
-          hasPin
-
-          ?
-
-          showSavedOnMap(
-            place
-          )
-
-          :
-
-          pinPlace(
-            place.id
-          );
-
-
-      element
-      .querySelector(
-        ".edit"
-      )
-      .onclick =
-        () =>
-
-          editPlace(
-            place.id
-          );
-
-
-      element
-      .querySelector(
-        ".del"
-      )
-      .onclick =
-        () =>
-
-          removePlace(
-            place.id
-          );
-
-
-      box.appendChild(
-        element
-      );
-
-
-    }
-  );
-
-}
-
-
-
-function showSavedOnMap(
-  place
-) {
-
-
-  changeView(
-    "map"
-  );
-
-
-  setTimeout(
-    () => {
-
-
-      map.flyTo({
-
-        center: [
-
-          place.lng,
-
-          place.lat
-
-        ],
-
-        zoom:
-          16
-
-      });
-
-
-    },
-
-    120
-  );
-
-}
-
-
-
-/* =========================
-   날짜 UI
-========================= */
-
-function renderDays() {
-
-
-  document
-  .querySelectorAll(
-    "[data-day-tabs]"
-  )
-  .forEach(
-    box => {
-
-
-      box.innerHTML =
-        "";
-
-
-      [
-        "day1",
-        "day2",
-        "day3"
-      ]
-      .forEach(
-        day => {
-
-
-          const button =
-            document.createElement(
-              "button"
-            );
-
-
-          button.className =
-
-            "pill"
-
-            +
-
-            (
-              state.selectedDay
-              ===
-              day
-
-              ?
-
-              " active"
-
-              :
-
-              ""
-            );
-
-
-          button.textContent =
-            dayLabel(
-              day
-            );
-
-
-          button.onclick =
-            () => {
-
-
-              state.selectedDay =
-                day;
-
-
-              saveState();
-
-
-              renderAll();
-
-
-            };
-
-
-          box.appendChild(
-            button
-          );
-
-
-        }
-      );
-
-
-    }
-  );
-
-}
-
-
-
-/* =========================
-   홈
-========================= */
-
-function renderHome() {
-
-
-  document
-  .getElementById(
-    "statSaved"
-  )
-  .textContent =
-    state.places.length;
-
-
-  document
-  .getElementById(
-    "statDay"
-  )
-  .textContent =
-    state.days[
-      state.selectedDay
-    ]
-    .length;
-
-
-  document
-  .getElementById(
-    "statCategories"
-  )
-  .textContent =
-
-    new Set(
-
-      state.places
-      .map(
-        place =>
-          place.category
-      )
-
-    )
-    .size;
-
-
-  const box =
-
-    document
-    .getElementById(
-      "homeSchedule"
-    );
-
-
-  const list =
-    dayPlaces();
-
-
-  box.innerHTML =
-
-    list.length
-
-    ?
-
-    list
-    .map(
-      (place,index) => `
-
-
-        <div class="scheduleItem">
-
-
-          <div class="num">
-
-            ${index + 1}
-
-          </div>
-
-
-          <div>
-
-
-            <div class="scheduleName">
-
-              ${esc(place.name)}
-
-            </div>
-
-
-            <div class="scheduleSub">
-
-              ${esc(
-                place.address || ""
-              )}
-
-            </div>
-
-
-          </div>
-
-
-          <button
-            class="iconBtn"
-            onclick="window.__openPlaceGoogle('${place.id}')"
-          >
-
-            ↗
-
-          </button>
-
-
-        </div>
-
-
-      `
-    )
-    .join("")
-
-    :
-
-    `
-
-      <div class="empty">
-
-        아직 일정이 없어.
-
-        <br><br>
-
-        저장한 장소에서 일정에 추가해줘.
-
-      </div>
-
-    `;
-
-}
-
-
-
-/* =========================
-   일정
-========================= */
 
 function moveSchedule(
-  index,
-  direction
-) {
+index,
+direction
+){
 
 
-  const list =
-    state.days[
-      state.selectedDay
-    ];
+const list =
+state.days[
+state.selectedDay
+];
 
 
-  const target =
-    index +
-    direction;
+const target =
+index +
+direction;
 
 
-  if (
+if(
+target < 0
 
-    target < 0
+||
 
-    ||
-
-    target >=
-    list.length
-
-  ) {
-
-    return;
-
-  }
+target >=
+list.length
+){
 
 
-  [
-
-    list[index],
-
-    list[target]
-
-  ] = [
-
-    list[target],
-
-    list[index]
-
-  ];
+return;
 
 
-  saveState();
+}
 
 
-  renderAll();
+[
+list[index],
+list[target]
+]
+=
+[
+list[target],
+list[index]
+];
+
+
+save();
+
+
+renderAll();
+
 
 }
 
 
 
 function removeSchedule(
-  index
-) {
+index
+){
 
 
-  state.days[
-    state.selectedDay
-  ]
-  .splice(
-    index,
-    1
-  );
+state.days[
+state.selectedDay
+]
+.splice(
+index,
+1
+);
 
 
-  saveState();
+save();
 
 
-  renderAll();
+renderAll();
+
 
 }
 
 
 
-function renderSchedule() {
+/* =====================
+   전체
+===================== */
 
+function renderAll(){
 
-  const box =
 
-    document
-    .getElementById(
-      "scheduleList"
-    );
+renderDays();
 
 
-  const list =
-    dayPlaces();
+renderHome();
 
 
-  box.innerHTML =
-    "";
+renderFilters();
 
 
-  if (!list.length) {
+renderSaved();
 
 
-    box.innerHTML =
+renderSchedule();
 
-      `<div class="empty">
 
-        ${dayLabel(
-          state.selectedDay
-        )} 일정이 비어있어.
+renderModes();
 
-      </div>`;
-
-  }
-
-
-  list
-  .forEach(
-    (place,index) => {
-
-
-      const element =
-
-        document.createElement(
-          "div"
-        );
-
-
-      element.className =
-        "scheduleItem";
-
-
-      element.innerHTML = `
-
-
-        <div class="num">
-
-          ${index + 1}
-
-        </div>
-
-
-        <div>
-
-
-          <div class="scheduleName">
-
-            ${esc(place.name)}
-
-          </div>
-
-
-          <div class="scheduleSub">
-
-            ${esc(
-              place.address || ""
-            )}
-
-          </div>
-
-
-        </div>
-
-
-        <div>
-
-
-          <button class="iconBtn up">
-
-            ↑
-
-          </button>
-
-
-          <button class="iconBtn down">
-
-            ↓
-
-          </button>
-
-
-          <button class="iconBtn remove">
-
-            ×
-
-          </button>
-
-
-        </div>
-
-
-      `;
-
-
-      element
-      .querySelector(
-        ".up"
-      )
-      .disabled =
-        index === 0;
-
-
-      element
-      .querySelector(
-        ".down"
-      )
-      .disabled =
-
-        index ===
-        list.length - 1;
-
-
-      element
-      .querySelector(
-        ".up"
-      )
-      .onclick =
-        () =>
-
-          moveSchedule(
-            index,
-            -1
-          );
-
-
-      element
-      .querySelector(
-        ".down"
-      )
-      .onclick =
-        () =>
-
-          moveSchedule(
-            index,
-            1
-          );
-
-
-      element
-      .querySelector(
-        ".remove"
-      )
-      .onclick =
-        () =>
-
-          removeSchedule(
-            index
-          );
-
-
-      box.appendChild(
-        element
-      );
-
-
-    }
-  );
-
-
-  renderRouteButtons();
 
 }
 
 
 
-/* =========================
-   Google Maps 일정 동선
-========================= */
-
-function buildDirectionsUrl(
-  places
-) {
-
-
-  if (!places.length) {
-
-    return null;
-
-  }
-
-
-  if (
-    places.length ===
-    1
-  ) {
-
-    return placeGoogleUrl(
-      places[0]
-    );
-
-  }
-
-
-  const params =
-    new URLSearchParams();
-
-
-  params.set(
-    "api",
-    "1"
-  );
-
-
-  params.set(
-
-    "origin",
-
-    googleToken(
-      places[0]
-    )
-
-  );
-
-
-  params.set(
-
-    "destination",
-
-    googleToken(
-      places[
-        places.length - 1
-      ]
-    )
-
-  );
-
-
-  params.set(
-
-    "travelmode",
-
-    state.travelMode
-
-  );
-
-
-  if (
-    places.length > 2
-  ) {
-
-
-    params.set(
-
-      "waypoints",
-
-      places
-      .slice(
-        1,
-        -1
-      )
-      .map(
-        googleToken
-      )
-      .join("|")
-
-    );
-
-
-  }
-
-
-  return (
-
-    "https://www.google.com/maps/dir/?"
-
-    +
-
-    params.toString()
-
-  );
-
-}
-
-
-
-function splitRoute(
-  list,
-  maxPlaces = 5
-) {
-
-
-  if (
-    list.length <=
-    maxPlaces
-  ) {
-
-    return [
-      list
-    ];
-
-  }
-
-
-  const chunks =
-    [];
-
-
-  let start =
-    0;
-
-
-  while (
-    start <
-    list.length - 1
-  ) {
-
-
-    const end =
-
-      Math.min(
-
-        start
-        +
-        maxPlaces,
-
-        list.length
-
-      );
-
-
-    chunks.push(
-
-      list.slice(
-        start,
-        end
-      )
-
-    );
-
-
-    start =
-      end - 1;
-
-
-  }
-
-
-  return chunks;
-
-}
-
-
-
-function renderRouteButtons() {
-
-
-  const box =
-
-    document
-    .getElementById(
-      "routeButtons"
-    );
-
-
-  const list =
-    dayPlaces();
-
-
-  box.innerHTML =
-    "";
-
-
-  if (!list.length) {
-
-
-    box.innerHTML =
-
-      `<span class="muted">
-
-        일정을 추가하면
-        Google Maps 동선을 열 수 있어.
-
-      </span>`;
-
-
-    return;
-
-  }
-
-
-  const chunks =
-    splitRoute(
-      list,
-      5
-    );
-
-
-  chunks
-  .forEach(
-    (chunk,index) => {
-
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      button.className =
-        "btn primary";
-
-
-      button.textContent =
-
-        chunks.length === 1
-
-        ?
-
-        "🗺️ Google Maps로 동선 열기"
-
-        :
-
-        `🗺️ ${index + 1}구간 (${chunk[0].name} → ${chunk[chunk.length - 1].name})`;
-
-
-      button.onclick =
-        () =>
-
-          window.open(
-
-            buildDirectionsUrl(
-              chunk
-            ),
-
-            "_blank"
-
-          );
-
-
-      box.appendChild(
-        button
-      );
-
-
-    }
-  );
-
-}
-
-
-
-function renderTravelModes() {
-
-
-  document
-  .querySelectorAll(
-    "[data-travel-mode]"
-  )
-  .forEach(
-    button => {
-
-
-      button
-      .classList
-      .toggle(
-
-        "active",
-
-        button.dataset
-        .travelMode
-
-        ===
-
-        state.travelMode
-
-      );
-
-
-    }
-  );
-
-}
-
-
-
-/* =========================
-   전체 렌더
-========================= */
-
-function renderAll() {
-
-
-  renderDays();
-
-
-  renderHome();
-
-
-  renderCategoryFilters();
-
-
-  renderSaved();
-
-
-  renderSchedule();
-
-
-  renderTravelModes();
-
-}
-
-
-
-/* =========================
-   화면 이동
-========================= */
-
-function changeView(
-  view
-) {
-
-
-  document
-  .querySelectorAll(
-    ".view"
-  )
-  .forEach(
-    element =>
-
-      element
-      .classList
-      .remove(
-        "active"
-      )
-
-  );
-
-
-  document
-  .getElementById(
-    view +
-    "View"
-  )
-  .classList
-  .add(
-    "active"
-  );
-
-
-  document
-  .querySelectorAll(
-    ".bottom button"
-  )
-  .forEach(
-    button => {
-
-
-      button
-      .classList
-      .toggle(
-
-        "active",
-
-        button.dataset.view
-        ===
-        view
-
-      );
-
-
-    }
-  );
-
-
-  if (
-    view ===
-    "map"
-  ) {
-
-
-    setTimeout(
-      () => {
-
-
-        map.resize();
-
-
-        renderMapMarkers();
-
-
-      },
-
-      100
-    );
-
-
-  }
-
-
-  window.scrollTo({
-
-    top:
-      0,
-
-    behavior:
-      "smooth"
-
-  });
-
-}
-
-
-
-/* =========================
-   전역 Google 열기
-========================= */
-
-window.__openPlaceGoogle =
-  id => {
-
-
-    const place =
-      getPlace(
-        id
-      );
-
-
-    if (place) {
-
-
-      window.open(
-
-        placeGoogleUrl(
-          place
-        ),
-
-        "_blank"
-
-      );
-
-
-    }
-
-
-  };
-
-
-
-/* =========================
+/* =====================
    이벤트
-========================= */
+===================== */
 
 document
 .querySelectorAll(
-  ".bottom button"
+".bottom button"
 )
 .forEach(
-  button => {
+button => {
 
 
-    button.onclick =
-      () =>
+button.onclick =
+() =>
 
-        changeView(
-          button.dataset.view
-        );
-
-
-  }
+changeView(
+button.dataset.view
 );
 
 
-
-document
-.querySelectorAll(
-  "[data-go]"
-)
-.forEach(
-  button => {
-
-
-    button.onclick =
-      () =>
-
-        changeView(
-          button.dataset.go
-        );
-
-
-  }
+}
 );
-
-
-
-document
-.getElementById(
-  "homeGoogleSearch"
-)
-.onclick =
-  () =>
-
-    window.open(
-
-      googleSearchUrl(
-        "후쿠오카 맛집"
-      ),
-
-      "_blank"
-
-    );
-
-
-
-document
-.getElementById(
-  "googleSearchBtn"
-)
-.onclick =
-  openGoogleFromQuick;
-
-
-
-document
-.getElementById(
-  "quickName"
-)
-.addEventListener(
-  "keydown",
-  event => {
-
-
-    if (
-      event.key ===
-      "Enter"
-    ) {
-
-
-      openGoogleFromQuick();
-
-
-    }
-
-
-  }
-);
-
-
-
-document
-.getElementById(
-  "quickSaveBtn"
-)
-.onclick =
-  quickSave;
-
-
-
-document
-.getElementById(
-  "manualAddBtn"
-)
-.onclick =
-  () =>
-
-    openPlaceSheet({
-
-      name:
-
-        document
-        .getElementById(
-          "quickName"
-        )
-        .value
-        .trim(),
-
-      category:
-
-        document
-        .getElementById(
-          "quickCategory"
-        )
-        .value
-
-    });
-
-
-
-document
-.getElementById(
-  "sheetCancel"
-)
-.onclick =
-  closePlaceSheet;
-
-
-
-document
-.getElementById(
-  "sheetSave"
-)
-.onclick =
-  savePlaceFromSheet;
-
-
-
-document
-.getElementById(
-  "placeSheetBack"
-)
-.addEventListener(
-  "click",
-  event => {
-
-
-    if (
-      event.target.id ===
-      "placeSheetBack"
-    ) {
-
-
-      closePlaceSheet();
-
-
-    }
-
-
-  }
-);
-
-
-
-document
-.getElementById(
-  "daySheetCancel"
-)
-.onclick =
-  () =>
-
-    document
-    .getElementById(
-      "daySheetBack"
-    )
-    .classList
-    .remove(
-      "show"
-    );
-
-
-
-document
-.getElementById(
-  "daySheetBack"
-)
-.addEventListener(
-  "click",
-  event => {
-
-
-    if (
-      event.target.id ===
-      "daySheetBack"
-    ) {
-
-
-      event.currentTarget
-      .classList
-      .remove(
-        "show"
-      );
-
-
-    }
-
-
-  }
-);
-
-
-
-document
-.getElementById(
-  "savedSearch"
-)
-.addEventListener(
-  "input",
-  renderSaved
-);
-
-
-
-document
-.getElementById(
-  "newPinBtn"
-)
-.onclick =
-  () =>
-
-    setPickMode(
-
-      pickMode === "new"
-
-      ?
-
-      null
-
-      :
-
-      "new"
-
-    );
-
-
-
-document
-.getElementById(
-  "fitSavedBtn"
-)
-.onclick =
-  fitSaved;
-
-
-
-document
-.getElementById(
-  "currentLocationBtn"
-)
-.onclick =
-  () => {
-
-
-    if (
-      !navigator.geolocation
-    ) {
-
-
-      alert(
-        "이 기기에서는 위치 기능을 사용할 수 없어."
-      );
-
-
-      return;
-
-    }
-
-
-    navigator
-    .geolocation
-    .getCurrentPosition(
-
-      position => {
-
-
-        const location = [
-
-          position.coords.longitude,
-
-          position.coords.latitude
-
-        ];
-
-
-        if (
-          currentMarker
-        ) {
-
-
-          currentMarker.remove();
-
-
-        }
-
-
-        const element =
-          document.createElement(
-            "div"
-          );
-
-
-        element.className =
-          "currentMarker";
-
-
-        currentMarker =
-
-          new maptilersdk.Marker({
-
-            element
-
-          })
-
-          .setLngLat(
-            location
-          )
-
-          .setPopup(
-
-            new maptilersdk.Popup({
-
-              offset:
-                18
-
-            })
-
-            .setHTML(
-              "<b>현재 위치</b>"
-            )
-
-          )
-
-          .addTo(
-            map
-          );
-
-
-        map.flyTo({
-
-          center:
-            location,
-
-          zoom:
-            15.5
-
-        });
-
-
-      },
-
-
-      () => {
-
-
-        alert(
-          "브라우저 위치 권한을 허용해줘."
-        );
-
-
-      },
-
-
-      {
-
-        enableHighAccuracy:
-          true,
-
-        timeout:
-          12000
-
-      }
-
-    );
-
-
-  };
 
 
 
 document
 .querySelectorAll(
-  "[data-travel-mode]"
+"[data-go]"
 )
 .forEach(
-  button => {
+button => {
 
 
-    button.onclick =
-      () => {
+button.onclick =
+() =>
+
+changeView(
+button.dataset.go
+);
 
 
-        state.travelMode =
-
-          button.dataset
-          .travelMode;
-
-
-        saveState();
-
-
-        renderTravelModes();
-
-
-        renderRouteButtons();
-
-
-      };
-
-
-  }
+}
 );
 
 
 
-/* 시작 */
+document
+.getElementById(
+"openFukuokaMap"
+)
+.onclick =
+() =>
 
-initMap();
+window.open(
+
+googleSearchUrl(
+"후쿠오카"
+),
+
+"_blank"
+
+);
+
+
+
+document
+.getElementById(
+"googleSearchBtn"
+)
+.onclick =
+() =>
+
+openGoogleSearch(
+
+document
+.getElementById(
+"googleSearchInput"
+)
+.value
+.trim()
+
+);
+
+
+
+document
+.getElementById(
+"googleSearchInput"
+)
+.addEventListener(
+"keydown",
+event => {
+
+
+if(
+event.key ===
+"Enter"
+){
+
+
+openGoogleSearch(
+event.currentTarget.value.trim()
+);
+
+
+}
+
+
+}
+);
+
+
+
+document
+.querySelectorAll(
+".quickSearch"
+)
+.forEach(
+button => {
+
+
+button.onclick =
+() =>
+
+openGoogleSearch(
+button.dataset.query
+);
+
+
+}
+);
+
+
+
+document
+.getElementById(
+"newPlaceBtn"
+)
+.onclick =
+() =>
+
+openPlaceSheet();
+
+
+
+document
+.getElementById(
+"pastePlaceBtn"
+)
+.onclick =
+() =>
+
+openPlaceSheet({
+
+googleUrl:""
+
+});
+
+
+
+document
+.getElementById(
+"sheetCancel"
+)
+.onclick =
+closePlaceSheet;
+
+
+
+document
+.getElementById(
+"sheetSave"
+)
+.onclick =
+savePlace;
+
+
+
+document
+.getElementById(
+"placeSheetBack"
+)
+.addEventListener(
+"click",
+event => {
+
+
+if(
+event.target.id ===
+"placeSheetBack"
+){
+
+
+closePlaceSheet();
+
+
+}
+
+
+}
+);
+
+
+
+document
+.getElementById(
+"daySheetCancel"
+)
+.onclick =
+() =>
+
+document
+.getElementById(
+"daySheetBack"
+)
+.classList
+.remove(
+"show"
+);
+
+
+
+document
+.getElementById(
+"daySheetBack"
+)
+.addEventListener(
+"click",
+event => {
+
+
+if(
+event.target.id ===
+"daySheetBack"
+){
+
+
+event.currentTarget
+.classList
+.remove(
+"show"
+);
+
+
+}
+
+
+}
+);
+
+
+
+document
+.getElementById(
+"savedSearch"
+)
+.addEventListener(
+"input",
+renderSaved
+);
+
+
+
+document
+.querySelectorAll(
+"[data-mode]"
+)
+.forEach(
+button => {
+
+
+button.onclick =
+() => {
+
+
+state.travelMode =
+button.dataset.mode;
+
+
+save();
+
+
+renderModes();
+
+
+renderRouteButtons();
+
+
+};
+
+
+}
+);
+
 
 
 renderAll();
@@ -5841,6 +4264,7 @@ renderAll();
 })();
 
 </script>
+
 
 </body>
 </html>
